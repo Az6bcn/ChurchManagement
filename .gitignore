@@ -1,0 +1,12 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea/.idea.ChurchManagement/.idea/.gitignore
+.idea/.idea.ChurchManagement/.idea/encodings.xml
+.idea/.idea.ChurchManagement/.idea/indexLayout.xml
+.idea/.idea.ChurchManagement/.idea/misc.xml
+.idea/.idea.ChurchManagement/.idea/vcs.xml
+.vs/ChurchManagement/xs/UserPrefs.xml
+.vs/ChurchManagement/xs/project-cache/WebApi-Debug.json
