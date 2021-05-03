@@ -4,8 +4,8 @@ namespace Application.Helpers
 {
     public class CommandResult
     {
-        private HashSet<string> _errors;
-        private Dictionary<string, object> _errorDictionary;
+        private readonly HashSet<string> _errors;
+        private readonly Dictionary<string, object> _errorDictionary;
 
         public CommandResult()
         {
@@ -37,9 +37,9 @@ namespace Application.Helpers
             _errorDictionary = (Dictionary<string, object>)errors;
         }
 
-        public bool Suceeded { get; set; }
-        public int IdentityId { get; set; }
-        public string Error { get; set; }
+        public bool Suceeded { get; private set; }
+        public int IdentityId { get; private set; }
+        public string? Error { get; private set; }
         public IReadOnlyCollection<string> ErrorsList => _errors;
         public IReadOnlyDictionary<string, object> ErrorsDictionary => _errorDictionary;
 

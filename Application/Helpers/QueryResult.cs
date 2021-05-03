@@ -11,10 +11,11 @@ namespace Application.Helpers
             _queryResultList = new();
         }
 
-        internal QueryResult(IEnumerable<T> response, T? data = null) : this()
+        internal QueryResult(IEnumerable<T>? response, T? data = null) : this()
         {
-            foreach (var item in response)
-                _queryResultList.Add(item);
+            if (response is not null)
+                foreach (var item in response)
+                    _queryResultList.Add(item);
 
             if (data is not null)
                 Result = data;
@@ -22,7 +23,7 @@ namespace Application.Helpers
 
 
         public IReadOnlyCollection<T> Results => _queryResultList;
-        public T? Result { get; set; }
+        public T? Result { get; private set; }
 
 
         public static QueryResult<T> CreateQueryResults(IEnumerable<T> response) => new(response);

@@ -1,0 +1,113 @@
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Infrastructure.Persistence.Mappings
+{
+    public class MemberMap : IEntityTypeConfiguration<Member>
+    {
+        public void Configure(EntityTypeBuilder<Member> builder)
+        {
+            builder.ToTable("Members");
+
+            // PK
+            builder.HasKey(m => m.MemberId)
+                .HasName("PK_Members_MemberId")
+                .IsClustered();
+
+            // Columns
+            builder.Property(m => m.MemberId)
+                .HasColumnName("MemberId")
+                .HasColumnType("int")
+                .UseIdentityColumn()
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
+            builder.Property(t => t.TenantId)
+                .HasColumnName("TenantId")
+                .HasColumnType("uuid")
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            builder.Property(t => t.Name)
+                .HasColumnName("Name")
+                .HasColumnType("varchar(200)")
+                .IsUnicode(false)
+                .HasMaxLength(200)
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            builder.Property(t => t.Surname)
+                .HasColumnName("Surname")
+                .HasColumnType("varchar(200)")
+                .IsUnicode(false)
+                .HasMaxLength(200)
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            builder.Property(t => t.DateAndMonthOfBirth)
+                .HasColumnName("DateAndMonthOfBirth")
+                .HasColumnType("varchar(50)")
+                .IsUnicode(false)
+                .HasMaxLength(50)
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            builder.Property(t => t.IsWorker)
+             .HasColumnName("IsWorker")
+             .HasColumnType("bit")
+             .ValueGeneratedNever()
+             .IsRequired();
+
+            builder.Property(t => t.PhoneNumber)
+                .HasColumnName("PhoneNumber")
+                .HasColumnType("varchar(25)")
+                .IsUnicode(false)
+                .HasMaxLength(25)
+                .ValueGeneratedNever()
+                .IsRequired();
+
+            builder.Property(t => t.CreatedAt)
+             .HasColumnName("CreatedAt")
+             .HasColumnType("datetime")
+             .IsRequired()
+             .ValueGeneratedNever();
+
+            builder.Property(t => t.UpdatedAt)
+             .HasColumnName("UpdatedAt")
+             .HasColumnType("datetime")
+             .ValueGeneratedNever()
+             .IsRequired(false);
+
+            builder.Property(t => t.Deleted)
+             .HasColumnName("Deleted")
+             .HasColumnType("datetime")
+             .ValueGeneratedNever()
+             .IsRequired(false);
+
+            // Relationships and Foreign Key Constraints
+            builder.HasMany(m => m.Departments)
+                .WithMany(D => D.Members)
+                .UsingEntity<DepartmentMembers>(
+                jt => jt.HasOne(dm => dm.Department)
+                    .WithMany()
+                    .HasForeignKey(dm => dm.DepartmentId)
+                    .HasConstraintName("FK_DepartmentMembers_Departments_DepartmentId")
+                    .OnDelete(DeleteBehavior.ClientSetNull),
+                jt => jt.HasOne(dm => dm.Member)
+                    .WithMany()
+                    .HasForeignKey(dm => dm.MemberId)
+                    .HasConstraintName("FK_DepartmentMembers_Members_DepartmentId")
+                    .OnDelete(DeleteBehavior.ClientSetNull),
+                jt =>
+                {
+                    jt.HasKey(pk => new { pk.DepartmentId, pk.MemberId });
+                });
+
+            // Indexes and Contraints
+            // UQ
+            builder.HasIndex(uq => new { uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
+                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
+        }
+    }
+}
