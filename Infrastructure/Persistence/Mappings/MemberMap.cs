@@ -10,6 +10,8 @@ namespace Infrastructure.Persistence.Mappings
         {
             builder.ToTable("Members");
 
+            builder.HasQueryFilter(m => m.Deleted == null);
+            
             // PK
             builder.HasKey(m => m.MemberId)
                 .HasName("PK_Members_MemberId")

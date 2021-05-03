@@ -9,6 +9,8 @@ namespace Infrastructure.Persistence.Mappings
         public void Configure(EntityTypeBuilder<Finance> builder)
         {
             builder.ToTable("Finances");
+            
+            builder.HasQueryFilter(f => f.Deleted == null);
 
             // PK
             builder.HasKey(x => x.FinanceId)

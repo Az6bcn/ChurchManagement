@@ -9,6 +9,8 @@ namespace Infrastructure.Persistence.Mappings
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.ToTable("Departments");
+            
+            builder.HasQueryFilter(d => d.Deleted == null);
 
             // PK
             builder.HasKey(x => x.DepartmentId)
