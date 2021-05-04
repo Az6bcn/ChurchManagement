@@ -17,11 +17,11 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(Guid tenantGuid) 
+        public async Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId) 
             => await _dbContext
             .Tenants
-                .Include(t => t.Members.Where(m => m.TenantId == tenantGuid))
-            .Where(t => t.TenantId == tenantGuid)
+                .Include(t => t.Members.Where(m => m.TenantId == tenantId))
+            .Where(t => t.TenantId == tenantId)
             .ToListAsync();
     }
 }

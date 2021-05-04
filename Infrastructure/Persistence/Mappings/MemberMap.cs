@@ -27,7 +27,7 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("uuid")
+                .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
@@ -79,28 +79,30 @@ namespace Infrastructure.Persistence.Mappings
              .HasColumnName("UpdatedAt")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             builder.Property(t => t.Deleted)
              .HasColumnName("Deleted")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
             builder.HasMany(m => m.Departments)
-                .WithMany(D => D.Members)
+                .WithMany(d => d.Members)
                 .UsingEntity<DepartmentMembers>(
                 jt => jt.HasOne(dm => dm.Department)
-                    .WithMany()
+                    .WithMany(x => x.DepartmentMembers)
                     .HasForeignKey(dm => dm.DepartmentId)
                     .HasConstraintName("FK_DepartmentMembers_Departments_DepartmentId")
-                    .OnDelete(DeleteBehavior.ClientSetNull),
+                    .OnDelete(DeleteBehavior.Restrict),
                 jt => jt.HasOne(dm => dm.Member)
-                    .WithMany()
+                    .WithMany(x => x.DepartmentMembers)
                     .HasForeignKey(dm => dm.MemberId)
                     .HasConstraintName("FK_DepartmentMembers_Members_DepartmentId")
-                    .OnDelete(DeleteBehavior.ClientSetNull),
+                    .OnDelete(DeleteBehavior.Restrict),
                 jt =>
                 {
                     jt.HasKey(pk => new { pk.DepartmentId, pk.MemberId });
@@ -108,7 +110,7 @@ namespace Infrastructure.Persistence.Mappings
 
             // Indexes and Contraints
             // UQ
-            builder.HasIndex(uq => new { uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
+            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
                 .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
         }
     }

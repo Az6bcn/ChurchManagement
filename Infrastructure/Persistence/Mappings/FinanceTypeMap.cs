@@ -38,7 +38,7 @@ namespace Infrastructure.Persistence.Mappings
                 FinanceType.CreateFinanceType(3, "Spending"),
                 FinanceType.CreateFinanceType(4, "Donation"),
                 FinanceType.CreateFinanceType(5, "Tithe"),
-                FinanceType.CreateFinanceType(6, "MidWeekServiceOffering"),
+                FinanceType.CreateFinanceType(6, "Mid Week Service Offering"),
                 FinanceType.CreateFinanceType(7, "Others")
                 );
         }

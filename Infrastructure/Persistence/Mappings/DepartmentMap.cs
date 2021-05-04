@@ -27,7 +27,7 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("uuid")
+                .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
@@ -49,12 +49,14 @@ namespace Infrastructure.Persistence.Mappings
              .HasColumnName("UpdatedAt")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             builder.Property(t => t.Deleted)
              .HasColumnName("Deleted")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             // Indexes and Contraints

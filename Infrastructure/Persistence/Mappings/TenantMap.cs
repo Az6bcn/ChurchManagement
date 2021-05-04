@@ -20,9 +20,15 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("uuid")
+                .HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
+                .IsRequired();
+            
+            builder.Property(t => t.TenantGuidId)
+                .HasColumnName("TenantGuidId")
+                .HasColumnType("uniqueidentifier")
+                .HasDefaultValueSql("newid()")
                 .IsRequired();
 
             builder.Property(t => t.Name)
@@ -62,37 +68,42 @@ namespace Infrastructure.Persistence.Mappings
              .HasColumnName("UpdatedAt")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             builder.Property(t => t.Deleted)
              .HasColumnName("Deleted")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
             builder.HasOne(t => t.Currency)
                 .WithOne(c => c.Tenant)
                 .HasForeignKey<Tenant>(t => t.CurrencyId)
-                .HasConstraintName("FK_Tenants_Currencies_CurrencytypeId")
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .HasConstraintName("FK_Tenants_Currencies_CurrencyId")
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(t => t.Members)
                 .WithOne(m => m.Tenant)
                 .HasForeignKey(m => m.TenantId)
                 .HasConstraintName("FK_Tenants_Members_TenantId")
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(t => t.Finances)
                .WithOne(f => f.Tenant)
                .HasForeignKey(m => m.TenantId)
                .HasConstraintName("FK_Tenants_Finances_TenantId")
-               .OnDelete(DeleteBehavior.ClientSetNull);
+               .OnDelete(DeleteBehavior.Restrict);
 
             // Indexes and Contraints
             // UQ
-            builder.HasIndex(uq => new { uq.TenantId, uq.Name })
-                .HasDatabaseName("UQ_TenantId_TenantName");
+            builder.HasIndex(uq => new {uq.TenantGuidId, uq.Name })
+                .HasDatabaseName("UQ_TenantGuidId_TenantName");
+            
+            builder.HasIndex(uq => uq.TenantGuidId)
+                .HasDatabaseName("UQ_TenantGuidId");
         }
     }
 }

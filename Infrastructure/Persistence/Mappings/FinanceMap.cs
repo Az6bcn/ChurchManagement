@@ -27,7 +27,7 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("uuid")
+                .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
@@ -58,12 +58,14 @@ namespace Infrastructure.Persistence.Mappings
             builder.Property(t => t.ServiceDate)
              .HasColumnName("ServiceDate")
              .HasColumnType("datetime")
+             .HasDefaultValueSql("null")
              .ValueGeneratedNever();
 
             builder.Property(t => t.GivenDate)
              .HasColumnName("GivenDate")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             builder.Property(t => t.Description)
@@ -83,12 +85,14 @@ namespace Infrastructure.Persistence.Mappings
              .HasColumnName("UpdatedAt")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
             builder.Property(t => t.Deleted)
              .HasColumnName("Deleted")
              .HasColumnType("datetime")
              .ValueGeneratedNever()
+             .HasDefaultValueSql("null")
              .IsRequired(false);
 
         }

@@ -5,6 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 .vs/
+./Migrations
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio

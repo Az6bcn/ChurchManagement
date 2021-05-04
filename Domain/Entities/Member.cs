@@ -14,7 +14,7 @@ namespace Domain.Entities
             _departmentMembers = new();
         }
 
-        internal Member(Guid tenantId,
+        internal Member(int tenantId,
             string name,
             string surname,
             string dayMonthBirth,
@@ -33,7 +33,7 @@ namespace Domain.Entities
         }
 
         public int MemberId { get; private set; }
-        public Guid TenantId { get; private set; }
+        public int TenantId { get; private set; }
         public string Name { get; private set; }
         public string Surname { get; private set; }
         public string DateAndMonthOfBirth { get; private set; }
@@ -44,14 +44,13 @@ namespace Domain.Entities
         public DateTime? Deleted { get; private set; }
 
         public Tenant Tenant { get; private set; }
-        public Department Department { get; private set; }
 
         public IReadOnlyCollection<Department> Departments => _departments;
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 
         public string FullName => $"{Name} {Surname}";
 
-        public static Member CreateMember(Guid tenantId,
+        public static Member CreateMember(int tenantId,
             string name,
             string surname,
             string dayMonthBirth,
@@ -59,7 +58,7 @@ namespace Domain.Entities
             string phoneNumber) => new Member(tenantId, name, surname, dayMonthBirth, isWorker, phoneNumber);
 
 
-        public void UpdateMember(Guid tenantId,
+        public void UpdateMember(int tenantId,
             string name,
             string surname,
             string dayMonthBirth,

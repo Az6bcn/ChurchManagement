@@ -7,6 +7,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface ITenantRepository: IGenericRepository<Tenant>
     {
-        Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(Guid tenantGuid);
+        Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
     }
 }

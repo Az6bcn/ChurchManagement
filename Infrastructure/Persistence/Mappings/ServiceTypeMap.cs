@@ -34,8 +34,8 @@ namespace Infrastructure.Persistence.Mappings
             // seed
             builder.HasData(
                 ServiceType.CreateServiceType(1, "Thanksgiving"),
-                ServiceType.CreateServiceType(2, "MidWeek"),
-                ServiceType.CreateServiceType(3, "Sunday"),
+                ServiceType.CreateServiceType(2, "Mid Week Service"),
+                ServiceType.CreateServiceType(3, "Sunday Service"),
                 ServiceType.CreateServiceType(4, "Crusade"),
                 ServiceType.CreateServiceType(5, "Cross Over"),
                 ServiceType.CreateServiceType(6, "Others")

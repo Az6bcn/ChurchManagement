@@ -21,7 +21,7 @@
         public int FinanceTypeId { get; private set; }
         public string Name { get; private set; }
 
-        public static Currency CreateFinanceType(string name) => new(name);
-        public static Currency CreateFinanceType(int id, string name) => new(id, name);
+        public static FinanceType CreateFinanceType(string name) => new(name);
+        public static FinanceType CreateFinanceType(int id, string name) => new(id, name);
     }
 }

@@ -8,7 +8,7 @@ namespace Domain.Entities
         }
 
         public int FinanceId { get; private set; }
-        public Guid TenantId { get; private set; }
+        public int TenantId { get; private set; }
         public int FinanceTypeId { get; private set; }
         public int ServiceTypeId { get; private set; }
         public int CurrencyId { get; private set; }

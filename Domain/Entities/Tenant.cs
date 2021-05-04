@@ -23,14 +23,15 @@ namespace Domain.Entities
             CreatedAt = DateTime.UtcNow;
         }
 
-        public Guid TenantId { get; private set; }
+        public int TenantId { get; private set; }
+        public Guid TenantGuidId { get; private set; }
         public string Name { get; private set; }
         public string? LogoUrl { get; private set; }
         public int CurrencyId { get; private set; }
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
-        public DateTime Deleted { get; private set; }
+        public DateTime? Deleted { get; private set; }
 
         public IReadOnlyCollection<Finance> Finances => _finances;
         public IReadOnlyCollection<Member> Members => _members;

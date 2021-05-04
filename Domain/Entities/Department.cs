@@ -13,11 +13,9 @@ namespace Domain.Entities
             _members = new();
             _departmentMembers = new();
         }
-
-
-
+        
         public int DepartmentId { get; private set; }
-        public Guid TenantId { get; private set; }
+        public int TenantId { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get;private  set; }

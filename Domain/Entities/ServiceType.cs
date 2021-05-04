@@ -21,7 +21,7 @@
         public int ServiceTypeId { get; private set; }
         public string Name { get; private set; }
 
-        public static Currency CreateServiceType(string name) => new(name);
-        public static Currency CreateServiceType(int id, string name) => new(id, name);
+        public static ServiceType CreateServiceType(string name) => new(name);
+        public static ServiceType CreateServiceType(int id, string name) => new(id, name);
     }
 }
