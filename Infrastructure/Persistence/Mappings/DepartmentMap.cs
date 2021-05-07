@@ -25,12 +25,6 @@ namespace Infrastructure.Persistence.Mappings
                 .UseIdentityColumn()
                 .IsRequired();
 
-            builder.Property(t => t.TenantId)
-                .HasColumnName("TenantId")
-                .HasColumnType("int")
-                .ValueGeneratedNever()
-                .IsRequired();
-
             builder.Property(t => t.Name)
                 .HasColumnName("Name")
                 .HasColumnType("varchar(200)")
@@ -61,8 +55,8 @@ namespace Infrastructure.Persistence.Mappings
 
             // Indexes and Contraints
             // UQ
-            builder.HasIndex(uq => new { uq.TenantId, uq.Name })
-                .HasDatabaseName("UQ_TenantId_DepartmentName");
+            builder.HasIndex(uq => uq.Name) 
+                .HasDatabaseName("UQ_DepartmentName");
         }
     }
 }

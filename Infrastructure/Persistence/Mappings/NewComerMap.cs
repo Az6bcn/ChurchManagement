@@ -1,25 +1,27 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Mappings
 {
-    public class MemberMap : IEntityTypeConfiguration<Member>
+    public class NewComerMap: IEntityTypeConfiguration<NewComer>
     {
-        public void Configure(EntityTypeBuilder<Member> builder)
+        public void Configure(EntityTypeBuilder<NewComer> builder)
         {
-            builder.ToTable("Members");
+            builder.ToTable("NewComers");
 
-            builder.HasQueryFilter(m => m.Deleted == null);
-            
+            // Can only be applied to root entity Member(base)
+            //builder.HasQueryFilter(m => m.Deleted == null);
+
             // PK
-            builder.HasKey(m => m.MemberId)
-                .HasName("PK_Members_MemberId")
-                .IsClustered();
+            // Cannot re-assign PK because already been done in Member(base)
+            // builder.HasKey(m => m.NewComerId)
+            //     .HasName("PK_Ministers_MinisterId")
+            //     .IsClustered();
 
             // Columns
-            builder.Property(m => m.MemberId)
-                .HasColumnName("MemberId")
+            builder.Property(m => m.NewComerId)
+                .HasColumnName("NewComerId")
                 .HasColumnType("int")
                 .UseIdentityColumn()
                 .ValueGeneratedOnAdd()
@@ -27,6 +29,12 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
+                .HasColumnType("int")
+                .ValueGeneratedNever()
+                .IsRequired();
+            
+            builder.Property(t => t.ServiceTypeId)
+                .HasColumnName("ServiceTypeId")
                 .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
@@ -63,12 +71,6 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.IsWorker)
-             .HasColumnName("IsWorker")
-             .HasColumnType("bit")
-             .ValueGeneratedNever()
-             .IsRequired();
-
             builder.Property(t => t.PhoneNumber)
                 .HasColumnName("PhoneNumber")
                 .HasColumnType("varchar(25)")
@@ -98,28 +100,25 @@ namespace Infrastructure.Persistence.Mappings
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
-            builder.HasMany(m => m.Departments)
-                .WithMany(d => d.Members)
-                .UsingEntity<DepartmentMembers>(
-                jt => jt.HasOne(dm => dm.Department)
-                    .WithMany(x => x.DepartmentMembers)
-                    .HasForeignKey(dm => dm.DepartmentId)
-                    .HasConstraintName("FK_DepartmentMembers_Departments_DepartmentId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                jt => jt.HasOne(dm => dm.Member)
-                    .WithMany(x => x.DepartmentMembers)
-                    .HasForeignKey(dm => dm.MemberId)
-                    .HasConstraintName("FK_DepartmentMembers_Members_DepartmentId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                jt =>
-                {
-                    jt.HasKey(pk => new { pk.DepartmentId, pk.MemberId });
-                });
-
+            builder.HasOne(m => m.ServiceType)
+                .WithMany()
+                .HasForeignKey(m => m.ServiceTypeId)
+                .HasConstraintName("FK_NewComers_ServiceTypes_ServiceTypeIdId")
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            //  Navigation properties can only participate in a single relationship. A relationship already exists between 'Tenant.Members(base)'
+            // builder.HasOne(t => t .Tenant)
+            //     .WithMany(t => t.NewComers)
+            //     .HasForeignKey(m => m.TenantId)
+            //     .HasConstraintName("FK_Tenants_NewComers_TenantId")
+            //     .OnDelete(DeleteBehavior.Restrict);
+            
             // Indexes and Constraints
             // UQ
-            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth, uq.PhoneNumber })
-                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth_PhoneNumber");
+            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
+                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
+            
         }
+
     }
 }

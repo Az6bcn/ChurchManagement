@@ -1,25 +1,27 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Mappings
 {
-    public class MemberMap : IEntityTypeConfiguration<Member>
+    public class MinisterMap: IEntityTypeConfiguration<Minister>
     {
-        public void Configure(EntityTypeBuilder<Member> builder)
+        public void Configure(EntityTypeBuilder<Minister> builder)
         {
-            builder.ToTable("Members");
+            builder.ToTable("Ministers");
 
-            builder.HasQueryFilter(m => m.Deleted == null);
+            // Can only be applied to root entity Member(base)
+            //builder.HasQueryFilter(m => m.Deleted == null);
             
             // PK
-            builder.HasKey(m => m.MemberId)
-                .HasName("PK_Members_MemberId")
-                .IsClustered();
+            // Cannot re-assign PK because already been done in Member(base)
+            // builder.HasKey(m => m.MinisterId)
+            //     .HasName("PK_Ministers_MinisterId")
+            //     .IsClustered();
 
             // Columns
-            builder.Property(m => m.MemberId)
-                .HasColumnName("MemberId")
+            builder.Property(m => m.MinisterId)
+                .HasColumnName("MinisterId")
                 .HasColumnType("int")
                 .UseIdentityColumn()
                 .ValueGeneratedOnAdd()
@@ -27,6 +29,12 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
+                .HasColumnType("int")
+                .ValueGeneratedNever()
+                .IsRequired();
+            
+            builder.Property(t => t.MinisterTitleId)
+                .HasColumnName("MinisterTitleId")
                 .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
@@ -98,28 +106,27 @@ namespace Infrastructure.Persistence.Mappings
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
-            builder.HasMany(m => m.Departments)
-                .WithMany(d => d.Members)
-                .UsingEntity<DepartmentMembers>(
-                jt => jt.HasOne(dm => dm.Department)
-                    .WithMany(x => x.DepartmentMembers)
-                    .HasForeignKey(dm => dm.DepartmentId)
-                    .HasConstraintName("FK_DepartmentMembers_Departments_DepartmentId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                jt => jt.HasOne(dm => dm.Member)
-                    .WithMany(x => x.DepartmentMembers)
-                    .HasForeignKey(dm => dm.MemberId)
-                    .HasConstraintName("FK_DepartmentMembers_Members_DepartmentId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                jt =>
-                {
-                    jt.HasKey(pk => new { pk.DepartmentId, pk.MemberId });
-                });
-
+            builder.HasOne(m => m.MinisterTitle)
+                .WithMany(mt => mt.Ministers)
+                .HasForeignKey(m => m.MinisterTitleId)
+                .HasConstraintName("FK_Ministers_MinisterTitles_MinisterTitleId")
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            //  Navigation properties can only participate in a single relationship. A relationship already exists between 'Tenant.Members(base)'
+            // builder.HasOne(t => t .Tenant)
+            //     .WithMany(t => t.Ministers)
+            //     .HasForeignKey(m => m.TenantId)
+            //     .HasConstraintName("FK_Tenants_Ministers_TenantId")
+            //     .OnDelete(DeleteBehavior.Restrict);
+            
             // Indexes and Constraints
             // UQ
             builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth, uq.PhoneNumber })
                 .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth_PhoneNumber");
+            
+            // Ignores
+            builder.Ignore(m => m.Title);
         }
+
     }
 }

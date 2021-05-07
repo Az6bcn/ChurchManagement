@@ -23,7 +23,11 @@ namespace Infrastructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new FinanceMap());
             modelBuilder.ApplyConfiguration(new FinanceTypeMap());
             modelBuilder.ApplyConfiguration(new ServiceTypeMap());
-            modelBuilder.ApplyConfiguration(new CurrencyMap());
+            modelBuilder.ApplyConfiguration(new MinisterTitleMap());
+            modelBuilder.ApplyConfiguration(new TenantStatusMap());
+            modelBuilder.ApplyConfiguration(new NewComerMap());
+            modelBuilder.ApplyConfiguration(new AttendanceMap());
+            modelBuilder.ApplyConfiguration(new MinisterMap());
         }
     }
 }
