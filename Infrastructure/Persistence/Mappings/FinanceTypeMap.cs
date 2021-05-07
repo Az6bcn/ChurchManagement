@@ -33,13 +33,13 @@ namespace Infrastructure.Persistence.Mappings
 
             // seed
             builder.HasData(
-                FinanceType.CreateFinanceType(1, "Thanksgiving"),
-                FinanceType.CreateFinanceType(2, "Offering"),
-                FinanceType.CreateFinanceType(3, "Spending"),
-                FinanceType.CreateFinanceType(4, "Donation"),
-                FinanceType.CreateFinanceType(5, "Tithe"),
-                FinanceType.CreateFinanceType(6, "Mid Week Service Offering"),
-                FinanceType.CreateFinanceType(7, "Others")
+                FinanceType.Create(1, "Thanksgiving"),
+                FinanceType.Create(2, "Offering"),
+                FinanceType.Create(3, "Spending"),
+                FinanceType.Create(4, "Donation"),
+                FinanceType.Create(5, "Tithe"),
+                FinanceType.Create(6, "Mid Week Service Offering"),
+                FinanceType.Create(7, "Others")
                 );
         }
     }

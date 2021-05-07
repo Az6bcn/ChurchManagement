@@ -33,12 +33,12 @@ namespace Infrastructure.Persistence.Mappings
 
             // seed
             builder.HasData(
-                ServiceType.CreateServiceType(1, "Thanksgiving"),
-                ServiceType.CreateServiceType(2, "Mid Week Service"),
-                ServiceType.CreateServiceType(3, "Sunday Service"),
-                ServiceType.CreateServiceType(4, "Crusade"),
-                ServiceType.CreateServiceType(5, "Cross Over"),
-                ServiceType.CreateServiceType(6, "Others")
+                ServiceType.Create(1, "Thanksgiving"),
+                ServiceType.Create(2, "Mid Week Service"),
+                ServiceType.Create(3, "Sunday Service"),
+                ServiceType.Create(4, "Crusade"),
+                ServiceType.Create(5, "Cross Over"),
+                ServiceType.Create(6, "Others")
                 );
         }
     }

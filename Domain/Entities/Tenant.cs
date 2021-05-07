@@ -7,18 +7,24 @@ namespace Domain.Entities
     {
         private readonly HashSet<Finance> _finances;
         private readonly HashSet<Member> _members;
+        private readonly HashSet<Attendance> _attendance;
+        private readonly HashSet<NewComer> _newComers;
+        private readonly HashSet<Minister> _ministers;
 
         private Tenant()
         {
             _finances = new();
             _members = new();
+            _attendance = new ();
+            _newComers = new ();
+            _ministers = new ();
         }
 
-        internal Tenant(string name, string logoUrl, int currencyId)
+        internal Tenant(string name, string logoUrl, int currencyId, int tenantStatus)
         {
             Name = name;
             LogoUrl = logoUrl;
-            IsActive = true;
+            TenantStausId = tenantStatus;
             CurrencyId = currencyId;
             CreatedAt = DateTime.UtcNow;
         }
@@ -28,18 +34,23 @@ namespace Domain.Entities
         public string Name { get; private set; }
         public string? LogoUrl { get; private set; }
         public int CurrencyId { get; private set; }
-        public bool IsActive { get; private set; }
+        public int TenantStausId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
+        public Currency Currency { get; private set; }
+        public TenantStatus TenantStatus { get; private set; }
 
+        
+        
         public IReadOnlyCollection<Finance> Finances => _finances;
         public IReadOnlyCollection<Member> Members => _members;
-
-        public Currency Currency { get; private set; }
-
-        public static Tenant CreateTenant(string name, string logoUrl, int currencyId)
-            => new Tenant(name, logoUrl, currencyId);
+        public IReadOnlyCollection<Attendance> Attendance => _attendance;
+        public IReadOnlyCollection<NewComer> NewComers => _newComers;
+        public IReadOnlyCollection<Minister> Ministers => _ministers;
+        
+        public static Tenant CreateTenant(string name, string logoUrl, int currencyId, int tenantStatus)
+            => new Tenant(name, logoUrl, currencyId, tenantStatus);
 
         public void Delete() => Deleted = DateTime.UtcNow;
 

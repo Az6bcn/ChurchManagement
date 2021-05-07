@@ -52,9 +52,9 @@ namespace Infrastructure.Persistence.Mappings
               .ValueGeneratedNever()
               .IsRequired();
 
-            builder.Property(t => t.IsActive)
-             .HasColumnName("IsActive")
-             .HasColumnType("bit")
+            builder.Property(t => t.TenantStausId)
+             .HasColumnName("TenantStatusId")
+             .HasColumnType("int")
              .ValueGeneratedNever()
              .IsRequired();
 
@@ -80,9 +80,15 @@ namespace Infrastructure.Persistence.Mappings
 
             // Relationships and Foreign Key Constraints
             builder.HasOne(t => t.Currency)
-                .WithOne(c => c.Tenant)
-                .HasForeignKey<Tenant>(t => t.CurrencyId)
+                .WithMany(c => c.Tenants)
+                .HasForeignKey(t => t.CurrencyId)
                 .HasConstraintName("FK_Tenants_Currencies_CurrencyId")
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.HasOne(t => t.TenantStatus)
+                .WithMany(ts => ts.Tenants)
+                .HasForeignKey(t => t.TenantStausId)
+                .HasConstraintName("FK_Tenants_TenantStatuses_TenantStatusId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(t => t.Members)
@@ -90,6 +96,7 @@ namespace Infrastructure.Persistence.Mappings
                 .HasForeignKey(m => m.TenantId)
                 .HasConstraintName("FK_Tenants_Members_TenantId")
                 .OnDelete(DeleteBehavior.Restrict);
+            
 
             builder.HasMany(t => t.Finances)
                .WithOne(f => f.Tenant)

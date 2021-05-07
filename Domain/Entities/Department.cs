@@ -15,7 +15,6 @@ namespace Domain.Entities
         }
         
         public int DepartmentId { get; private set; }
-        public int TenantId { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get;private  set; }

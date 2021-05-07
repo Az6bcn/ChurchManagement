@@ -54,6 +54,14 @@ namespace Infrastructure.Persistence.Mappings
                 .HasMaxLength(50)
                 .ValueGeneratedNever()
                 .IsRequired();
+            
+            builder.Property(t => t.Gender)
+                .HasColumnName("Gender")
+                .HasColumnType("varchar(10)")
+                .IsUnicode(false)
+                .HasMaxLength(10)
+                .ValueGeneratedNever()
+                .IsRequired();
 
             builder.Property(t => t.IsWorker)
              .HasColumnName("IsWorker")
@@ -108,10 +116,10 @@ namespace Infrastructure.Persistence.Mappings
                     jt.HasKey(pk => new { pk.DepartmentId, pk.MemberId });
                 });
 
-            // Indexes and Contraints
+            // Indexes and Constraints
             // UQ
-            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
-                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
+            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth, uq.PhoneNumber })
+                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth_PhoneNumber");
         }
     }
 }

@@ -8,11 +8,12 @@ namespace Domain.Entities
         private readonly HashSet<Department> _departments;
         private readonly HashSet<DepartmentMembers> _departmentMembers;
 
-        private Member()
+        public Member()
         {
             _departments = new();
             _departmentMembers = new();
         }
+
 
         internal Member(int tenantId,
             string name,
@@ -37,6 +38,7 @@ namespace Domain.Entities
         public string Name { get; private set; }
         public string Surname { get; private set; }
         public string DateAndMonthOfBirth { get; private set; }
+        public string Gender { get; private set; }
         public bool IsWorker { get; private set; }
         public string PhoneNumber { get; private set; }
         public DateTime CreatedAt { get; private set; }
@@ -51,6 +53,13 @@ namespace Domain.Entities
         public string FullName => $"{Name} {Surname}";
 
         public static Member CreateMember(int tenantId,
+            string name,
+            string surname,
+            string dayMonthBirth,
+            bool isWorker,
+            string phoneNumber) => new Member(tenantId, name, surname, dayMonthBirth, isWorker, phoneNumber);
+        
+        public Member Create(int tenantId,
             string name,
             string surname,
             string dayMonthBirth,

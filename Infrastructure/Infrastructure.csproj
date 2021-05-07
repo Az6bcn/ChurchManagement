@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="Persistence\" />
     <Folder Include="Persistence\Migrations" />
+    <Folder Include="Persistence\Script" />
     <Folder Include="Persistence\UnitOfWork\" />
     <Folder Include="Persistence\Repositories\" />
     <Folder Include="Persistence\Mappings\" />

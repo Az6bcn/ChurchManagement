@@ -1,6 +1,6 @@
 namespace Application.Enums
 {
-    public enum MinisterTitle
+    public enum MinisterTitleEnum
     {
         Pastor = 1,
         AssitantPastor = 2,
