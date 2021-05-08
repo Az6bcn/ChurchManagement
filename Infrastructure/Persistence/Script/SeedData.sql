@@ -108,6 +108,7 @@ INSERT INTO [ChurchManagement].[dbo].[Members]
     Name,
     Surname,
     DateAndMonthOfBirth,
+    Gender,
     IsWorker,
     PhoneNumber,
     CreatedAt
@@ -193,6 +194,8 @@ VALUES
     (1, 'Addddvvzeez', 'Odrty5umosu', '16 Mar', 'Female', 1, 07703768361, GETDATE()),
     (1, 'Azvdeez', 'Odumgfg6osu', '16 Mar', 'Male', 1, 07703768361, GETDATE())
 
+    GO
+
 --- Add Finance-------------
 PRINT('Adding Demo Tenant Finance')
 DECLARE @Currency INT = (SELECT CurrencyId
@@ -231,74 +234,133 @@ INSERT INTO [ChurchManagement].[dbo].[Finances]
 VALUES
     -- tenant 1
     -- Thanksgiving Offering
-    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '500.00'), CONVERT(DATETIME, '01/01/2021'), 'First thanksgiving offering of the year', CONVERT(DATETIME, '01/01/2021')),
-    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '07/02/2021'), 'Thanksgiving offering Febuary', CONVERT(DATETIME, '07/02/2021')),
-    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '07/03/2021'), 'Thanksgiving offering March', CONVERT(DATETIME, '07/03/2021')),
-    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '95.00'), CONVERT(DATETIME, '04/04/2021'), 'Thanksgiving offering April', CONVERT(DATETIME, '04/04/2021')),
-    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '209.00'), CONVERT(DATETIME, '02/05/2021'), 'Thanksgiving offering May', CONVERT(DATETIME, '03/05/2021')),
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '500.00'), CONVERT(DATETIME, '01/01/2021', 103), 'First thanksgiving offering of the year', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '07/02/2021', 103), 'Thanksgiving offering Febuary', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '07/03/2021', 103), 'Thanksgiving offering March', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '95.00'),  CONVERT(DATETIME, '04/04/2021', 103), 'Thanksgiving offering April', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '209.00'), CONVERT(DATETIME, '02/05/2021', 103), 'Thanksgiving offering May', CONVERT(DATETIME, '03/05/2021', 103)),
     -- Offering (Thanksgiving Sunday)
-    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '180.05'), CONVERT(DATETIME, '01/01/2021'), 'First offering of the year', CONVERT(DATETIME, '01/01/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '93.70'), CONVERT(DATETIME, '07/02/2021'), 'First offering of the year', CONVERT(DATETIME, '07/02/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '78.99'), CONVERT(DATETIME, '07/03/2021'), 'First offering of the year', CONVERT(DATETIME, '07/03/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '58.89'), CONVERT(DATETIME, '04/04/2021'), 'First offering of the year', CONVERT(DATETIME, '04/04/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '101.05'), CONVERT(DATETIME, '02/05/2021'), 'First offering of the year', CONVERT(DATETIME, '03/05/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '180.05'), CONVERT(DATETIME, '01/01/2021', 103), 'First offering of the year', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '93.70'),  CONVERT(DATETIME, '07/02/2021', 103), 'First offering of the year', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '78.99'),  CONVERT(DATETIME, '07/03/2021', 103), 'First offering of the year', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '58.89'),  CONVERT(DATETIME, '04/04/2021', 103), 'First offering of the year', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '101.05'), CONVERT(DATETIME, '02/05/2021', 103), 'First offering of the year', CONVERT(DATETIME, '03/05/2021', 103)),
 
     --Offering Sunday Services
     -- Jan
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '85.00'), CONVERT(DATETIME, '01/01/2021'), 'Offering', CONVERT(DATETIME, '01/01/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '113.09'), CONVERT(DATETIME, '10/01/2021'), 'Offering', CONVERT(DATETIME, '10/01/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.78'), CONVERT(DATETIME, '17/01/2021'), 'Offering', CONVERT(DATETIME, '17/01/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '79.14'), CONVERT(DATETIME, '24/01/2021'), 'Offering', CONVERT(DATETIME, '24/01/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '43.78'), CONVERT(DATETIME, '31/01/2021'), 'Offering', CONVERT(DATETIME, '31/01/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '85.00'), CONVERT(DATETIME, '01/01/2021', 103), 'Offering', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '113.09'), CONVERT(DATETIME, '10/01/2021', 103), 'Offering', CONVERT(DATETIME, '10/01/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.78'), CONVERT(DATETIME, '17/01/2021', 103), 'Offering', CONVERT(DATETIME, '17/01/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '79.14'), CONVERT(DATETIME, '24/01/2021', 103), 'Offering', CONVERT(DATETIME, '24/01/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '43.78'), CONVERT(DATETIME, '31/01/2021', 103), 'Offering', CONVERT(DATETIME, '31/01/2021', 103)),
     --Feb
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '89.00'), CONVERT(DATETIME, '07/02/2021'), 'Offering', CONVERT(DATETIME, '07/02/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '123.00'), CONVERT(DATETIME, '14/02/2021'), 'Offering', CONVERT(DATETIME, '14/02/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '78.00'), CONVERT(DATETIME, '21/02/2021'), 'Offering', CONVERT(DATETIME, '21/02/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '34.00'), CONVERT(DATETIME, '28/02/2021'), 'Offering', CONVERT(DATETIME, '28/02/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '89.00'), CONVERT(DATETIME, '07/02/2021', 103), 'Offering', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '123.00'),CONVERT(DATETIME, '14/02/2021', 103), 'Offering', CONVERT(DATETIME, '14/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '78.00'), CONVERT(DATETIME, '21/02/2021', 103), 'Offering', CONVERT(DATETIME, '21/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '34.00'), CONVERT(DATETIME, '28/02/2021', 103), 'Offering', CONVERT(DATETIME, '28/02/2021', 103)),
     --Mar
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '78.34'), CONVERT(DATETIME, '07/03/2021'), 'Offering', CONVERT(DATETIME, '07/03/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '23.99'), CONVERT(DATETIME, '14/03/2021'), 'Offering', CONVERT(DATETIME, '14/03/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '104.96'), CONVERT(DATETIME, '21/03/2021'), 'Offering', CONVERT(DATETIME, '21/03/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '116.98'), CONVERT(DATETIME, '28/03/2021'), 'Offering', CONVERT(DATETIME, '28/03/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '78.34'), CONVERT(DATETIME, '07/03/2021', 103), 'Offering', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '23.99'), CONVERT(DATETIME, '14/03/2021', 103), 'Offering', CONVERT(DATETIME, '14/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '104.96'),CONVERT(DATETIME, '21/03/2021', 103), 'Offering', CONVERT(DATETIME, '21/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '116.98'),CONVERT(DATETIME, '28/03/2021', 103), 'Offering', CONVERT(DATETIME, '28/03/2021', 103)),
     --Apr
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '87.00'), CONVERT(DATETIME, '04/04/2021'), 'Offering', CONVERT(DATETIME, '04/04/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'), CONVERT(DATETIME, '11/04/2021'), 'Offering', CONVERT(DATETIME, '11/04/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '37.99'), CONVERT(DATETIME, '18/04/2021'), 'Offering', CONVERT(DATETIME, '18/04/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.70'), CONVERT(DATETIME, '25/04/2021'), 'Offering', CONVERT(DATETIME, '25/04/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '87.00'), CONVERT(DATETIME, '04/04/2021', 103), 'Offering', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'),CONVERT(DATETIME, '11/04/2021', 103), 'Offering', CONVERT(DATETIME, '11/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '37.99'), CONVERT(DATETIME, '18/04/2021', 103), 'Offering', CONVERT(DATETIME, '18/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.70'), CONVERT(DATETIME, '25/04/2021', 103), 'Offering', CONVERT(DATETIME, '25/04/2021', 103)),
     --May
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.00'), CONVERT(DATETIME, '02/05/2021'), 'Offering', CONVERT(DATETIME, '02/05/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '89.00'), CONVERT(DATETIME, '09/05/2021'), 'Offering', CONVERT(DATETIME, '09/05/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'), CONVERT(DATETIME, '16/05/2021'), 'Offering', CONVERT(DATETIME, '16/05/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '34.08'), CONVERT(DATETIME, '23/05/2021'), 'Offering', CONVERT(DATETIME, '23/05/2021')),
-    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '315.99'), CONVERT(DATETIME, '30/05/2021'), 'Offering', CONVERT(DATETIME, '30/05/2021')),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.00'), CONVERT(DATETIME, '02/05/2021', 103), 'Offering', CONVERT(DATETIME, '02/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '89.00'), CONVERT(DATETIME, '09/05/2021', 103), 'Offering', CONVERT(DATETIME, '09/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'),CONVERT(DATETIME, '16/05/2021', 103), 'Offering', CONVERT(DATETIME, '16/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '34.08'), CONVERT(DATETIME, '23/05/2021', 103), 'Offering', CONVERT(DATETIME, '23/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '315.99'),CONVERT(DATETIME, '30/05/2021', 103), 'Offering', CONVERT(DATETIME, '30/05/2021', 103)),
 
     -- Tithe 
     --Jan
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '200.00'), CONVERT(DATETIME, '01/01/2021'), 'First tithe offering of the year', CONVERT(DATETIME, '01/01/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '400.00'), CONVERT(DATETIME, '01/01/2021'), 'Tithe', CONVERT(DATETIME, '01/01/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '700.00'), CONVERT(DATETIME, '10/01/2021'), 'Tithe', CONVERT(DATETIME, '10/01/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '600.00'), CONVERT(DATETIME, '17/01/2021'), 'Tithe', CONVERT(DATETIME, '17/01/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '95.00'), CONVERT(DATETIME, '24/01/2021'), 'Tithe', CONVERT(DATETIME, '24/01/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.00'), CONVERT(DATETIME, '31/01/2021'), 'Tithe', CONVERT(DATETIME, '31/01/2021')),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '200.00'), CONVERT(DATETIME, '01/01/2021', 103), 'First tithe offering of the year', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '400.00'), CONVERT(DATETIME, '01/01/2021', 103), 'Tithe', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '700.00'), CONVERT(DATETIME, '10/01/2021', 103), 'Tithe', CONVERT(DATETIME, '10/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '600.00'), CONVERT(DATETIME, '17/01/2021', 103), 'Tithe', CONVERT(DATETIME, '17/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '95.00'),  CONVERT(DATETIME, '24/01/2021', 103), 'Tithe', CONVERT(DATETIME, '24/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.00'), CONVERT(DATETIME, '31/01/2021', 103), 'Tithe', CONVERT(DATETIME, '31/01/2021', 103)),
     --Feb
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '300.00'), CONVERT(DATETIME, '07/02/2021'), 'Tithe', CONVERT(DATETIME, '07/02/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'), CONVERT(DATETIME, '14/02/2021'), 'Tithe', CONVERT(DATETIME, '14/02/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/02/2021'), 'Tithe', CONVERT(DATETIME, '21/02/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '50.00'), CONVERT(DATETIME, '28/02/2021'),  'Tithe', CONVERT(DATETIME, '28/02/2021')),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '300.00'), CONVERT(DATETIME, '07/02/2021', 103), 'Tithe', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'), CONVERT(DATETIME, '14/02/2021', 103), 'Tithe', CONVERT(DATETIME, '14/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/02/2021', 103), 'Tithe', CONVERT(DATETIME, '21/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '50.00'),  CONVERT(DATETIME, '28/02/2021', 103),  'Tithe',CONVERT(DATETIME, '28/02/2021', 103)),
     --Mar
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '500.00'), CONVERT(DATETIME, '07/03/2021'), 'Tithe', CONVERT(DATETIME, '07/03/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '14/03/2021'), 'Tithe', CONVERT(DATETIME, '14/03/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/03/2021'), 'Tithe', CONVERT(DATETIME, '21/03/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '28/03/2021'),  'Tithe', CONVERT(DATETIME, '28/03/2021')),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '500.00'), CONVERT(DATETIME, '07/03/2021', 103), 'Tithe', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '14/03/2021', 103), 'Tithe', CONVERT(DATETIME, '14/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/03/2021', 103), 'Tithe', CONVERT(DATETIME, '21/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '28/03/2021', 103),  'Tithe',CONVERT(DATETIME, '28/03/2021', 103)),
     --Apr
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '380.00'), CONVERT(DATETIME, '04/04/2021'), 'Tithe', CONVERT(DATETIME, '04/04/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '11/04/2021'), 'Tithe', CONVERT(DATETIME, '11/04/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'), CONVERT(DATETIME, '18/04/2021'), 'Tithe', CONVERT(DATETIME, '18/04/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '670.00'), CONVERT(DATETIME, '25/04/2021'),  'Tithe', CONVERT(DATETIME, '25/04/2021')),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '380.00'), CONVERT(DATETIME, '04/04/2021', 103), 'Tithe', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '11/04/2021', 103), 'Tithe', CONVERT(DATETIME, '11/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'), CONVERT(DATETIME, '18/04/2021', 103), 'Tithe', CONVERT(DATETIME, '18/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '670.00'), CONVERT(DATETIME, '25/04/2021', 103),  'Tithe',CONVERT(DATETIME, '25/04/2021', 103)),
     --May
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '230.00'), CONVERT(DATETIME, '02/05/2021'), 'Tithe', CONVERT(DATETIME, '02/05/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '09/05/2021'), 'Tithe', CONVERT(DATETIME, '09/05/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '16/05/2021'), 'Tithe', CONVERT(DATETIME, '16/05/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '900.00'), CONVERT(DATETIME, '23/05/2021'),  'Tithe', CONVERT(DATETIME, '23/05/2021')),
-    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.79'), CONVERT(DATETIME, '30/05/2021'), 'Tithe', CONVERT(DATETIME, '30/05/2021'))
-    
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '230.00'), CONVERT(DATETIME, '02/05/2021', 103), 'Tithe', CONVERT(DATETIME, '02/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '09/05/2021', 103), 'Tithe', CONVERT(DATETIME, '09/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '16/05/2021', 103), 'Tithe', CONVERT(DATETIME, '16/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '900.00'), CONVERT(DATETIME, '23/05/2021', 103),  'Tithe',CONVERT(DATETIME, '23/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.79'), CONVERT(DATETIME, '30/05/2021', 103), 'Tithe', CONVERT(DATETIME, '30/05/2021', 103))
+   
+   GO
+
+   --- Add Ministers-------------
+DECLARE @DeaconId INT = (SELECT MinisterTitleId
+FROM [ChurchManagement].[dbo].[MinisterTitle]
+WHERE Name = 'Deacon')
+DECLARE @DeaconessId INT = (SELECT MinisterTitleId
+FROM [ChurchManagement].[dbo].[MinisterTitle]
+WHERE Name = 'Deaconess')
+DECLARE @PastorId INT = (SELECT MinisterTitleId
+FROM [ChurchManagement].[dbo].[MinisterTitle]
+WHERE Name = 'Pastor')
+DECLARE @AssistantPastorId INT = (SELECT MinisterTitleId
+FROM [ChurchManagement].[dbo].[MinisterTitle]
+WHERE Name = 'Pastor')
+
+PRINT('Adding Demo Tenant Ministers')
+INSERT INTO [ChurchManagement].[dbo].[Ministers]
+    (
+        MemberId,
+        MinisterTitleId,
+        TenantId
+    )
+VALUES
+    -- tenant 1
+    (2, @PastorId, 1),
+    (1, @DeaconId, 1),
+    (4, @DeaconessId, 1),
+    (112, @AssistantPastorId, 1)
+
+    GO
+
+
+   --- Add New Comers-------------
+DECLARE @SundayServiceTypeId INT = (SELECT ServiceTypeId
+FROM [ChurchManagement].[dbo].[ServiceTypes]
+WHERE Name = 'Sunday Service')
+
+DECLARE @ThanksgivingServiceTypeId INT = (SELECT ServiceTypeId
+FROM [ChurchManagement].[dbo].[ServiceTypes]
+WHERE Name = 'Thanksgiving')
+
+PRINT('Adding Demo Tenant Ministers')
+INSERT INTO [ChurchManagement].[dbo].[NewComers]
+    (
+        MemberId,
+        DateAttended,
+        ServiceTypeId,
+        TenantId
+    )
+VALUES
+    -- tenant 1
+    (139, CONVERT(DATETIME, '01/01/2021', 103),@ThanksgivingServiceTypeId,  1),
+    (151, CONVERT(DATETIME, '30/05/2021', 103),@SundayServiceTypeId,  1),
+    (120, CONVERT(DATETIME, '01/01/2021', 103),@ThanksgivingServiceTypeId,  1),
+    (7, CONVERT(DATETIME, '14/03/2021', 103),@SundayServiceTypeId,  1),
+    (19, CONVERT(DATETIME, '30/05/2021', 103),@SundayServiceTypeId,  1)
+
+    GO

@@ -28,6 +28,7 @@ namespace Infrastructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new NewComerMap());
             modelBuilder.ApplyConfiguration(new AttendanceMap());
             modelBuilder.ApplyConfiguration(new MinisterMap());
+            modelBuilder.ApplyConfiguration(new CurrencyMap());
         }
     }
 }
