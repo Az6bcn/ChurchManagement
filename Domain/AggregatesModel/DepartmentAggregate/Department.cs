@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Department
+    public class Department: Entity
     {
         private HashSet<Member> _members;
         private HashSet<DepartmentMembers> _departmentMembers;

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class MinisterTitle
+    public class MinisterTitle: Entity
     {
         private HashSet<Minister> _ministers;
         private MinisterTitle()

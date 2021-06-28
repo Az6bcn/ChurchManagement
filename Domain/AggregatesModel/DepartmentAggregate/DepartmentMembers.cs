@@ -1,7 +1,9 @@
 ﻿using System;
+using Domain.Abstracts;
+
 namespace Domain.Entities
 {
-    public class DepartmentMembers
+    public class DepartmentMembers: Entity
     {
         private DepartmentMembers()
         {

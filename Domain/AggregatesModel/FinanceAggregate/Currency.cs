@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Currency
+    public class Currency: Entity
     {
         private HashSet<Tenant> _tenants;
         private Currency()

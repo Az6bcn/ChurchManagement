@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstracts;
+
+namespace Domain.Entities
 {
-    public class ServiceType
+    public class ServiceType: Entity
     {
         private ServiceType()
         {

@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Abstracts;
+
+namespace Domain.Entities
 {
-    public class FinanceType
+    public class FinanceType: Entity
     {
         private FinanceType()
         {

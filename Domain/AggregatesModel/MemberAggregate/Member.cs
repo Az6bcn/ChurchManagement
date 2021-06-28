@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Member
+    public class Member: Entity
     {
         private readonly HashSet<Department> _departments;
         private readonly HashSet<DepartmentMembers> _departmentMembers;
@@ -15,22 +17,22 @@ namespace Domain.Entities
         }
 
 
-        internal Member(int tenantId,
+        internal Member(
             string name,
             string surname,
             string dayMonthBirth,
             bool isWorker,
-            string phoneNumber) : this()
+            string phoneNumber,
+            Tenant tenant) : this()
         {
-            TenantId = tenantId;
+            Tenant = tenant;
+            TenantId = tenant.TenantId;
             Name = name;
             Surname = surname;
             DateAndMonthOfBirth = dayMonthBirth;
             IsWorker = isWorker;
+            PhoneNumber = phoneNumber;
             CreatedAt = DateTime.UtcNow;
-
-            if (!string.IsNullOrWhiteSpace(phoneNumber))
-                PhoneNumber = phoneNumber;
         }
 
         public int MemberId { get; private set; }
@@ -44,27 +46,21 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
-
+        public Minister Minister { get; set; }
         public Tenant Tenant { get; private set; }
 
         public IReadOnlyCollection<Department> Departments => _departments;
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 
         public string FullName => $"{Name} {Surname}";
-
-        public static Member CreateMember(int tenantId,
-            string name,
-            string surname,
-            string dayMonthBirth,
-            bool isWorker,
-            string phoneNumber) => new Member(tenantId, name, surname, dayMonthBirth, isWorker, phoneNumber);
         
-        public Member Create(int tenantId,
+        public static Member Create(
             string name,
             string surname,
             string dayMonthBirth,
             bool isWorker,
-            string phoneNumber) => new Member(tenantId, name, surname, dayMonthBirth, isWorker, phoneNumber);
+            string phoneNumber,
+            Tenant tenant) => new Member(name, surname, dayMonthBirth, isWorker, phoneNumber, tenant);
 
 
         public void UpdateMember(int tenantId,
@@ -86,5 +82,26 @@ namespace Domain.Entities
         }
 
         public void DeleteMember() => Deleted = DateTime.UtcNow;
+
+        public IEnumerable<string> Validate()
+        {
+            if (Tenant is null)
+                yield return $"{nameof(Tenant)} is required to create a member";
+            
+            if (string.IsNullOrWhiteSpace(Name))
+                yield return $"{nameof(Name)} is required to create a member";
+            
+            if (string.IsNullOrWhiteSpace(Surname))
+                yield return $"{nameof(Surname)} is required to create a member";
+            
+            if (string.IsNullOrWhiteSpace(Gender))
+                yield return $"{nameof(Gender)} is required to create a member";
+            
+            if (string.IsNullOrWhiteSpace(DateAndMonthOfBirth))
+                yield return $"{nameof(DateAndMonthOfBirth)} is required to create a member";
+            
+            if (!string.IsNullOrWhiteSpace(PhoneNumber))
+                yield return $"{nameof(PhoneNumber)} is required to create a member";
+        }
     }
 }

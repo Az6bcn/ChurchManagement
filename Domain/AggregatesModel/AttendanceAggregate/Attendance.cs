@@ -1,8 +1,9 @@
 using System;
+using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Attendance
+    public class Attendance: Entity
     {
         public int AttendanceId { get; set; }
         public int TenantId { get; private set; }

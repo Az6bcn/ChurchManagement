@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Domain.Abstracts;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class TenantStatus
+    public class TenantStatus: Entity
     {
         private HashSet<Tenant> _tenants;
         public int TenantStatusId { get; private set; }
