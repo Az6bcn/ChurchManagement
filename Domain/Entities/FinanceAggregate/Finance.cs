@@ -1,9 +1,12 @@
 ﻿using System;
 using Domain.Abstracts;
+using Domain.AggregatesModel.ServiceTypeAggregate;
+using Domain.AggregatesModel.TenantAggregate;
+using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.FinanceAggregate
 {
-    public class Finance: Entity
+    public class Finance: Entity, IAggregateRoot
     {
         private Finance()
         {

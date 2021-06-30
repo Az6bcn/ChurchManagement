@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Domain.Abstracts;
+using Domain.Entities.TenantAggregate;
+using Domain.Interfaces;
+using Domain.ValueObjects;
 
-namespace Domain.Entities
+namespace Domain.Entities.NewComerAggregate
 {
-    public class NewComer: Entity
+    public class NewComer: IEntity, IAggregateRoot
     {
         private NewComer(): base()
         {
@@ -20,28 +23,29 @@ namespace Domain.Entities
             Tenant tenant) 
         {
             Tenant = tenant;
-            TenantId = tenant.TenantId;
-            Name = name;
-            Surname = surname;
-            DateAndMonthOfBirth = dayMonthBirth;
+            // TenantId = tenant.TenantId;
+            // Name = name;
+            // Surname = surname;
+            // DateAndMonthOfBirth = dayMonthBirth;
             CreatedAt = DateTime.UtcNow;
 
-            PhoneNumber = phoneNumber;
+            //PhoneNumber = phoneNumber;
         }
 
         public int NewComerId { get; private set; }
-        public int TenantId { get; private set; }
-        public string Name { get; private set; }
-        public string Surname { get; private set; }
-        public string DateAndMonthOfBirth { get; private set; }
-        public string Gender { get; private set; }
-        public string PhoneNumber { get; private set; }
+        // public int TenantId { get; private set; }
+        // public string Name { get; private set; }
+        // public string Surname { get; private set; }
+        // public string DateAndMonthOfBirth { get; private set; }
+        // public string Gender { get; private set; }
+        // public string PhoneNumber { get; private set; }
         public DateTime DateAttended { get; private set; }
         public int ServiceTypeId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
-        
+
+        public Person Person { get; private set; }
         public Tenant Tenant { get; private set; }
         public ServiceType ServiceType { get; private set; }
 

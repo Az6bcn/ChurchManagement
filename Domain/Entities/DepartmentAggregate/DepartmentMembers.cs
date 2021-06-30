@@ -1,7 +1,8 @@
 ﻿using System;
 using Domain.Abstracts;
+using Domain.AggregatesModel.MemberAggregate;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.DepartmentAggregate
 {
     public class DepartmentMembers: Entity
     {

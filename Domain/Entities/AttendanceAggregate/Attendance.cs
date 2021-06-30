@@ -1,9 +1,12 @@
 using System;
 using Domain.Abstracts;
+using Domain.AggregatesModel.ServiceTypeAggregate;
+using Domain.AggregatesModel.TenantAggregate;
+using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.AttendanceAggregate
 {
-    public class Attendance: Entity
+    public class Attendance: Entity, IAggregateRoot
     {
         public int AttendanceId { get; set; }
         public int TenantId { get; private set; }
@@ -16,5 +19,6 @@ namespace Domain.Entities
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
         public Tenant Tenant { get; private set; }
+        public ServiceType ServiceType { get; private set; }
     }
 }

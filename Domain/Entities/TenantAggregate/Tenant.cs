@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Abstracts;
+using Domain.AggregatesModel.FinanceAggregate;
+using Domain.Enumerations;
 using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.TenantAggregate
 {
-    public class Tenant: Entity
+    public class Tenant: Entity, IAggregateRoot
     {
         public Tenant()
         {
@@ -31,8 +33,8 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
-        public Currency Currency { get; private set; }
         
+        public CurrencyEnum Currency { get; private set; }
         public TenantStatus TenantStatus { get; private set; }
        
        

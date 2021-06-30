@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Abstracts;
+using Domain.Entities.DepartmentAggregate;
+using Domain.Entities.TenantAggregate;
+using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.Entities.MemberAggregate
 {
-    public class Member: Entity
+    public class Member: IEntity, IAggregateRoot
     {
         private readonly HashSet<Department> _departments;
         private readonly HashSet<DepartmentMembers> _departmentMembers;
@@ -26,31 +28,31 @@ namespace Domain.Entities
             Tenant tenant) : this()
         {
             Tenant = tenant;
-            TenantId = tenant.TenantId;
-            Name = name;
-            Surname = surname;
-            DateAndMonthOfBirth = dayMonthBirth;
+            // TenantId = tenant.TenantId;
+            // Name = name;
+            // Surname = surname;
+            // DateAndMonthOfBirth = dayMonthBirth;
             IsWorker = isWorker;
-            PhoneNumber = phoneNumber;
+            //PhoneNumber = phoneNumber;
             CreatedAt = DateTime.UtcNow;
         }
 
         public int MemberId { get; private set; }
-        public int TenantId { get; private set; }
-        public string Name { get; private set; }
-        public string Surname { get; private set; }
-        public string DateAndMonthOfBirth { get; private set; }
-        public string Gender { get; private set; }
+        // public int TenantId { get; private set; }
+        // public string Name { get; private set; }
+        // public string Surname { get; private set; }
+        // public string DateAndMonthOfBirth { get; private set; }
+        // public string Gender { get; private set; }
+        // public string PhoneNumber { get; private set; }
         public bool IsWorker { get; private set; }
-        public string PhoneNumber { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
         public Minister Minister { get; set; }
-        public Tenant Tenant { get; private set; }
 
+        public Person Person { get; private set; }
+        public Tenant Tenant { get; private set; }
         public IReadOnlyCollection<Department> Departments => _departments;
-        public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 
         public string FullName => $"{Name} {Surname}";
         

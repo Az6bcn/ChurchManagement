@@ -1,20 +1,15 @@
 using System.Collections.Generic;
 using Domain.Abstracts;
-using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.TenantAggregate
 {
     public class TenantStatus: Entity
     {
-        private HashSet<Tenant> _tenants;
         public int TenantStatusId { get; private set; }
         public string Name { get; set; }
 
-        public IReadOnlyCollection<Tenant> Tenants => _tenants;
-
         public TenantStatus()
         {
-            _tenants = new HashSet<Tenant>();
         }
 
         internal TenantStatus(int id, string name)

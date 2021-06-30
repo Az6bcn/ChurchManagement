@@ -1,14 +1,11 @@
-using System.Collections.Generic;
 using Domain.Abstracts;
 
-namespace Domain.Entities
+namespace Domain.Entities.MemberAggregate
 {
-    public class MinisterTitle: Entity
+    public class MinisterTitle: IEntity
     {
-        private HashSet<Minister> _ministers;
         private MinisterTitle()
         {
-            _ministers = new HashSet<Minister>();
         }
 
         internal MinisterTitle(string name): this()
@@ -26,8 +23,6 @@ namespace Domain.Entities
         public string Name { get; private set; }
 
 
-
-        public IReadOnlyCollection<Minister> Ministers => _ministers;
         public static MinisterTitle Create(string name) => new(name);
         public static MinisterTitle Create(int id, string name) => new(id, name);
     }

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using Domain.Abstracts;
+using Domain.AggregatesModel.TenantAggregate;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.FinanceAggregate
 {
     public class Currency: Entity
     {
-        private HashSet<Tenant> _tenants;
         private Currency()
         {
-            _tenants = new HashSet<Tenant>();
         }
 
         internal Currency(string name)
@@ -23,8 +22,6 @@ namespace Domain.Entities
 
         public int CurrencyId { get; private set; }
         public string Name { get; private set; }
-
-        public IReadOnlyCollection<Tenant> Tenants => _tenants;
 
         public static Currency CreateCurrency(string name) => new(name);
         public static Currency CreateCurrency(int id, string name) => new(id, name);

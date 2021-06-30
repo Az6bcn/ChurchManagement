@@ -1,6 +1,6 @@
 ﻿using Domain.Abstracts;
 
-namespace Domain.Entities
+namespace Domain.AggregatesModel.FinanceAggregate
 {
     public class FinanceType: Entity
     {

@@ -1,8 +1,9 @@
 ﻿using Domain.Abstracts;
+using Domain.Interfaces;
 
-namespace Domain.Entities
+namespace Domain.Entities.ServiceTypeAggregate
 {
-    public class ServiceType: Entity
+    public class ServiceType: Entity, IAggregateRoot
     {
         private ServiceType()
         {
