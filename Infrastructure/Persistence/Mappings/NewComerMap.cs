@@ -1,4 +1,4 @@
-using Domain.Entities;
+using Domain.Entities.NewComerAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,14 +10,12 @@ namespace Infrastructure.Persistence.Mappings
         {
             builder.ToTable("NewComers");
 
-            // Can only be applied to root entity Member(base)
-            //builder.HasQueryFilter(m => m.Deleted == null);
+             builder.HasQueryFilter(m => m.Deleted == null);
 
-            // PK
-            // Cannot re-assign PK because already been done in Member(base)
-            // builder.HasKey(m => m.NewComerId)
-            //     .HasName("PK_Ministers_MinisterId")
-            //     .IsClustered();
+             //PK
+             builder.HasKey(m => m.NewComerId)
+                 .HasName("PK_NewComers_NewComerId")
+                 .IsClustered();
 
             // Columns
             builder.Property(m => m.NewComerId)
@@ -27,7 +25,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedOnAdd()
                 .IsRequired();
 
-            builder.Property(t => t.TenantId)
+            builder.Property(t => t.Person.TenantId)
                 .HasColumnName("TenantId")
                 .HasColumnType("int")
                 .ValueGeneratedNever()
@@ -39,7 +37,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Name)
+            builder.Property(t => t.Person.Name)
                 .HasColumnName("Name")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -47,7 +45,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Surname)
+            builder.Property(t => t.Person.Surname)
                 .HasColumnName("Surname")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -55,7 +53,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.DateAndMonthOfBirth)
+            builder.Property(t => t.Person.DateAndMonthOfBirth)
                 .HasColumnName("DateAndMonthOfBirth")
                 .HasColumnType("varchar(50)")
                 .IsUnicode(false)
@@ -63,7 +61,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
             
-            builder.Property(t => t.Gender)
+            builder.Property(t => t.Person.Gender)
                 .HasColumnName("Gender")
                 .HasColumnType("varchar(10)")
                 .IsUnicode(false)
@@ -71,13 +69,19 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.PhoneNumber)
+            builder.Property(t => t.Person.PhoneNumber)
                 .HasColumnName("PhoneNumber")
-                .HasColumnType("varchar(25)")
+                .HasColumnType("varchar(50)")
                 .IsUnicode(false)
                 .HasMaxLength(25)
                 .ValueGeneratedNever()
                 .IsRequired();
+            
+            builder.Property(t => t.DateAttended)
+                .HasColumnName("DateAttended")
+                .HasColumnType("datetime")
+                .IsRequired()
+                .ValueGeneratedNever();
 
             builder.Property(t => t.CreatedAt)
              .HasColumnName("CreatedAt")
@@ -100,24 +104,21 @@ namespace Infrastructure.Persistence.Mappings
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
-            builder.HasOne(m => m.ServiceType)
+            builder.HasOne(m => m.Tenant)
                 .WithMany()
-                .HasForeignKey(m => m.ServiceTypeId)
-                .HasConstraintName("FK_NewComers_ServiceTypes_ServiceTypeIdId")
+                .HasForeignKey(m => m.Person.TenantId)
+                .HasConstraintName("FK_NewComers_TenantId_Tenants_TenantId")
                 .OnDelete(DeleteBehavior.Restrict);
             
-            //  Navigation properties can only participate in a single relationship. A relationship already exists between 'Tenant.Members(base)'
-            // builder.HasOne(t => t .Tenant)
-            //     .WithMany(t => t.NewComers)
-            //     .HasForeignKey(m => m.TenantId)
-            //     .HasConstraintName("FK_Tenants_NewComers_TenantId")
-            //     .OnDelete(DeleteBehavior.Restrict);
             
             // Indexes and Constraints
             // UQ
-            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth })
-                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
-            
+
+            // CK
+            builder.HasCheckConstraint("CK_NewComers_TenantId_Name_Surname",
+                                       "TenantId>(0) AND Name IS NOT NULL " +
+                                       "AND [Surname] IS NOT NULL AND Gender IS NOT NULL");
+
         }
 
     }

@@ -3,16 +3,11 @@ using Domain.Interfaces;
 
 namespace Domain.Entities.FinanceAggregate
 {
-    public class FinanceType: IEntity
+    public class FinanceType: ValueObject
     {
         private FinanceType()
         {
 
-        }
-
-        internal FinanceType(string name)
-        {
-            Name = name;
         }
 
         internal FinanceType(int id, string name)
@@ -24,7 +19,10 @@ namespace Domain.Entities.FinanceAggregate
         public int FinanceTypeId { get; private set; }
         public string Name { get; private set; }
 
-        public static FinanceType Create(string name) => new(name);
         public static FinanceType Create(int id, string name) => new(id, name);
+        protected override bool Equals(ValueObject value1, ValueObject value2)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

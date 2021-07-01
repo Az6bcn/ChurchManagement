@@ -1,18 +1,11 @@
 ﻿using Domain.Abstracts;
-using Domain.Interfaces;
 
-namespace Domain.Entities.ServiceTypeAggregate
+namespace Domain.ValueObjects
 {
-    public class ServiceType: Entity, IAggregateRoot
+    public class ServiceType: ValueObject
     {
-        private ServiceType()
+        internal ServiceType()
         {
-
-        }
-
-        internal ServiceType(string name)
-        {
-            Name = name;
         }
 
         internal ServiceType(int id, string name)
@@ -24,7 +17,12 @@ namespace Domain.Entities.ServiceTypeAggregate
         public int ServiceTypeId { get; private set; }
         public string Name { get; private set; }
 
-        public static ServiceType Create(string name) => new(name);
         public static ServiceType Create(int id, string name) => new(id, name);
+        public static ServiceType Update(int id, string name) => new(id, name);
+        
+        protected override bool Equals(ValueObject value1, ValueObject value2)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
