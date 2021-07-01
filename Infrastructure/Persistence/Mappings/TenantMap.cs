@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.TenantAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -33,9 +33,9 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.Name)
                 .HasColumnName("Name")
-                .HasColumnType("varchar(200)")
+                .HasColumnType("varchar(255)")
                 .IsUnicode(false)
-                .HasMaxLength(200)
+                .HasMaxLength(255)
                 .ValueGeneratedNever()
                 .IsRequired();
 
@@ -52,7 +52,7 @@ namespace Infrastructure.Persistence.Mappings
               .ValueGeneratedNever()
               .IsRequired();
 
-            builder.Property(t => t.TenantStausId)
+            builder.Property(t => t.TenantStatusId)
              .HasColumnName("TenantStatusId")
              .HasColumnType("int")
              .ValueGeneratedNever()
@@ -79,38 +79,44 @@ namespace Infrastructure.Persistence.Mappings
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
-            builder.HasOne(t => t.Currency)
-                .WithMany(c => c.Tenants)
-                .HasForeignKey(t => t.CurrencyId)
-                .HasConstraintName("FK_Tenants_Currencies_CurrencyId")
-                .OnDelete(DeleteBehavior.Restrict);
+            // builder.HasOne(t => t.Currency)
+            //     .WithMany(c => c.Tenants)
+            //     .HasForeignKey(t => t.CurrencyId)
+            //     .HasConstraintName("FK_Tenants_Currencies_CurrencyId")
+            //     .OnDelete(DeleteBehavior.Restrict);
+            //
+            // builder.HasMany(t => t.Finances)
+            //        .WithOne(f => f.Tenant)
+            //        .HasForeignKey(m => m.TenantId)
+            //        .HasConstraintName("FK_Tenants_Finances_TenantId")
+            //        .OnDelete(DeleteBehavior.Restrict);
+            // builder.HasOne(t => t.TenantStatus)
+            //     .WithMany(ts => ts.Tenants)
+            //     .HasForeignKey(t => t.TenantStausId)
+            //     .HasConstraintName("FK_Tenants_TenantStatuses_TenantStatusId")
+            //     .OnDelete(DeleteBehavior.Restrict);
+            //
+            // builder.HasMany(t => t.Members)
+            //     .WithOne(m => m.Tenant)
+            //     .HasForeignKey(m => m.TenantId)
+            //     .HasConstraintName("FK_Tenants_Members_TenantId")
+            //     .OnDelete(DeleteBehavior.Restrict);
             
             builder.HasOne(t => t.TenantStatus)
-                .WithMany(ts => ts.Tenants)
-                .HasForeignKey(t => t.TenantStausId)
-                .HasConstraintName("FK_Tenants_TenantStatuses_TenantStatusId")
+                .WithMany()
+                .HasForeignKey(t => t.TenantStatusId)
+                .HasConstraintName("FK_TenantsTenantStatusId_TenantStatuses_TenantStatusId")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(t => t.Members)
-                .WithOne(m => m.Tenant)
-                .HasForeignKey(m => m.TenantId)
-                .HasConstraintName("FK_Tenants_Members_TenantId")
-                .OnDelete(DeleteBehavior.Restrict);
-            
-
-            builder.HasMany(t => t.Finances)
-               .WithOne(f => f.Tenant)
-               .HasForeignKey(m => m.TenantId)
-               .HasConstraintName("FK_Tenants_Finances_TenantId")
-               .OnDelete(DeleteBehavior.Restrict);
-
-            // Indexes and Contraints
+            // Indexes and Constraints
             // UQ
             builder.HasIndex(uq => new {uq.TenantGuidId, uq.Name })
-                .HasDatabaseName("UQ_TenantGuidId_TenantName");
-            
+                .HasDatabaseName("UQ_Tenants_TenantGuidId_Name");
+
             builder.HasIndex(uq => uq.TenantGuidId)
-                .HasDatabaseName("UQ_TenantGuidId");
+                   .HasDatabaseName("UQ_Tenants_TenantGuidId");
+            // CK
+            builder.HasCheckConstraint("CK_Tenant_Name", "Name IS NOT NULL");
         }
     }
 }
