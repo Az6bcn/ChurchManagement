@@ -1,18 +1,18 @@
 using System;
 
-namespace Domain.ValueObjects
+namespace Domain.Abstracts
 {
+    // https://enterprisecraftsmanship.com/posts/entity-vs-value-object-the-ultimate-list-of-differences/
     public abstract class ValueObject
     {
-        public string Currency { get; private set; }
-        public int CurrencyId { get; set; }
-        
-        protected static bool Equals(ValueObject first, ValueObject second)
+        protected abstract bool Equals(ValueObject value1, ValueObject value2);
+
+        protected bool StringValuesEquals(string value1, string value2)
         {
-            if (first is null || second is null)
+            if (string.IsNullOrWhiteSpace(value1) || string.IsNullOrWhiteSpace(value2))
                 return false;
 
-            return first.Currency.Equals(second.Currency, StringComparison.OrdinalIgnoreCase);
+            return value1.Equals(value2, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -1,12 +1,12 @@
 using System;
 using Domain.Abstracts;
-using Domain.AggregatesModel.ServiceTypeAggregate;
-using Domain.AggregatesModel.TenantAggregate;
+using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
+using Domain.ValueObjects;
 
-namespace Domain.AggregatesModel.AttendanceAggregate
+namespace Domain.Entities.AttendanceAggregate
 {
-    public class Attendance: Entity, IAggregateRoot
+    public class Attendance: IEntity, IAggregateRoot
     {
         public int AttendanceId { get; set; }
         public int TenantId { get; private set; }

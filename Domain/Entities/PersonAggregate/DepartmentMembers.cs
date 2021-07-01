@@ -1,10 +1,11 @@
 ﻿using System;
 using Domain.Abstracts;
-using Domain.AggregatesModel.MemberAggregate;
+using Domain.Entities.PersonAggregate;
+using Domain.Interfaces;
 
-namespace Domain.AggregatesModel.DepartmentAggregate
+namespace Domain.Entities.DepartmentAggregate
 {
-    public class DepartmentMembers: Entity
+    public class DepartmentMembers: IEntity
     {
         private DepartmentMembers()
         {
@@ -14,7 +15,10 @@ namespace Domain.AggregatesModel.DepartmentAggregate
         public int MemberId { get; set; }
         public bool IsHeadOfDepartment { get; private set; }
         public DateTime DateJoined { get; private set; }
+        public DateTime DateLeft { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
+        public DateTime? Deleted { get; private set; }
 
         public Department Department { get; private set; }
         public Member Member { get; private set; }

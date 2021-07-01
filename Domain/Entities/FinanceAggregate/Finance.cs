@@ -1,12 +1,12 @@
 ﻿using System;
 using Domain.Abstracts;
-using Domain.AggregatesModel.ServiceTypeAggregate;
-using Domain.AggregatesModel.TenantAggregate;
+using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
+using Domain.ValueObjects;
 
-namespace Domain.AggregatesModel.FinanceAggregate
+namespace Domain.Entities.FinanceAggregate
 {
-    public class Finance: Entity, IAggregateRoot
+    public class Finance: IEntity, IAggregateRoot
     {
         private Finance()
         {
@@ -18,8 +18,8 @@ namespace Domain.AggregatesModel.FinanceAggregate
         public int ServiceTypeId { get; private set; }
         public int CurrencyId { get; private set; }
         public decimal Amount { get; private set; }
-        public DateTime? ServiceDate { get; private set; }
-        public DateTime? GivenDate { get; private set; }
+        //public DateTime ServiceDate { get; private set; }
+        public DateTime GivenDate { get; private set; }
         public string? Description { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }

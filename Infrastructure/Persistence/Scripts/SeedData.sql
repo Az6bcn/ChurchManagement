@@ -65,7 +65,7 @@ GO
 --- Add Departments-------------
 PRINT('Adding Demo Tenant Departments')
 
-INSERT INTO Departments
+INSERT INTO [ChurchManagement].[dbo].[Departments]
     (
     Name,
     CreatedAt
@@ -324,16 +324,17 @@ WHERE Name = 'Pastor')
 PRINT('Adding Demo Tenant Ministers')
 INSERT INTO [ChurchManagement].[dbo].[Ministers]
     (
-        MemberId,
-        MinisterTitleId,
-        TenantId
+       [MemberId]
+      ,[MinisterTitleId]
+      ,[TenantId]
+      ,[CreatedAt]
     )
 VALUES
     -- tenant 1
-    (2, @PastorId, 1),
-    (1, @DeaconId, 1),
-    (4, @DeaconessId, 1),
-    (112, @AssistantPastorId, 1)
+    (2, @PastorId, 1, GETDATE()),
+    (1, @DeaconId, 1, GETDATE()),
+    (4, @DeaconessId, 1, GETDATE()),
+    (112, @AssistantPastorId, 1, GETDATE())
 
     GO
 
@@ -350,17 +351,59 @@ WHERE Name = 'Thanksgiving')
 PRINT('Adding Demo Tenant Ministers')
 INSERT INTO [ChurchManagement].[dbo].[NewComers]
     (
-        MemberId,
-        DateAttended,
-        ServiceTypeId,
-        TenantId
+       [TenantId]
+      ,[Name]
+      ,[Surname]
+      ,[DateAndMonthOfBirth]
+      ,[Gender]
+      ,[PhoneNumber]
+      ,[DateAttended]
+      ,[ServiceTypeId]
+      ,[CreatedAt]
     )
 VALUES
     -- tenant 1
-    (139, CONVERT(DATETIME, '01/01/2021', 103),@ThanksgivingServiceTypeId,  1),
-    (151, CONVERT(DATETIME, '30/05/2021', 103),@SundayServiceTypeId,  1),
-    (120, CONVERT(DATETIME, '01/01/2021', 103),@ThanksgivingServiceTypeId,  1),
-    (7, CONVERT(DATETIME, '14/03/2021', 103),@SundayServiceTypeId,  1),
-    (19, CONVERT(DATETIME, '30/05/2021', 103),@SundayServiceTypeId,  1)
+   (1, 'Olukemi', 'Sorogun', CONVERT(DATETIME, '01/01/1978', 103), 'Female', '07789097689', CONVERT(DATETIME, '30/05/2021', 103), @ThanksgivingServiceTypeId, GETDATE()),
+   (1, 'Abidemi', 'Rogers', CONVERT(DATETIME, '01/01/1978', 103), 'Female', '07789097689', CONVERT(DATETIME, '30/05/2021', 103), @ThanksgivingServiceTypeId, GETDATE()),
+   (1, 'Jack', 'Middleton', CONVERT(DATETIME, '01/01/1978', 103), 'Female', '07789097689', CONVERT(DATETIME, '30/05/2021', 103), @ThanksgivingServiceTypeId, GETDATE()),
+   (1, 'Ramon', 'Jimennez', CONVERT(DATETIME, '01/01/1978', 103), 'Female', '07789097689', CONVERT(DATETIME, '30/05/2021', 103), @ThanksgivingServiceTypeId, GETDATE()),
+   (1, 'Sergio', 'Alubinmo', CONVERT(DATETIME, '01/01/1978', 103), 'Female', '07789097689', CONVERT(DATETIME, '30/05/2021', 103), @ThanksgivingServiceTypeId, GETDATE())
 
     GO
+
+--- Add Attendance-------------
+INSERT INTO [ChurchManagement].[dbo].[Attendance]
+(
+    TenantId,
+    ServiceDate,
+    Male,
+    Female,
+    Children,
+    NewComers,
+    CreatedAt
+)
+VALUES
+(1, CONVERT(DATETIME, '01/01/2021', 103), 80, 97, 50, 13, GETDATE()),
+(1, CONVERT(DATETIME, '10/01/2021', 103), 56, 67, 23, 13, GETDATE()),
+(1, CONVERT(DATETIME, '17/01/2021', 103), 18, 20, 20, 13, GETDATE()),
+(1, CONVERT(DATETIME, '24/01/2021', 103), 29, 23, 15, 13, GETDATE()),
+(1, CONVERT(DATETIME, '31/01/2021', 103), 13, 34, 35, 13, GETDATE()),
+(1, CONVERT(DATETIME, '07/02/2021', 103), 68, 56, 78, 13, GETDATE()),
+(1, CONVERT(DATETIME, '14/02/2021', 103), 25, 45, 50, 13, GETDATE()),
+(1, CONVERT(DATETIME, '21/02/2021', 103), 36, 17, 23, 13, GETDATE()),
+(1, CONVERT(DATETIME, '28/02/2021', 103), 23, 12, 54, 13, GETDATE()),
+(1, CONVERT(DATETIME, '07/03/2021', 103), 10, 15, 43, 13, GETDATE()),
+(1, CONVERT(DATETIME, '14/03/2021', 103), 43, 25, 28, 13, GETDATE()),
+(1, CONVERT(DATETIME, '21/03/2021', 103), 78, 16, 30, 13, GETDATE()),
+(1, CONVERT(DATETIME, '28/03/2021', 103), 28, 19, 27, 13, GETDATE()),
+(1, CONVERT(DATETIME, '04/04/2021', 103), 32, 37, 21, 13, GETDATE()),
+(1, CONVERT(DATETIME, '11/04/2021', 103), 50, 67, 30, 13, GETDATE()),
+(1, CONVERT(DATETIME, '18/04/2021', 103), 31, 13, 50, 13, GETDATE()),
+(1, CONVERT(DATETIME, '25/04/2021', 103), 29, 45, 34, 13, GETDATE()),
+(1, CONVERT(DATETIME, '02/05/2021', 103), 8,  17, 23, 0, GETDATE()),
+(1, CONVERT(DATETIME, '09/05/2021', 103), 45, 58, 20, 0, GETDATE()),
+(1, CONVERT(DATETIME, '16/05/2021', 103), 23, 60, 18, 0, GETDATE()),
+(1, CONVERT(DATETIME, '23/05/2021', 103), 51, 10, 19, 0, GETDATE()),
+(1, CONVERT(DATETIME, '30/05/2021', 103), 17, 45, 20, 0, GETDATE())
+
+GO

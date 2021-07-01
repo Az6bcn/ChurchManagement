@@ -1,9 +1,9 @@
-using System.Collections.Generic;
 using Domain.Abstracts;
+using Domain.Interfaces;
 
-namespace Domain.AggregatesModel.TenantAggregate
+namespace Domain.Entities.TenantAggregate
 {
-    public class TenantStatus: Entity
+    public class TenantStatus: IEntity
     {
         public int TenantStatusId { get; private set; }
         public string Name { get; set; }

@@ -1,6 +1,6 @@
-using Domain.Abstracts;
+using Domain.Interfaces;
 
-namespace Domain.Entities.MemberAggregate
+namespace Domain.Entities.PersonAggregate
 {
     public class MinisterTitle: IEntity
     {

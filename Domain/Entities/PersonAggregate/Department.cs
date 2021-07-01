@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Abstracts;
-using Domain.AggregatesModel.MemberAggregate;
-using Domain.AggregatesModel.TenantAggregate;
+using Domain.Entities.PersonAggregate;
+using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 
-namespace Domain.AggregatesModel.DepartmentAggregate
+namespace Domain.Entities.DepartmentAggregate
 {
-    public class Department: Entity, IAggregateRoot
+    public class Department: IEntity
     {
         private HashSet<Member> _members;
         private HashSet<DepartmentMembers> _departmentMembers;
@@ -19,6 +19,7 @@ namespace Domain.AggregatesModel.DepartmentAggregate
         }
         
         public int DepartmentId { get; private set; }
+        public int TenantId { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get;private  set; }

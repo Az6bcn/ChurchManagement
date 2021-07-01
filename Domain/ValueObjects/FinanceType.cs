@@ -1,8 +1,9 @@
 ﻿using Domain.Abstracts;
+using Domain.Interfaces;
 
-namespace Domain.AggregatesModel.FinanceAggregate
+namespace Domain.Entities.FinanceAggregate
 {
-    public class FinanceType: Entity
+    public class FinanceType: IEntity
     {
         private FinanceType()
         {

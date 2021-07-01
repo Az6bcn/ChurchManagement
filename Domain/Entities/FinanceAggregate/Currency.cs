@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Domain.Abstracts;
-using Domain.AggregatesModel.TenantAggregate;
+﻿using Domain.Abstracts;
 
-namespace Domain.AggregatesModel.FinanceAggregate
+namespace Domain.Entities.FinanceAggregate
 {
     public class Currency: Entity
     {

@@ -1,6 +1,6 @@
-namespace Domain.Abstracts
+namespace Domain.Interfaces
 {
-    public interface Entity
+    public interface IEntity
     {
     }
 }
