@@ -1,5 +1,5 @@
 using Application.Interfaces.Repositories;
-using Domain.Entities;
+using Domain.Entities.PersonAggregate;
 using Infrastructure.Persistence.Context;
 
 namespace Infrastructure.Persistence.Repositories

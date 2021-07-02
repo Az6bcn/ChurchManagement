@@ -1,4 +1,4 @@
-using Domain.Entities;
+using Domain.Entities.DepartmentAggregate;
 
 namespace Application.Interfaces.Repositories
 {
