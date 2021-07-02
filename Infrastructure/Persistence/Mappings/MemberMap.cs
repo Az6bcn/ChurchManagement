@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.DepartmentAggregate;
+using Domain.Entities.PersonAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,13 +26,13 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedOnAdd()
                 .IsRequired();
 
-            builder.Property(t => t.TenantId)
+            builder.Property(t => t.Person.TenantId)
                 .HasColumnName("TenantId")
                 .HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Name)
+            builder.Property(t => t.Person.Name)
                 .HasColumnName("Name")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -39,7 +40,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Surname)
+            builder.Property(t => t.Person.Surname)
                 .HasColumnName("Surname")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -47,7 +48,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.DateAndMonthOfBirth)
+            builder.Property(t => t.Person.DateAndMonthOfBirth)
                 .HasColumnName("DateAndMonthOfBirth")
                 .HasColumnType("varchar(50)")
                 .IsUnicode(false)
@@ -55,7 +56,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
             
-            builder.Property(t => t.Gender)
+            builder.Property(t => t.Person.Gender)
                 .HasColumnName("Gender")
                 .HasColumnType("varchar(10)")
                 .IsUnicode(false)
@@ -66,10 +67,11 @@ namespace Infrastructure.Persistence.Mappings
             builder.Property(t => t.IsWorker)
              .HasColumnName("IsWorker")
              .HasColumnType("bit")
+             .HasDefaultValueSql("0")
              .ValueGeneratedNever()
              .IsRequired();
 
-            builder.Property(t => t.PhoneNumber)
+            builder.Property(t => t.Person.PhoneNumber)
                 .HasColumnName("PhoneNumber")
                 .HasColumnType("varchar(25)")
                 .IsUnicode(false)
@@ -98,18 +100,23 @@ namespace Infrastructure.Persistence.Mappings
              .IsRequired(false);
 
             // Relationships and Foreign Key Constraints
+            builder.HasOne(x => x.Tenant)
+                   .WithOne()
+                   .HasForeignKey<Member>(x => x.Person.TenantId)
+                   .HasConstraintName("FK_Departments_TenantId_Tenants_TenantId");
+            
             builder.HasMany(m => m.Departments)
                 .WithMany(d => d.Members)
                 .UsingEntity<DepartmentMembers>(
                 jt => jt.HasOne(dm => dm.Department)
                     .WithMany(x => x.DepartmentMembers)
                     .HasForeignKey(dm => dm.DepartmentId)
-                    .HasConstraintName("FK_DepartmentMembers_Departments_DepartmentId")
+                    .HasConstraintName("FK_DepartmentMembers_DepartmentMemberId_Departments_DepartmentId")
                     .OnDelete(DeleteBehavior.Restrict),
                 jt => jt.HasOne(dm => dm.Member)
                     .WithMany(x => x.DepartmentMembers)
                     .HasForeignKey(dm => dm.MemberId)
-                    .HasConstraintName("FK_DepartmentMembers_Members_DepartmentId")
+                    .HasConstraintName("FK_DepartmentMembers_DepartmentMemberId_Members_DepartmentId")
                     .OnDelete(DeleteBehavior.Restrict),
                 jt =>
                 {
@@ -118,8 +125,13 @@ namespace Infrastructure.Persistence.Mappings
 
             // Indexes and Constraints
             // UQ
-            builder.HasIndex(uq => new {uq.TenantId, uq.Name, uq.Surname, uq.DateAndMonthOfBirth, uq.PhoneNumber })
-                .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth_PhoneNumber");
+            // TODO
+            // builder.HasIndex(uq => new {uq.Person.TenantId, uq.Person.Name, uq.Person.Surname, uq.Person.DateAndMonthOfBirth })
+            //     .HasDatabaseName("UQ_TenantId_Name_Surname_DateAndMonthOfBirth");
+            
+            // CK
+            builder.HasCheckConstraint("CK_Members_TenantId_Name_Surname_DateMonthOfBirth", "[TenantId]>(0) " +
+                                       "AND [Name] IS NOT NULL AND [Surname] IS NOT NULL AND [DateMonthOfBirth] IS NOT NULL");
         }
     }
 }

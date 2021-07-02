@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.FinanceAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -55,11 +55,11 @@ namespace Infrastructure.Persistence.Mappings
               .ValueGeneratedNever()
               .IsRequired();
 
-            builder.Property(t => t.ServiceDate)
-             .HasColumnName("ServiceDate")
-             .HasColumnType("datetime")
-             .HasDefaultValueSql("null")
-             .ValueGeneratedNever();
+            // builder.Property(t => t.ServiceDate)
+            //  .HasColumnName("ServiceDate")
+            //  .HasColumnType("datetime")
+            //  .HasDefaultValueSql("null")
+            //  .ValueGeneratedNever();
 
             builder.Property(t => t.GivenDate)
              .HasColumnName("GivenDate")
@@ -94,6 +94,17 @@ namespace Infrastructure.Persistence.Mappings
              .ValueGeneratedNever()
              .HasDefaultValueSql("null")
              .IsRequired(false);
+            
+            
+            // Relationships and Foreign Key Constraints
+            builder.HasOne(x => x.Tenant)
+                   .WithOne()
+                   .HasForeignKey<Finance>(x => x.TenantId)
+                   .HasConstraintName("FK_Finances_TenantId_Tenants_TenantId")
+                   .OnDelete(DeleteBehavior.Restrict);
+            
+            // Indexes and Constraints
+            // TODO : -- CK Ammount > 0, CurrencyId > 0, TenantId > 0
 
         }
     }

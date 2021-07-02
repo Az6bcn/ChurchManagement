@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Entities;
+using Domain.Entities.TenantAggregate;
+using Domain.ProjectionEntities;
 
 namespace Application.Interfaces.Repositories
 {
     public interface ITenantRepository: IGenericRepository<Tenant>
     {
         Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
+        Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId);
+        Task<Tenant?> GetMonthDashboardDataAsync(Guid tenantGuidId, int tenantId);
     }
 }

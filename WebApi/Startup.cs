@@ -1,4 +1,6 @@
 using System;
+using Application;
+using Infrastructure;
 using Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +34,8 @@ namespace WebApi
                 .EnableSensitiveDataLogging()
                 .LogTo(Console.WriteLine, LogLevel.Information);
             });
-
+            services.AddApplicationServices();
+            services.AddInfrastructureServices();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddSwaggerGen(c =>

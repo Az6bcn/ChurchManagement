@@ -1,5 +1,4 @@
-﻿
-using Domain.Entities;
+﻿using Domain.Entities.TenantAggregate;
 using Infrastructure.Persistence.Mappings;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +21,13 @@ namespace Infrastructure.Persistence.Context
             modelBuilder.ApplyConfiguration(new DepartmentMap());
             modelBuilder.ApplyConfiguration(new FinanceMap());
             modelBuilder.ApplyConfiguration(new FinanceTypeMap());
-            modelBuilder.ApplyConfiguration(new ServiceTypeMap());
-            modelBuilder.ApplyConfiguration(new MinisterTitleMap());
+            //modelBuilder.ApplyConfiguration(new ServiceTypeMap());
+            //modelBuilder.ApplyConfiguration(new MinisterTitleMap());
             modelBuilder.ApplyConfiguration(new TenantStatusMap());
             modelBuilder.ApplyConfiguration(new NewComerMap());
             modelBuilder.ApplyConfiguration(new AttendanceMap());
             modelBuilder.ApplyConfiguration(new MinisterMap());
-            modelBuilder.ApplyConfiguration(new CurrencyMap());
+            //modelBuilder.ApplyConfiguration(new CurrencyMap());
         }
     }
 }
