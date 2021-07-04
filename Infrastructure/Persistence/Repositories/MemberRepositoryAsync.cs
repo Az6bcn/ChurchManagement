@@ -4,9 +4,9 @@ using Infrastructure.Persistence.Context;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class MemberRepository: GenericRepository<Member>, IMemberRepository
+    public class MemberRepositoryAsync: GenericRepositoryAsync<Member>, IMemberRepositoryAsync
     {
-        public MemberRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public MemberRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
     }

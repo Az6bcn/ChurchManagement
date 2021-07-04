@@ -17,14 +17,11 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public void Add(T entity)
+        public IEnumerable<T> GetAll()
         {
-            _dbContext.Set<T>().AddAsync(entity);
-        }
+            var response = _dbContext.Set<T>().ToList();
 
-        public void AddRange(IEnumerable<T> entities)
-        {
-            _dbContext.Set<T>().AddRange(entities);
+            return response;
         }
 
         public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
@@ -50,6 +47,16 @@ namespace Infrastructure.Persistence.Repositories
                 .Find(guid);
 
             return response;
+        }
+        
+        public void Add(T entity)
+        {
+            _dbContext.Set<T>().AddAsync(entity);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().AddRange(entities);
         }
 
         public void Remove(T entity)

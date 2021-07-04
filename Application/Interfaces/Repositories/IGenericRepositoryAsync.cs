@@ -7,16 +7,15 @@ namespace Application.Interfaces.Repositories
 {
     public interface IGenericRepository<T> where T: class
     {
-        void Add(T entity);
-        
-        void AddRange(IEnumerable<T> entities);
-
+        IEnumerable<T> GetAll();
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
 
         T GetById(int id);
 
         T GetByGuid(Guid guid);
+        void Add(T entity);
         
+        void AddRange(IEnumerable<T> entities);
         void Remove(T entity);
         
         void RemoveRange(IEnumerable<T> entities);
