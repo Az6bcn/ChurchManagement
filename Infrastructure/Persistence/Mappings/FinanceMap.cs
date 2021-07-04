@@ -20,26 +20,26 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.FinanceId)
                 .HasColumnName("FinanceId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();
 
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
             builder.Property(t => t.FinanceTypeId)
               .HasColumnName("FinanceTypeId")
-              .HasColumnType("int")
+              //.HasColumnType("int")
               .ValueGeneratedNever()
               .IsRequired();
 
             builder.Property(t => t.ServiceTypeId)
               .HasColumnName("ServiceTypeId")
-              .HasColumnType("int")
+              //.HasColumnType("int")
               .ValueGeneratedNever()
               .IsRequired();
 
@@ -51,7 +51,7 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.CurrencyId)
               .HasColumnName("CurrencyId")
-              .HasColumnType("int")
+              //.HasColumnType("int")
               .ValueGeneratedNever()
               .IsRequired();
 
@@ -66,11 +66,11 @@ namespace Infrastructure.Persistence.Mappings
              .HasColumnType("datetime")
              .ValueGeneratedNever()
              .HasDefaultValueSql("null")
-             .IsRequired(false);
+             .IsRequired();
 
             builder.Property(t => t.Description)
               .HasColumnName("Description")
-              .HasColumnType("varchar(max)")
+              //.HasColumnType("varchar(max)")
               .IsUnicode(false)
               .ValueGeneratedNever()
               .IsRequired(false);

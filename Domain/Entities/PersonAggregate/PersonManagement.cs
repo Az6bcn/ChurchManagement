@@ -1,5 +1,3 @@
-using Domain.Entities.DepartmentAggregate;
-using Domain.Entities.NewComerAggregate;
 using Domain.Interfaces;
 using Domain.ValueObjects;
 

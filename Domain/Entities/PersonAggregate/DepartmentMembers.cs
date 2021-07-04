@@ -1,9 +1,7 @@
 ﻿using System;
-using Domain.Abstracts;
-using Domain.Entities.PersonAggregate;
 using Domain.Interfaces;
 
-namespace Domain.Entities.DepartmentAggregate
+namespace Domain.Entities.PersonAggregate
 {
     public class DepartmentMembers: IEntity
     {

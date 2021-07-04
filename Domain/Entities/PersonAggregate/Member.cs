@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Entities.DepartmentAggregate;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.ValueObjects;
@@ -19,7 +18,7 @@ namespace Domain.Entities.PersonAggregate
         }
 
 
-        internal Member(string name,
+        internal Member(string name, 
                         string surname,
                         string dayMonthBirth,
                         bool isWorker,
@@ -37,17 +36,16 @@ namespace Domain.Entities.PersonAggregate
         }
 
         public int MemberId { get; private set; }
-
-        // public int TenantId { get; private set; }
-        // public string Name { get; private set; }
-        // public string Surname { get; private set; }
-        // public string DateAndMonthOfBirth { get; private set; }
-        // public string Gender { get; private set; }
-        // public string PhoneNumber { get; private set; }
         public bool IsWorker { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
+        public int TenantId { get; private set; }
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string DateMonthOfBirth { get; private set; }
+        public string Gender { get; private set; }
+        public string PhoneNumber { get; private set; }
         public IReadOnlyCollection<Department> Departments => _departments;
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 

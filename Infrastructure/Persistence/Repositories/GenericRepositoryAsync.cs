@@ -9,62 +9,63 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepositoryAsync<T> : IGenericRepositoryAsync<T> where T : class
     {
         private readonly ApplicationDbContext _dbContext;
-        public GenericRepository(ApplicationDbContext dbContext)
+
+        public GenericRepositoryAsync(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<ICollection<T>> GetAllAsync()
         {
-            var response = _dbContext.Set<T>().ToList();
+            var response = await _dbContext.Set<T>().ToListAsync();
 
             return response;
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
+        public async Task<ICollection<T>> GetAsync(Expression<Func<T, bool>> predicate)
         {
-            var response = _dbContext.Set<T>()
-                .Where(predicate)
-                .ToList();
+            var response = await _dbContext.Set<T>()
+                                           .Where(predicate)
+                                           .ToListAsync();
 
             return response;
         }
 
-        public T GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            var response = _dbContext.Set<T>()
-                .Find(id);
+            var response = await _dbContext.Set<T>()
+                                           .FindAsync(id);
 
             return response;
         }
 
-        public T GetByGuid(Guid guid)
+        public async Task<T> GetByGuidAsync(Guid guid)
         {
-            var response = _dbContext.Set<T>()
-                .Find(guid);
+            var response = await _dbContext.Set<T>()
+                                           .FindAsync(guid);
 
             return response;
         }
-        
-        public void Add(T entity)
+
+        public async Task AddAsync(T entity)
         {
-            _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.Set<T>().AddAsync(entity);
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public async Task AddRangeAsync(ICollection<T> entities)
         {
-            _dbContext.Set<T>().AddRange(entities);
+            await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
         public void Remove(T entity)
         {
-             _dbContext.Set<T>().Remove(entity);
+            _dbContext.Set<T>().Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public void RemoveRange(ICollection<T> entities)
         {
             _dbContext.Set<T>().RemoveRange(entities);
         }
@@ -74,7 +75,7 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext.Set<T>().Update(entity);
         }
 
-        public void UpdateRange(IEnumerable<T> entities)
+        public void UpdateRange(ICollection<T> entities)
         {
             _dbContext.Set<T>().UpdateRange(entities);
         }

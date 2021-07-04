@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IGenericRepository<T> where T: class
+    public interface IGenericRepositoryAsync<T> where T : class
     {
-        IEnumerable<T> GetAll();
-        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
+        Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> GetAsync(Expression<Func<T, bool>> predicate);
 
-        T GetById(int id);
+        Task<T> GetByIdAsync(int id);
 
-        T GetByGuid(Guid guid);
-        void Add(T entity);
-        
-        void AddRange(IEnumerable<T> entities);
+        Task<T> GetByGuidAsync(Guid guid);
+        Task AddAsync(T entity);
+
+        Task AddRangeAsync(ICollection<T> entities);
         void Remove(T entity);
-        
-        void RemoveRange(IEnumerable<T> entities);
-        
+
+        void RemoveRange(ICollection<T> entities);
+
         void Update(T entity);
-        
-        void UpdateRange(IEnumerable<T> entities);
+
+        void UpdateRange(ICollection<T> entities);
     }
 }

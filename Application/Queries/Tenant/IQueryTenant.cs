@@ -1,6 +1,6 @@
 namespace Application.Queries.Tenant
 {
-    public interface IReadTenantQuery
+    public interface IQueryTenant
     {
         
     }

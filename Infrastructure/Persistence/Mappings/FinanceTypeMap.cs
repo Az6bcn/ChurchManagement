@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.FinanceAggregate;
+using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +19,7 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.FinanceTypeId)
                 .HasColumnName("FinanceTypeId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();
@@ -32,15 +33,15 @@ namespace Infrastructure.Persistence.Mappings
                 .IsRequired();
 
             // seed
-            builder.HasData(
-                FinanceType.Create(1, "Thanksgiving"),
-                FinanceType.Create(2, "Offering"),
-                FinanceType.Create(3, "Spending"),
-                FinanceType.Create(4, "Donation"),
-                FinanceType.Create(5, "Tithe"),
-                FinanceType.Create(6, "Mid Week Service Offering"),
-                FinanceType.Create(7, "Others")
-                );
+            // builder.HasData(
+            //     FinanceType.Create(1, "Thanksgiving"),
+            //     FinanceType.Create(2, "Offering"),
+            //     FinanceType.Create(3, "Spending"),
+            //     FinanceType.Create(4, "Donation"),
+            //     FinanceType.Create(5, "Tithe"),
+            //     FinanceType.Create(6, "Mid Week Service Offering"),
+            //     FinanceType.Create(7, "Others")
+            //     );
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Domain.Abstracts;
-using Domain.Interfaces;
 
-namespace Domain.Entities.FinanceAggregate
+namespace Domain.ValueObjects
 {
     public class FinanceType: ValueObject
     {

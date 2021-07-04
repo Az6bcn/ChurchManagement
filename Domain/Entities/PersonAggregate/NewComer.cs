@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using Domain.Abstracts;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.ValueObjects;
 
-namespace Domain.Entities.NewComerAggregate
+namespace Domain.Entities.PersonAggregate
 {
     public class NewComer: IEntity
     {
@@ -32,12 +30,17 @@ namespace Domain.Entities.NewComerAggregate
         }
 
         public int NewComerId { get; private set; }
-        
         public DateTime DateAttended { get; private set; }
         public int ServiceTypeId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
+        public int TenantId { get; private set; }
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string DateMonthOfBirth { get; private set; }
+        public string Gender { get; private set; }
+        public string PhoneNumber { get; private set; }
         
         
         public Person Person { get; private set; }

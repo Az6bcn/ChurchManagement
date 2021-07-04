@@ -1,4 +1,4 @@
-namespace Application.Enums
+namespace Shared.Enums
 {
     public enum TenantStatusEnum
     {

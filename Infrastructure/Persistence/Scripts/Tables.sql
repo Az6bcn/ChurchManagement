@@ -114,6 +114,48 @@ GO
 ALTER TABLE [dbo].[NewComers] CHECK CONSTRAINT [CK_NewComers_TenantId_Name_Surname]
 GO
 
+-- Members
+/****** Object:  Table [dbo].[Members]    Script Date: 01/07/2021 17:41:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Members](
+                                [MemberId] [int] IDENTITY(10000,1) NOT NULL,
+                                [TenantId] [int] NOT NULL,
+                                [Name] [varchar](200) NOT NULL,
+                                [Surname] [varchar](200) NOT NULL,
+                                [DateMonthOfBirth] [varchar](50) NOT NULL,
+                                [IsWorker] [bit] NOT NULL,
+                                [PhoneNumber] [varchar](50) NOT NULL,
+                                [CreaedAt] [datetime] NOT NULL,
+                                [UpdatedAt] [datetime] NULL,
+                                [DeletedAt] [datetime] NULL,
+                                CONSTRAINT [PK_Members_MemberId] PRIMARY KEY CLUSTERED
+                                    (
+                                     [MemberId] ASC
+                                        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Members] ADD  CONSTRAINT [DF_Members_IsWorker]  DEFAULT ((0)) FOR [IsWorker]
+GO
+
+ALTER TABLE [dbo].[Members]  WITH CHECK ADD  CONSTRAINT [FK_Members_TenantId_Tenants_TenantId] FOREIGN KEY([TenantId])
+    REFERENCES [dbo].[Tenants] ([TenantId])
+GO
+
+ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [FK_Members_TenantId_Tenants_TenantId]
+GO
+
+ALTER TABLE [dbo].[Members]  WITH CHECK ADD  CONSTRAINT [CK_Members_TenantId_Name_Surname_DateMonthOfBirth] CHECK  (([TenantId]>(0) AND [Name] IS NOT NULL AND [Surname] IS NOT NULL AND [DateMonthOfBirth] IS NOT NULL))
+GO
+
+ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [CK_Members_TenantId_Name_Surname_DateMonthOfBirth]
+GO
+
 -- Ministers
 /****** Object:  Table [dbo].[Ministers]    Script Date: 01/07/2021 20:29:42 ******/
 SET ANSI_NULLS ON
@@ -155,49 +197,6 @@ ALTER TABLE [dbo].[Ministers]  WITH CHECK ADD  CONSTRAINT [CK_Ministers_TenantId
 GO
 
 ALTER TABLE [dbo].[Ministers] CHECK CONSTRAINT [CK_Ministers_TenantId]
-GO
-
-
--- Members
-/****** Object:  Table [dbo].[Members]    Script Date: 01/07/2021 17:41:40 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Members](
-	[MemberId] [int] IDENTITY(10000,1) NOT NULL,
-	[TenantId] [int] NOT NULL,
-	[Name] [varchar](200) NOT NULL,
-	[Surname] [varchar](200) NOT NULL,
-	[DateMonthOfBirth] [varchar](50) NOT NULL,
-	[IsWorker] [bit] NOT NULL,
-	[PhoneNumber] [varchar](50) NOT NULL,
-	[CreaedAt] [datetime] NOT NULL,
-	[UpdatedAt] [datetime] NULL,
-	[DeletedAt] [datetime] NULL,
- CONSTRAINT [PK_Members_MemberId] PRIMARY KEY CLUSTERED 
-(
-	[MemberId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[Members] ADD  CONSTRAINT [DF_Members_IsWorker]  DEFAULT ((0)) FOR [IsWorker]
-GO
-
-ALTER TABLE [dbo].[Members]  WITH CHECK ADD  CONSTRAINT [FK_Members_TenantId_Tenants_TenantId] FOREIGN KEY([TenantId])
-REFERENCES [dbo].[Tenants] ([TenantId])
-GO
-
-ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [FK_Members_TenantId_Tenants_TenantId]
-GO
-
-ALTER TABLE [dbo].[Members]  WITH CHECK ADD  CONSTRAINT [CK_Members_TenantId_Name_Surname_DateMonthOfBirth] CHECK  (([TenantId]>(0) AND [Name] IS NOT NULL AND [Surname] IS NOT NULL AND [DateMonthOfBirth] IS NOT NULL))
-GO
-
-ALTER TABLE [dbo].[Members] CHECK CONSTRAINT [CK_Members_TenantId_Name_Surname_DateMonthOfBirth]
 GO
 
 
