@@ -52,6 +52,27 @@ namespace Application.Tests.Commands.Tenant
             Assert.Equal(TenantStatusEnum.Pending, response.TenantStatusEnum);
         }
         
+        
+        [Fact]
+        public async Task Create_WhenCalledWithoutNameInRequest_ShouldThrowRequestValidationException()
+        {
+            // Arrange
+            _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
+            TestDbCreator.CreateDatabase(_context);
+            var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            var tenantRequestDto = new CreateTenantRequestDto()
+            {
+                Name = string.Empty,
+                LogoUrl = string.Empty,
+                TenantStatusEnum = TenantStatusEnum.Pending,
+                CurrencyEnum = CurrencyEnum.UsDollars
+            };
+
+            // Act && Assert
+            await Assert.ThrowsAsync<RequestValidationException>(
+                  async () => await target.ExecuteAsync(tenantRequestDto));
+        }
+        
         [Fact]
         public async Task Create_WhenCalledWithExistentTenant_ShouldThrowRequestValidationException()
         {
