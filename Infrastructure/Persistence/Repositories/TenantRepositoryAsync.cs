@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Enums;
 using Application.Interfaces.Repositories;
 using Domain.Entities.TenantAggregate;
 using Domain.ProjectionEntities;
@@ -11,10 +10,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class TenantRepository: GenericRepository<Tenant>, ITenantRepository
+    public class TenantRepositoryAsync: GenericRepositoryAsync<Tenant>, ITenantRepositoryAsync
     {
         private readonly ApplicationDbContext _dbContext;
-        public TenantRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public TenantRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

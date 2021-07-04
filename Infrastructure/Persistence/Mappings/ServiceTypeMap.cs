@@ -18,7 +18,7 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.ServiceTypeId)
                 .HasColumnName("ServiceTypeId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();

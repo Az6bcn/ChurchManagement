@@ -1,5 +1,7 @@
 using Application.Interfaces.Repositories;
+using Application.Interfaces.UnitOfWork;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Persistence.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
@@ -8,10 +10,11 @@ namespace Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<ITenantRepository, TenantRepository>();
-            services.AddTransient<IMemberRepository, MemberRepository>();
-            services.AddTransient<IDepartmentReporsitory, DepartmentRepository>();
+            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ITenantRepositoryAsync, TenantRepositoryAsync>();
+            services.AddTransient<IMemberRepositoryAsync, MemberRepositoryAsync>();
+            services.AddTransient<IDepartmentReporsitory, DepartmentRepositoryAsync>();
         }
     }
 }

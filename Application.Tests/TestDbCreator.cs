@@ -1,5 +1,7 @@
 using System;
 using System.Data.Common;
+using System.Threading.Tasks;
+using Infrastructure.Persistence.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -16,8 +18,7 @@ namespace Application.Tests
         /// </summary>
         /// <param name="builtServicesCollection"></param>
         /// <param name="dbContext"></param>
-        public static void CreateDatabase(IServiceProvider builtServicesCollection,
-                                          ApplicationTestDbContext dbContext)
+        public static void CreateDatabase(ApplicationDbContext dbContext)
         {
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
@@ -28,16 +29,28 @@ namespace Application.Tests
         /// </summary>
         /// <param name="builtServicesCollection"></param>
         /// <returns></returns>
-        public static ApplicationTestDbContext GetApplicationTestDbContext(
+        public static ApplicationDbContext GetApplicationTestDbContext(
             IServiceProvider builtServicesCollection)
-            => builtServicesCollection.GetRequiredService<ApplicationTestDbContext>();
+            => builtServicesCollection.GetRequiredService<ApplicationDbContext>();
 
 
-        public static void SaveChangesAndStopTracking(ApplicationTestDbContext dbContext)
+        public static void SaveChangesAndStopTracking(ApplicationDbContext dbContext)
         {
             dbContext.SaveChanges();
 
             dbContext.ChangeTracker.Clear();
+        }
+        
+        public static async Task SaveChangesAndStopTrackingAsync(ApplicationDbContext dbContext)
+        {
+            await dbContext.SaveChangesAsync();
+
+            dbContext.ChangeTracker.Clear();
+        }
+        
+        public static async Task SaveChangesAsync(ApplicationDbContext dbContext)
+        {
+            await dbContext.SaveChangesAsync();
         }
     }
 }

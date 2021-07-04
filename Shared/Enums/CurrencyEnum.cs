@@ -1,5 +1,4 @@
-﻿using System;
-namespace Application.Enums
+﻿namespace Shared.Enums
 {
     public enum CurrencyEnum
     {

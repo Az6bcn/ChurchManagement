@@ -1,5 +1,4 @@
-﻿using Domain.Entities.DepartmentAggregate;
-using Domain.Entities.PersonAggregate;
+﻿using Domain.Entities.PersonAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,6 +11,7 @@ namespace Infrastructure.Persistence.Mappings
             builder.ToTable("Members");
 
             builder.HasQueryFilter(m => m.Deleted == null);
+            builder.HasQueryFilter(d => d.Deleted == null);
             
             // PK
             builder.HasKey(m => m.MemberId)
@@ -21,18 +21,18 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(m => m.MemberId)
                 .HasColumnName("MemberId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .UseIdentityColumn()
                 .ValueGeneratedOnAdd()
                 .IsRequired();
 
-            builder.Property(t => t.Person.TenantId)
+            builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Person.Name)
+            builder.Property(t => t.Name)
                 .HasColumnName("Name")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -40,7 +40,7 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Person.Surname)
+            builder.Property(t => t.Surname)
                 .HasColumnName("Surname")
                 .HasColumnType("varchar(200)")
                 .IsUnicode(false)
@@ -48,15 +48,15 @@ namespace Infrastructure.Persistence.Mappings
                 .ValueGeneratedNever()
                 .IsRequired();
 
-            builder.Property(t => t.Person.DateAndMonthOfBirth)
-                .HasColumnName("DateAndMonthOfBirth")
+            builder.Property(t => t.DateMonthOfBirth)
+                .HasColumnName("DateMonthOfBirth")
                 .HasColumnType("varchar(50)")
                 .IsUnicode(false)
                 .HasMaxLength(50)
                 .ValueGeneratedNever()
                 .IsRequired();
             
-            builder.Property(t => t.Person.Gender)
+            builder.Property(t => t.Gender)
                 .HasColumnName("Gender")
                 .HasColumnType("varchar(10)")
                 .IsUnicode(false)
@@ -71,7 +71,7 @@ namespace Infrastructure.Persistence.Mappings
              .ValueGeneratedNever()
              .IsRequired();
 
-            builder.Property(t => t.Person.PhoneNumber)
+            builder.Property(t => t.PhoneNumber)
                 .HasColumnName("PhoneNumber")
                 .HasColumnType("varchar(25)")
                 .IsUnicode(false)
@@ -102,7 +102,7 @@ namespace Infrastructure.Persistence.Mappings
             // Relationships and Foreign Key Constraints
             builder.HasOne(x => x.Tenant)
                    .WithOne()
-                   .HasForeignKey<Member>(x => x.Person.TenantId)
+                   .HasForeignKey<Member>(x => x.TenantId)
                    .HasConstraintName("FK_Departments_TenantId_Tenants_TenantId");
             
             builder.HasMany(m => m.Departments)

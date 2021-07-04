@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Abstracts;
-using Domain.Entities.PersonAggregate;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 
-namespace Domain.Entities.DepartmentAggregate
+namespace Domain.Entities.PersonAggregate
 {
     public class Department: IEntity
     {

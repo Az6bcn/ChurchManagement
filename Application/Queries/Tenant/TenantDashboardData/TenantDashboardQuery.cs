@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos;
-using Application.Enums;
 using Application.Helpers;
 using Application.Interfaces.Repositories;
 
@@ -11,9 +10,9 @@ namespace Application.Queries.Tenant.TenantDashboardData
 {
     public class TenantDashboardQuery: IQueryTenantDashboardData
     {
-        private readonly ITenantRepository _tenantRepo;
+        private readonly ITenantRepositoryAsync _tenantRepo;
 
-        public TenantDashboardQuery(ITenantRepository tenantRepo)
+        public TenantDashboardQuery(ITenantRepositoryAsync tenantRepo)
         {
             _tenantRepo = tenantRepo;
         }

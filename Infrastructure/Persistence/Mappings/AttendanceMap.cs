@@ -20,38 +20,38 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(m => m.AttendanceId)
                    .HasColumnName("AttendanceId")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .UseIdentityColumn()
                    .ValueGeneratedOnAdd()
                    .IsRequired();
 
             builder.Property(t => t.TenantId)
                    .HasColumnName("TenantId")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
 
             builder.Property(t => t.Male)
                    .HasColumnName("Male")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
 
             builder.Property(t => t.Female)
                    .HasColumnName("Female")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
 
             builder.Property(t => t.Children)
                    .HasColumnName("Children")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
 
             builder.Property(t => t.NewComers)
                    .HasColumnName("NewComers")
-                   .HasColumnType("int")
+                   //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
 

@@ -1,4 +1,4 @@
-﻿using Domain.Entities.DepartmentAggregate;
+﻿using Domain.Entities.PersonAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.DepartmentId)
                 .HasColumnName("DepartmentId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();

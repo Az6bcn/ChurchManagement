@@ -1,7 +1,6 @@
 using Domain.Abstracts;
-using Domain.Interfaces;
 
-namespace Domain.Entities.PersonAggregate
+namespace Domain.ValueObjects
 {
     public class MinisterTitle: ValueObject
     {

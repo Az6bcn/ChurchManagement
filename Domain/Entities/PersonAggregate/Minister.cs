@@ -1,6 +1,7 @@
 using System;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
+using Domain.ValueObjects;
 
 namespace Domain.Entities.PersonAggregate
 {

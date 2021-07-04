@@ -1,8 +1,8 @@
-using Domain.Entities.DepartmentAggregate;
+using Domain.Entities.PersonAggregate;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IDepartmentReporsitory: IGenericRepository<Department>
+    public interface IDepartmentReporsitory: IGenericRepositoryAsync<Department>
     {
         
     }

@@ -16,4 +16,8 @@
   <ItemGroup>
     <Compile Remove="Entities\FinanceAggregate\Currency.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
 </Project>

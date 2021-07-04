@@ -1,10 +1,16 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Domain.Abstracts;
 
 namespace Domain.ValueObjects
 {
     public class Person : ValueObject
     {
+        public Person()
+        {
+            
+        }
+        
         internal Person(int tenantId,
                         string name,
                         string surname,
@@ -27,12 +33,13 @@ namespace Domain.ValueObjects
                                     string phoneNumber)
             => new Person(tenantId, name, surname, dayMonthBirth, phoneNumber, gender);
 
-        public int TenantId { get; protected set; }
-        public string Name { get; protected set; }
-        public string Surname { get; protected set; }
-        public string DateAndMonthOfBirth { get; protected set; }
-        public string Gender { get; protected set; }
-        public string PhoneNumber { get; protected set; }
+        [Key]
+        public int TenantId { get; private set; }
+        public string Name { get; private set; }
+        public string Surname { get; private set; }
+        public string DateAndMonthOfBirth { get; private set; }
+        public string Gender { get; private set; }
+        public string PhoneNumber { get; private set; }
 
         public IEnumerable<string> Validate()
         {

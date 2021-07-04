@@ -22,26 +22,26 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(m => m.MinisterId)
                 .HasColumnName("MinisterId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .UseIdentityColumn()
                 .ValueGeneratedOnAdd()
                 .IsRequired();
             
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
             
             builder.Property(t => t.MinisterTitleId)
                 .HasColumnName("MinisterTitleId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
             
             builder.Property(t => t.MemberId)
                 .HasColumnName("MemberId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedNever()
                 .IsRequired();
 

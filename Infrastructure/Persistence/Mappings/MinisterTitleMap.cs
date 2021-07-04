@@ -1,4 +1,5 @@
 using Domain.Entities.PersonAggregate;
+using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +19,7 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.MinisterTitleId)
                 .HasColumnName("MinisterTitleId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();

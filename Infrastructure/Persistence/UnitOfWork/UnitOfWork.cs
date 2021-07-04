@@ -16,9 +16,9 @@ namespace Infrastructure.Persistence.UnitOfWork
             _dbContext = dbContext;
         }
 
-        public ITenantRepository Tenants => new TenantRepository(_dbContext);
-        public IMemberRepository Members => new MemberRepository(_dbContext);
-        public IDepartmentReporsitory Departments => new DepartmentRepository(_dbContext);
+        public ITenantRepositoryAsync Tenants => new TenantRepositoryAsync(_dbContext);
+        public IMemberRepositoryAsync Members => new MemberRepositoryAsync(_dbContext);
+        public IDepartmentReporsitory Departments => new DepartmentRepositoryAsync(_dbContext);
         
         
         public async Task<int> SaveChangesAsync()

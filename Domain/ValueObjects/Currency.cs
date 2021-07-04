@@ -1,22 +1,31 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Domain.Abstracts;
 
 namespace Domain.ValueObjects
 {
     public class Currency: ValueObject
     {
-        internal Currency(string name, int id)
+        public Currency()
+        {
+            
+        }
+        
+        internal Currency(int id, string name)
         {
             CurrencyId = id;
             Name = name;
         }
         
+        
         public int CurrencyId { get; private set; }
         public string Name { get; private set; }
+        public int CurrencyValueObjectId => CurrencyId;
         
         
-        public Currency Create(string name, int id) => new Currency(name, id);
-        public Currency Update(string name, int id) => new Currency(name, id);
+        public static Currency Create(int id, string name) => new Currency(id, name);
+        public static Currency Update(int id, string name) => new Currency(id, name);
+
         
         protected override bool Equals(ValueObject value1, ValueObject value2)
         {

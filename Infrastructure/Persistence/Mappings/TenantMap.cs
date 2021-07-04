@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Mappings
             // Columns
             builder.Property(t => t.TenantId)
                 .HasColumnName("TenantId")
-                .HasColumnType("int")
+                //.HasColumnType("int")
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn()
                 .IsRequired();
@@ -41,20 +41,20 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.LogoUrl)
               .HasColumnName("LogoUrl")
-              .HasColumnType("varchar(max)")
+              //.HasColumnType("varchar(max)")
               .IsUnicode(false)
               .ValueGeneratedNever()
               .IsRequired(false);
 
             builder.Property(t => t.CurrencyId)
               .HasColumnName("CurrencyId")
-              .HasColumnType("int")
+              //.HasColumnType("int")
               .ValueGeneratedNever()
               .IsRequired();
 
             builder.Property(t => t.TenantStatusId)
              .HasColumnName("TenantStatusId")
-             .HasColumnType("int")
+             //.HasColumnType("int")
              .ValueGeneratedNever()
              .IsRequired();
 
@@ -77,6 +77,10 @@ namespace Infrastructure.Persistence.Mappings
              .ValueGeneratedNever()
              .HasDefaultValueSql("null")
              .IsRequired(false);
+            
+            //Ignores :
+            // Navigation Properties to Ignore in tenant(Not Mapped)
+            //builder.Ignore(x => x.Currency);
 
             // Relationships and Foreign Key Constraints
             // builder.HasOne(t => t.Currency)

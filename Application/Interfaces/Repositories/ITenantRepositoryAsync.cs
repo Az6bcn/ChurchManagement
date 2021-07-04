@@ -6,7 +6,7 @@ using Domain.ProjectionEntities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ITenantRepository: IGenericRepository<Tenant>
+    public interface ITenantRepositoryAsync: IGenericRepositoryAsync<Tenant>
     {
         Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
         Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId);
