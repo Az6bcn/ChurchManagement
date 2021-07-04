@@ -1,5 +1,6 @@
 using System;
 using System.Data.Common;
+using System.Threading.Tasks;
 using Infrastructure.Persistence.Context;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,18 @@ namespace Application.Tests
             dbContext.SaveChanges();
 
             dbContext.ChangeTracker.Clear();
+        }
+        
+        public static async Task SaveChangesAndStopTrackingAsync(ApplicationDbContext dbContext)
+        {
+            await dbContext.SaveChangesAsync();
+
+            dbContext.ChangeTracker.Clear();
+        }
+        
+        public static async Task SaveChangesAsync(ApplicationDbContext dbContext)
+        {
+            await dbContext.SaveChangesAsync();
         }
     }
 }

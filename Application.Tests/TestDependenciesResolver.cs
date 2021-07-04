@@ -22,7 +22,6 @@ namespace Application.Tests
             // Add all dependencies
             services.AddApplicationServices();
             services.AddInfrastructureServices();
-            //services.AddTransient<ApplicationDbContext>();
 
             return services;
         }

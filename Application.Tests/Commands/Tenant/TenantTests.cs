@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.Tenant.Create;
 using Application.Dtos.Request.Create;
+using Application.RequestValidators;
 using Infrastructure.Persistence.Context;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Enums;
@@ -49,6 +50,27 @@ namespace Application.Tests.Commands.Tenant
             Assert.NotNull(response);
             Assert.True(response.TenantId > 0);
             Assert.Equal(TenantStatusEnum.Pending, response.TenantStatusEnum);
+        }
+        
+        [Fact]
+        public async Task Create_WhenCalledWithExistentTenant_ShouldThrowRequestValidationException()
+        {
+            // Arrange
+            _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
+            TestDbCreator.CreateDatabase(_context);
+            await TestSeeder.CreateDemoTenant(_context);
+            var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            var tenantRequestDto = new CreateTenantRequestDto()
+            {
+                Name = "Demo",
+                LogoUrl = string.Empty,
+                TenantStatusEnum = TenantStatusEnum.Pending,
+                CurrencyEnum = CurrencyEnum.UsDollars
+            };
+
+            // Act && Assert
+            await Assert.ThrowsAsync<RequestValidationException>(
+                 async () => await target.ExecuteAsync(tenantRequestDto));
         }
     }
 }
