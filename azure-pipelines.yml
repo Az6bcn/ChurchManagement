@@ -33,14 +33,10 @@ steps:
 
 - task: VSTest@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
     testSelector: 'testAssemblies'
+    codeCoverageEnabled: true
     testAssemblyVer2: |
-      **\*test*.dll
+      **\*Application.Tests*.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
