@@ -34,9 +34,11 @@ steps:
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
+    runTestsInIsolation: true
     codeCoverageEnabled: true
     testAssemblyVer2: |
       **\*Application.Tests*.dll
       !**\*TestAdapter.dll
       !**\obj\**
+      !**\bin\**\ref\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
