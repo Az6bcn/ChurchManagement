@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Commands.Tenant.Create;
 using Application.Dtos;
+using Application.Dtos.Request.Create;
+using Application.Dtos.Response.Create;
 using Application.Interfaces.Repositories;
 using Application.Queries.Tenant.TenantDetails;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +19,15 @@ namespace WebApi.Controllers
     public class TenantController : ControllerBase
     {
         private readonly IQueryTenantDetails _queryTenantDetails;
+        private readonly ICreateTenantCommand _createTenantCommand;
 
-        public TenantController(IQueryTenantDetails queryTenantDetails)
+        public TenantController(IQueryTenantDetails queryTenantDetails,
+                                ICreateTenantCommand createTenantCommand)
         {
             _queryTenantDetails = queryTenantDetails;
+            _createTenantCommand = createTenantCommand;
         }
+        
         
         [ProducesResponseType(typeof(ApiRequestResponse<TenantDetailsDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -39,6 +46,17 @@ namespace WebApi.Controllers
             var result = ApiRequestResponse<TenantDetailsDto>.Succeed(result: response.Result);
             
             return Ok(result);
+        }
+
+
+        [ProducesResponseType(typeof(ApiRequestResponse<CreateTenantResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost]
+        public async Task<IActionResult> CreateTenant([FromBody] CreateTenantRequestDto request)
+        {
+            var response = await _createTenantCommand.ExecuteAsync(request);
+
+            return Ok(ApiRequestResponse<CreateTenantResponseDto>.Succeed(response));
         }
     }
 }

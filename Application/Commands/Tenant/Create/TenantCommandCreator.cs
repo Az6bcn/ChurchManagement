@@ -45,8 +45,8 @@ namespace Application.Commands.Tenant.Create
 
             var tenant = TenantAggregate.Create(request.Name,
                                                 request.LogoUrl ?? string.Empty,
-                                                request.CurrencyEnum,
-                                                request.TenantStatusEnum);
+                                                request.CurrencyId,
+                                                request.TenantStatusId);
 
             await _tenantRepo.AddAsync(tenant);
             await _unitOfWork.SaveChangesAsync();

@@ -24,9 +24,8 @@ namespace Domain.Entities.TenantAggregate
             LogoUrl = logoUrl;
             CreatedAt = DateTime.UtcNow;
             Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
-            TenantStatus = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
             CurrencyId = Currency.CurrencyId;
-            TenantStatusId = TenantStatus.TenantStatusId;
+            TenantStatusId = tenantStatusEnumValue.Id;
             TenantGuidId = Guid.NewGuid();
         }
 
@@ -59,6 +58,12 @@ namespace Domain.Entities.TenantAggregate
             LogoUrl = logoUrl;
             CurrencyEnum = CurrencyEnum;
             UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AssignValuesToTenantStatusObject(TenantStatusEnum tenantStatusEnum)
+        {
+            var tenantStatusEnumValue = GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
+            TenantStatus = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
         }
 
         public void UpdateStatus()

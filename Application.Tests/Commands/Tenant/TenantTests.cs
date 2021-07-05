@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Commands.Tenant.Create;
 using Application.Dtos.Request.Create;
 using Application.RequestValidators;
+using Domain.Entities.TenantAggregate;
 using Infrastructure.Persistence.Context;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Enums;
@@ -38,8 +39,8 @@ namespace Application.Tests.Commands.Tenant
             {
                 Name = "Demo",
                 LogoUrl = string.Empty,
-                TenantStatusEnum = TenantStatusEnum.Pending,
-                CurrencyEnum = CurrencyEnum.UsDollars
+                TenantStatusId = TenantStatusEnum.Pending,
+                CurrencyId = CurrencyEnum.UsDollars
             };
 
             // Act
@@ -52,9 +53,8 @@ namespace Application.Tests.Commands.Tenant
             Assert.Equal(TenantStatusEnum.Pending, response.TenantStatusEnum);
         }
         
-        
         [Fact]
-        public async Task Create_WhenCalledWithoutNameInRequest_ShouldThrowRequestValidationException()
+        public async Task Create_WhenCalledIfRequestHasNoName_ShouldThrowRequestValidationException()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -64,8 +64,8 @@ namespace Application.Tests.Commands.Tenant
             {
                 Name = string.Empty,
                 LogoUrl = string.Empty,
-                TenantStatusEnum = TenantStatusEnum.Pending,
-                CurrencyEnum = CurrencyEnum.UsDollars
+                TenantStatusId = TenantStatusEnum.Pending,
+                CurrencyId = CurrencyEnum.UsDollars
             };
 
             // Act && Assert
@@ -74,7 +74,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Create_WhenCalledWithExistentTenant_ShouldThrowRequestValidationException()
+        public async Task Create_WhenCalledWithExistentTenantNameInDb_ShouldThrowRequestValidationException()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -85,13 +85,15 @@ namespace Application.Tests.Commands.Tenant
             {
                 Name = "Demo",
                 LogoUrl = string.Empty,
-                TenantStatusEnum = TenantStatusEnum.Pending,
-                CurrencyEnum = CurrencyEnum.UsDollars
+                TenantStatusId = TenantStatusEnum.Pending,
+                CurrencyId = CurrencyEnum.UsDollars
             };
 
             // Act && Assert
             await Assert.ThrowsAsync<RequestValidationException>(
                  async () => await target.ExecuteAsync(tenantRequestDto));
         }
+        
+        
     }
 }
