@@ -5,6 +5,7 @@ using Application.Commands.Tenant.Create;
 using Application.Dtos.Request.Create;
 using Application.RequestValidators;
 using Domain.Entities.TenantAggregate;
+using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Enums;
@@ -35,11 +36,11 @@ namespace Application.Tests.Commands.Tenant
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            
             var tenantRequestDto = new CreateTenantRequestDto()
             {
                 Name = "Demo",
                 LogoUrl = string.Empty,
-                TenantStatusId = TenantStatusEnum.Pending,
                 CurrencyId = CurrencyEnum.UsDollars
             };
 
@@ -60,11 +61,11 @@ namespace Application.Tests.Commands.Tenant
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            
             var tenantRequestDto = new CreateTenantRequestDto()
             {
                 Name = string.Empty,
                 LogoUrl = string.Empty,
-                TenantStatusId = TenantStatusEnum.Pending,
                 CurrencyId = CurrencyEnum.UsDollars
             };
 
@@ -79,13 +80,14 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
-            await TestSeeder.CreateDemoTenant(_context);
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>(_serviceProvider);
+            await TestSeeder.CreateDemoTenant(_context, domainValidator);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            
             var tenantRequestDto = new CreateTenantRequestDto()
             {
                 Name = "Demo",
                 LogoUrl = string.Empty,
-                TenantStatusId = TenantStatusEnum.Pending,
                 CurrencyId = CurrencyEnum.UsDollars
             };
 
@@ -94,6 +96,25 @@ namespace Application.Tests.Commands.Tenant
                  async () => await target.ExecuteAsync(tenantRequestDto));
         }
         
-        
+        [Fact]
+        public async Task Create_WhenCalledWithCurrencyId0_ShouldThrowDomainValidationException()
+        {
+            // Arrange
+            _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
+            TestDbCreator.CreateDatabase(_context);
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>(_serviceProvider);
+            var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
+            
+            var tenantRequestDto = new CreateTenantRequestDto()
+            {
+                Name = "Demo",
+                LogoUrl = string.Empty,
+                CurrencyId = 0
+            };
+
+            // Act && Assert
+            await Assert.ThrowsAsync<DomainValidationException>(
+                 async () => await target.ExecuteAsync(tenantRequestDto));
+        }
     }
 }

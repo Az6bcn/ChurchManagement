@@ -7,6 +7,5 @@ namespace Application.Dtos.Request.Create
         public string Name { get; set; }
         public string? LogoUrl { get; set; }
         public CurrencyEnum CurrencyId { get; set; }
-        public TenantStatusEnum TenantStatusId { get; set; }
     }
 }
