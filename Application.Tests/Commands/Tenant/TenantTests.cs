@@ -116,5 +116,20 @@ namespace Application.Tests.Commands.Tenant
             await Assert.ThrowsAsync<DomainValidationException>(
                  async () => await target.ExecuteAsync(tenantRequestDto));
         }
+
+        public async Task Update_WhenCalledWithValidRequest_ShouldUpdateTenantIndatabase()
+        {
+            // Arrange
+            var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
+            var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
+            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>
+            (_serviceProvider);
+            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
+
+            // Act
+            var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+
+            // Assert
+        }
     }
 }

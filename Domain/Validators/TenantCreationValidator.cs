@@ -12,7 +12,6 @@ namespace Domain.Validators
             
             if(currencyId <= 0)
                 errors.Add(nameof(currencyId), "Invalid currency");
-            
         }
     }
 }

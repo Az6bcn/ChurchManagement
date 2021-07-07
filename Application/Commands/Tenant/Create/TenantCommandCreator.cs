@@ -39,10 +39,9 @@ namespace Application.Commands.Tenant.Create
         
         public async Task<CreateTenantResponseDto> ExecuteAsync(CreateTenantRequestDto request)
         {
-            var tenants = await _tenantRepo.GetAllAsync();
-            var tenantNames = tenants.Select(x => x.Name).ToList();
+            var tenantNames = await _tenantQuery.GetTenantNamesAsync();
 
-            _requestValidator.Validate(request, tenantNames, out IDictionary<string, object> errors);
+            _requestValidator.Validate(request, tenantNames.ToList(), out IDictionary<string, object> errors);
             if (errors.Any())
                 throw new RequestValidationException("Request failed validation", errors);
 

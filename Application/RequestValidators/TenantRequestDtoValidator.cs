@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Application.Dtos.Request.Create;
+using Application.Dtos.Request.Update;
 
 namespace Application.RequestValidators
 {

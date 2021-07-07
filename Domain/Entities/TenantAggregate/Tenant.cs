@@ -55,7 +55,7 @@ namespace Domain.Entities.TenantAggregate
             return new Tenant(name, logoUrl, currencyEnum, validateTenantCreation, errors);
         }
 
-        public void UpdateTenant(string name,
+        public void Update(string name,
                                  string? logoUrl,
                                  CurrencyEnum currencyEnum)
         {
