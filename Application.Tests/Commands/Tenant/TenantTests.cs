@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.Tenant.Create;
+using Application.Commands.Tenant.Update;
 using Application.Dtos.Request.Create;
+using Application.Dtos.Request.Update;
 using Application.RequestValidators;
 using Domain.Entities.TenantAggregate;
 using Domain.Validators;
@@ -51,7 +53,7 @@ namespace Application.Tests.Commands.Tenant
             // Assert
             Assert.NotNull(response);
             Assert.True(response.TenantId > 0);
-            Assert.Equal(TenantStatusEnum.Pending, response.TenantStatusEnum);
+            Assert.Equal(TenantStatusEnum.Pending, response.TenantStatus);
         }
         
         [Fact]
@@ -117,6 +119,7 @@ namespace Application.Tests.Commands.Tenant
                  async () => await target.ExecuteAsync(tenantRequestDto));
         }
 
+        [Fact]
         public async Task Update_WhenCalledWithValidRequest_ShouldUpdateTenantIndatabase()
         {
             // Arrange
@@ -128,8 +131,33 @@ namespace Application.Tests.Commands.Tenant
 
             // Act
             var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+            var updateRequest = new UpdateTenantRequestDto
+            {
+                TenantId = createdTenant.TenantId,
+                Name = "Updated Demo",
+                CurrencyId = CurrencyEnum.Naira,
+                LogoUrl = "www.https://nothing.com"
+            };
+            var updatedTenantResponseDto = await target.ExecuteAsync(updateRequest);
 
+            var insertedUpdate = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
             // Assert
+            Assert.NotNull(updatedTenantResponseDto);
+            Assert.Equal(updateRequest.TenantId , updatedTenantResponseDto.TenantId);
+            Assert.Equal(updateRequest.Name , updatedTenantResponseDto.Name);
+            Assert.Equal(updateRequest.CurrencyId , updatedTenantResponseDto.Currency);
+            Assert.Equal(updateRequest.LogoUrl , updatedTenantResponseDto.LogoUrl);
+            
+            Assert.Equal(updateRequest.TenantId , insertedUpdate.TenantId);
+            Assert.Equal(updateRequest.Name , insertedUpdate.Name);
+            Assert.Equal((int)updateRequest.CurrencyId, insertedUpdate.CurrencyId);
+            Assert.Equal(updateRequest.LogoUrl, insertedUpdate.LogoUrl);
+            
+            Assert.Equal(updateRequest.TenantId , createdTenant.TenantId);
+            Assert.NotEqual(updateRequest.Name , createdTenant.Name);
+            Assert.NotEqual((int)updateRequest.CurrencyId, createdTenant.CurrencyId);
+            Assert.NotEqual(updateRequest.LogoUrl, createdTenant.LogoUrl);
+
         }
     }
 }

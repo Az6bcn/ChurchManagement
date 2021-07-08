@@ -5,6 +5,6 @@ namespace Application.Dtos.Request.Update
 {
     public class UpdateTenantRequestDto: CreateTenantRequestDto
     {
-        public int Id { get; set; }
+        public int TenantId { get; set; }
     }
 }

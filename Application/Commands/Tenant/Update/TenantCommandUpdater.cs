@@ -43,11 +43,11 @@ namespace Application.Commands.Tenant.Update
             if (errors.Any())
                 throw new RequestValidationException("Request failed validation", errors);
 
-            var tenant = await _tenantQuery.GetTenantByIdAsync(request.Id);
+            var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
 
             if (tenant is null)
-                throw new ArgumentException($"Tenant with id {request.Id} does not exist",
-                                            nameof(request.Id));
+                throw new ArgumentException($"Tenant with id {request.TenantId} does not exist",
+                                            nameof(request.TenantId));
 
             tenant.Update(request.Name, request.LogoUrl, request.CurrencyId);
 

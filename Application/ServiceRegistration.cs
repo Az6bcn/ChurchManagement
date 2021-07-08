@@ -1,5 +1,6 @@
 using System.Reflection;
 using Application.Commands.Tenant.Create;
+using Application.Commands.Tenant.Update;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries;
 using Application.Queries.Tenant;
@@ -16,14 +17,15 @@ namespace Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Domain
-            services.AddTransient<IValidateTenantCreation, TenantCreationValidator>();
+            services.AddScoped<IValidateTenantCreation, TenantCreationValidator>();
         
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddTransient<IQueryTenantDetails, TenantDetailsQuery>();
-            services.AddTransient<IQueryTenantDashboardData, TenantDashboardQuery>();
-            services.AddTransient<ICreateTenantCommand, TenantCommandCreator>();
-            services.AddTransient<IQueryTenant, TenantQuery>();
-            services.AddTransient<IValidateTenantRequestDto, TenantRequestDtoValidator>();
+            services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
+            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
+            services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
+            services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
+            services.AddScoped<IQueryTenant, TenantQuery>();
+            services.AddScoped<IValidateTenantRequestDto, TenantRequestDtoValidator>();
         }
     }
 }
