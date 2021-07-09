@@ -11,12 +11,12 @@ namespace Application.Tests
     public class TestSeeder
     {
         public static async Task CreateDemoTenant(ApplicationDbContext context,
-                                                  IValidateTenantCreation validateTenantCreation)
+                                                  IValidateTenantInDomain validateTenantInDomain)
         {
             var demoTenant = Tenant.Create("Demo",
                                            string.Empty,
                                            CurrencyEnum.UsDollars,
-                                           validateTenantCreation,
+                                           validateTenantInDomain,
                                            out IDictionary<string, object> errors);
 
             await context.AddAsync(demoTenant);

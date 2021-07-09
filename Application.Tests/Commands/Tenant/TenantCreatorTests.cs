@@ -15,21 +15,19 @@ using Xunit;
 
 namespace Application.Tests.Commands.Tenant
 {
-    public class TenantTests
+    public class TenantCreatorTests
     {
         private ApplicationDbContext _context;
         private readonly IServiceProvider _serviceProvider;
         
-        public TenantTests()
+        public TenantCreatorTests()
         {
             var services = ResolveServices();
             _serviceProvider = TestDependenciesResolver.BuildServices(services);
         }
 
-        private IServiceCollection ResolveServices()
-        {
-            return TestDependenciesResolver.AddServices();
-        }
+        private IServiceCollection ResolveServices() => TestDependenciesResolver.AddServices();
+        
 
         [Fact]
         public async Task Create_WhenCalledWithValidRequest_ShouldCreateTenantInDatabase()
@@ -82,7 +80,7 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
-            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>(_serviceProvider);
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_serviceProvider);
             await TestSeeder.CreateDemoTenant(_context, domainValidator);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
             
@@ -104,7 +102,7 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
-            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>(_serviceProvider);
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_serviceProvider);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
             
             var tenantRequestDto = new CreateTenantRequestDto()
@@ -117,42 +115,6 @@ namespace Application.Tests.Commands.Tenant
             // Act && Assert
             await Assert.ThrowsAsync<DomainValidationException>(
                  async () => await target.ExecuteAsync(tenantRequestDto));
-        }
-
-        [Fact]
-        public async Task Update_WhenCalledWithValidRequest_ShouldUpdateTenantIndatabase()
-        {
-            // Arrange
-            var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
-            var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
-            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>
-            (_serviceProvider);
-            TestDbCreator.CreateDatabase(context);
-            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
-
-            // Act
-            var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
-            var updateRequest = new UpdateTenantRequestDto
-            {
-                TenantId = createdTenant.TenantId,
-                Name = "Updated Demo",
-                CurrencyId = CurrencyEnum.Naira,
-                LogoUrl = "www.https://nothing.com"
-            };
-            var updatedTenantResponseDto = await target.ExecuteAsync(updateRequest);
-
-            var insertedUpdate = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
-            // Assert
-            Assert.NotNull(updatedTenantResponseDto);
-            Assert.Equal(updateRequest.TenantId , updatedTenantResponseDto.TenantId);
-            Assert.Equal(updateRequest.Name , updatedTenantResponseDto.Name);
-            Assert.Equal(updateRequest.CurrencyId , updatedTenantResponseDto.Currency);
-            Assert.Equal(updateRequest.LogoUrl , updatedTenantResponseDto.LogoUrl);
-            
-            Assert.Equal(updateRequest.TenantId , insertedUpdate.TenantId);
-            Assert.Equal(updateRequest.Name , insertedUpdate.Name);
-            Assert.Equal((int)updateRequest.CurrencyId, insertedUpdate.CurrencyId);
-            Assert.Equal(updateRequest.LogoUrl, insertedUpdate.LogoUrl);
         }
     }
 }

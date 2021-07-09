@@ -17,7 +17,7 @@ namespace Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Domain
-            services.AddScoped<IValidateTenantCreation, TenantCreationValidator>();
+            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
         
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();

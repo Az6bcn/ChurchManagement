@@ -15,44 +15,44 @@ namespace Application.Commands.Tenant.Create
 {
     public class TenantCommandCreator : ICreateTenantCommand
     {
-        private readonly ITenantRepositoryAsync _tenantRepo;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IValidateTenantRequestDto _requestValidator;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IQueryTenant _tenantQuery;
-        private readonly IValidateTenantCreation _validateTenantCreation;
+        private readonly ITenantRepositoryAsync _tenantRepo;
+        private readonly IValidateTenantInDomain _domainValidator;
+        private readonly IValidateTenantRequestDto _requestValidator;
 
         public TenantCommandCreator(ITenantRepositoryAsync tenantRepo,
                                     IUnitOfWork unitOfWork,
                                     IMapper mapper,
                                     IValidateTenantRequestDto requestValidator,
                                     IQueryTenant tenantQuery,
-                                    IValidateTenantCreation validateTenantCreation)
+                                    IValidateTenantInDomain domainValidator)
         {
             _tenantRepo = tenantRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _requestValidator = requestValidator;
             _tenantQuery = tenantQuery;
-            _validateTenantCreation = validateTenantCreation;
+            _domainValidator = domainValidator;
         }
         
         public async Task<CreateTenantResponseDto> ExecuteAsync(CreateTenantRequestDto request)
         {
             var tenantNames = await _tenantQuery.GetTenantNamesAsync();
 
-            _requestValidator.Validate(request, tenantNames.ToList(), out IDictionary<string, object> errors);
+            _requestValidator.Validate(request, tenantNames.ToList(), out var errors);
             if (errors.Any())
                 throw new RequestValidationException("Request failed validation", errors);
 
             var tenant = TenantAggregate.Create(request.Name,
                                                 request.LogoUrl ?? string.Empty,
                                                 request.CurrencyId,
-                                                _validateTenantCreation,
+                                                _domainValidator,
                                                 out var domainErrors);
 
             if (domainErrors.Any())
-                throw new DomainValidationException("Failed domain validation", domainErrors);
+                throw new DomainValidationException("Request failed domain validation", domainErrors);
 
             await _tenantRepo.AddAsync(tenant);
             await _unitOfWork.SaveChangesAsync();

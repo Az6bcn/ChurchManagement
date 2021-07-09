@@ -8,17 +8,12 @@
     &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5b42744a_002Da0a3_002D43a9_002Daed5_002Dc9f4d53697fd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TenantDetailsTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithValidRequest_ShouldCreateTenantInDatabase&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithExistentTenant_ShouldThrowRequestValidationException&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithValidRequest_ShouldCreateTenantWithTenantStatusInDatabase&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithoutNameInRequest_ShouldThrowRequestValidationException&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithValidRequest_ShouldCreateTenantsInDatabase&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7f2980b_002D14ab_002D4a6a_002D939d_002D25bebf9a5e30/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Application.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\azeez.odumosu\Documents\ChurchManagement\Application.Tests" Presentation="&amp;lt;Application.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
+	
+	
 	
 	
 	</wpf:ResourceDictionary>

@@ -70,20 +70,5 @@ namespace Application.Tests
         /// <returns></returns>
         public static T GetService<T>(IServiceProvider builtServiceCollection)
             => builtServiceCollection.GetRequiredService<T>();
-        
-        // public static T GetService<T>(IServiceProvider builtServiceCollection)
-        // {
-        //     try
-        //     {
-        //         var res = builtServiceCollection.GetRequiredService<T>();
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Console.WriteLine(e);
-        //         throw;
-        //     }
-        //
-        //     return default;
-        // }
     }
 }
