@@ -1,5 +1,6 @@
 using System.Reflection;
 using Application.Commands.Tenant.Create;
+using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries;
@@ -24,6 +25,7 @@ namespace Application
             services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
             services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
             services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
+            services.AddScoped<IDeleteTenantCommand, TenantDeleteCommand>();
             services.AddScoped<IQueryTenant, TenantQuery>();
             services.AddScoped<IValidateTenantRequestDto, TenantRequestDtoValidator>();
         }
