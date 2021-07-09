@@ -50,7 +50,7 @@ namespace Application.Commands.Tenant.Update
             var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
 
             if (tenant is null)
-                throw new ArgumentException($"Tenant with id {request.TenantId} does not exist",
+                throw new ArgumentException($"Tenant {request.TenantId} not found",
                                             nameof(request.TenantId));
 
             tenant.Update(request.Name,
