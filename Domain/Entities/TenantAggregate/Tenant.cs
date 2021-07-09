@@ -66,16 +66,16 @@ namespace Domain.Entities.TenantAggregate
 
             var currencyEnumValue = GetCurrencyEnumValue(currencyEnum);
             var tenantStatusEnumValue = GetTenantStatusEnumValue(tenantStatusEnum);
-            TenantStatus
+            var tenantStatus
                 = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
             Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
             
-            validator.Validate(Currency.CurrencyId, TenantStatus.TenantStatusId, errors);
+            validator.Validate(Currency.CurrencyId, tenantStatus.TenantStatusId, errors);
 
             Name = name;
             LogoUrl = logoUrl;
             CurrencyId = Currency.CurrencyId;
-            TenantStatusId = TenantStatus.TenantStatusId;
+            TenantStatusId = tenantStatus.TenantStatusId;
             UpdatedAt = DateTime.UtcNow;
         }
 
