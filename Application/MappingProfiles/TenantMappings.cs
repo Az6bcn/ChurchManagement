@@ -19,27 +19,27 @@ namespace Application.MappingProfiles
                            options 
                                => options.MapFrom(src => src.Name))
                 .ForMember(dst => dst.LogoUrl, options 
-                               => options.MapFrom(src => src.Name))
+                               => options.MapFrom(src => src.LogoUrl))
                 .ForMember(dst => dst.TenantStatus, options 
                                => options.MapFrom(src => (TenantStatusEnum)src.TenantStatusId))
                 .ForMember(dst => dst.Currency, options 
                                => options.MapFrom(src => (CurrencyEnum)src.CurrencyId))
                 .ReverseMap();
 
-            CreateMap<Tenant, UpdateTenantResponseDto>();
-            // .ForMember(dst => dst.TenantId, 
-            //            options 
-            //                => options.MapFrom(src => src.TenantId))
-            // .ForMember(dst => dst.Name, 
-            //            options 
-            //                => options.MapFrom(src => src.Name))
-            // .ForMember(dst => dst.LogoUrl, options 
-            //                => options.MapFrom(src => src.Name))
-            // .ForMember(dst => dst.TenantStatusEnum, options 
-            //                => options.MapFrom(src => (TenantStatusEnum)src.TenantStatusId))
-            // .ForMember(dst => dst.CurrencyEnum, options 
-            //                => options.MapFrom(src => (CurrencyEnum)src.CurrencyId))
-            // .ReverseMap();
+            CreateMap<Tenant, UpdateTenantResponseDto>()
+            .ForMember(dst => dst.TenantId, 
+                       options 
+                           => options.MapFrom(src => src.TenantId))
+            .ForMember(dst => dst.Name, 
+                       options 
+                           => options.MapFrom(src => src.Name))
+            .ForMember(dst => dst.LogoUrl, options 
+                           => options.MapFrom(src => src.LogoUrl))
+            .ForMember(dst => dst.TenantStatus, options 
+                           => options.MapFrom(src => (TenantStatusEnum)src.TenantStatusId))
+            .ForMember(dst => dst.Currency, options 
+                           => options.MapFrom(src => (CurrencyEnum)src.CurrencyId))
+            .ReverseMap();
 
         }
     }

@@ -127,6 +127,7 @@ namespace Application.Tests.Commands.Tenant
             var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
             var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantCreation>
             (_serviceProvider);
+            TestDbCreator.CreateDatabase(context);
             await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
 
             // Act
@@ -152,12 +153,6 @@ namespace Application.Tests.Commands.Tenant
             Assert.Equal(updateRequest.Name , insertedUpdate.Name);
             Assert.Equal((int)updateRequest.CurrencyId, insertedUpdate.CurrencyId);
             Assert.Equal(updateRequest.LogoUrl, insertedUpdate.LogoUrl);
-            
-            Assert.Equal(updateRequest.TenantId , createdTenant.TenantId);
-            Assert.NotEqual(updateRequest.Name , createdTenant.Name);
-            Assert.NotEqual((int)updateRequest.CurrencyId, createdTenant.CurrencyId);
-            Assert.NotEqual(updateRequest.LogoUrl, createdTenant.LogoUrl);
-
         }
     }
 }
