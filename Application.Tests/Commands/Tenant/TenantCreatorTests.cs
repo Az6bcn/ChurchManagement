@@ -81,6 +81,7 @@ namespace Application.Tests.Commands.Tenant
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
             var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_serviceProvider);
+
             await TestSeeder.CreateDemoTenant(_context, domainValidator);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
             
@@ -102,7 +103,6 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             TestDbCreator.CreateDatabase(_context);
-            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_serviceProvider);
             var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_serviceProvider);
             
             var tenantRequestDto = new CreateTenantRequestDto()

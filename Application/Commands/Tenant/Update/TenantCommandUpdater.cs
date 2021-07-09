@@ -53,11 +53,17 @@ namespace Application.Commands.Tenant.Update
                 throw new ArgumentException($"Tenant with id {request.TenantId} does not exist",
                                             nameof(request.TenantId));
 
-            tenant.Update(request.Name, request.LogoUrl, request.CurrencyId, request.TenantStatus, _domainValidator, out var domainErrors);
+            tenant.Update(request.Name,
+                          request.LogoUrl,
+                          request.CurrencyId,
+                          request.TenantStatus,
+                          _domainValidator,
+                          out var domainErrors);
 
 
             if (domainErrors.Any())
-                throw new DomainValidationException("Request failed domain validation", domainErrors);
+                throw new DomainValidationException("Request failed domain validation",
+                                                    domainErrors);
 
             _tenantRepo.Update(tenant);
             await _uniOfWork.SaveChangesAsync();

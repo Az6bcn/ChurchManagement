@@ -30,10 +30,10 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
-            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
                 (_serviceProvider);
             TestDbCreator.CreateDatabase(context);
-            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
+            await TestSeeder.CreateDemoTenant(context, domainValidator);
 
             // Act
             var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
@@ -67,10 +67,10 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
-            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
                 (_serviceProvider);
             TestDbCreator.CreateDatabase(context);
-            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
+            await TestSeeder.CreateDemoTenant(context, domainValidator);
 
             // Act
             var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
@@ -92,10 +92,10 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
-            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
                 (_serviceProvider);
             TestDbCreator.CreateDatabase(context);
-            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
+            await TestSeeder.CreateDemoTenant(context, domainValidator);
 
             // Act
             var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
@@ -117,17 +117,17 @@ namespace Application.Tests.Commands.Tenant
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
             var target = TestDependenciesResolver.GetService<IUpdateTenantCommand>(_serviceProvider);
-            var tenantCreationValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
+            var domainValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>
                 (_serviceProvider);
             TestDbCreator.CreateDatabase(context);
-            await TestSeeder.CreateDemoTenant(context, tenantCreationValidator);
+            await TestSeeder.CreateDemoTenant(context, domainValidator);
 
             // Act
             var createdTenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
             var updateRequest = new UpdateTenantRequestDto
             {
                 TenantId = createdTenant.TenantId,
-                Name = "Update dEMO",
+                Name = "Update Demo",
                 CurrencyId = CurrencyEnum.Naira,
                 TenantStatus = 0,
                 LogoUrl = "www.https://nothing.com"
