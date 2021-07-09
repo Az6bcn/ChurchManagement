@@ -17,7 +17,7 @@ namespace Domain.Entities.TenantAggregate
         internal Tenant(string name,
                         string logoUrl,
                         CurrencyEnum currencyEnum,
-                        IValidateTenantCreation validator,
+                        IValidateTenantInDomain validator,
                         IDictionary<string, object> errors) : this()
         {
             var currencyEnumValue = GetCurrencyEnumValue(currencyEnum);
@@ -48,22 +48,34 @@ namespace Domain.Entities.TenantAggregate
         public static Tenant Create(string name,
                                     string logoUrl,
                                     CurrencyEnum currencyEnum,
-                                    IValidateTenantCreation validateTenantCreation,
+                                    IValidateTenantInDomain validateTenantInDomain,
                                     out IDictionary<string, object> errors)
         {
             errors = new Dictionary<string, object>();
-            return new Tenant(name, logoUrl, currencyEnum, validateTenantCreation, errors);
+            return new Tenant(name, logoUrl, currencyEnum, validateTenantInDomain, errors);
         }
 
         public void Update(string name,
                                  string? logoUrl,
-                                 CurrencyEnum currencyEnum)
+                                 CurrencyEnum currencyEnum,
+                                 TenantStatusEnum tenantStatusEnum,
+                                 IValidateTenantInDomain validator,
+                                 out IDictionary<string, object> errors)
         {
+            errors = new Dictionary<string, object>();
+
             var currencyEnumValue = GetCurrencyEnumValue(currencyEnum);
+            var tenantStatusEnumValue = GetTenantStatusEnumValue(tenantStatusEnum);
+            TenantStatus
+                = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
+            Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
+            
+            validator.Validate(Currency.CurrencyId, TenantStatus.TenantStatusId, errors);
+
             Name = name;
             LogoUrl = logoUrl;
-            Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
             CurrencyId = Currency.CurrencyId;
+            TenantStatusId = TenantStatus.TenantStatusId;
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -86,6 +98,9 @@ namespace Domain.Entities.TenantAggregate
 
         private EnumValue GetCurrencyEnumValue(CurrencyEnum currencyEnum)
             => GetEnumValue<CurrencyEnum>(currencyEnum);
+
+        private EnumValue GetTenantStatusEnumValue(TenantStatusEnum tenantStatusEnum)
+            => GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
 
         private EnumValue GetEnumValue<T>(T enumType) where T : Enum
         {

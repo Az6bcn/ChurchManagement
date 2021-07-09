@@ -9,6 +9,7 @@ using Application.Interfaces.UnitOfWork;
 using Application.Queries.Tenant;
 using Application.RequestValidators;
 using AutoMapper;
+using Domain.Validators;
 using TenantAggregate = Domain.Entities.TenantAggregate.Tenant;
 
 namespace Application.Commands.Tenant.Update
@@ -16,29 +17,32 @@ namespace Application.Commands.Tenant.Update
     public class TenantCommandUpdater : IUpdateTenantCommand
     {
         private readonly IMapper _mapper;
-        private readonly IValidateTenantRequestDto _requestValidator;
+        private readonly IUnitOfWork _uniOfWork;
         private readonly IQueryTenant _tenantQuery;
         private readonly ITenantRepositoryAsync _tenantRepo;
-        private readonly IUnitOfWork _uniOfWork;
+        private readonly IValidateTenantInDomain _domainValidator;
+        private readonly IValidateTenantRequestDto _requestValidator;
 
         public TenantCommandUpdater(IMapper mapper,
-                                    IValidateTenantRequestDto requestValidator,
-                                    IQueryTenant queryTenant,
+                                    IQueryTenant tenantQuery,
                                     ITenantRepositoryAsync tenantRepo,
-                                    IUnitOfWork uniOfWork)
+                                    IUnitOfWork uniOfWork,
+                                    IValidateTenantRequestDto requestValidator,
+                                    IValidateTenantInDomain domainValidator)
         {
             _mapper = mapper;
-            _requestValidator = requestValidator;
-            _tenantQuery = queryTenant;
+            _tenantQuery = tenantQuery;
             _tenantRepo = tenantRepo;
             _uniOfWork = uniOfWork;
+            _requestValidator = requestValidator;
+            _domainValidator = domainValidator;
         }
 
         public async Task<UpdateTenantResponseDto> ExecuteAsync(UpdateTenantRequestDto request)
         {
             var tenantNames = await _tenantQuery.GetTenantNamesAsync();
 
-            _requestValidator.Validate(request, tenantNames.ToList(), out IDictionary<string, object> errors);
+            _requestValidator.Validate(request, tenantNames.ToList(), out var errors);
 
             if (errors.Any())
                 throw new RequestValidationException("Request failed validation", errors);
@@ -49,7 +53,17 @@ namespace Application.Commands.Tenant.Update
                 throw new ArgumentException($"Tenant with id {request.TenantId} does not exist",
                                             nameof(request.TenantId));
 
-            tenant.Update(request.Name, request.LogoUrl, request.CurrencyId);
+            tenant.Update(request.Name,
+                          request.LogoUrl,
+                          request.CurrencyId,
+                          request.TenantStatus,
+                          _domainValidator,
+                          out var domainErrors);
+
+
+            if (domainErrors.Any())
+                throw new DomainValidationException("Request failed domain validation",
+                                                    domainErrors);
 
             _tenantRepo.Update(tenant);
             await _uniOfWork.SaveChangesAsync();
