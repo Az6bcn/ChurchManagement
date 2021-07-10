@@ -9,8 +9,10 @@ using Application.Dtos;
 using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Create;
+using Application.Dtos.Response.Get;
 using Application.Dtos.Response.Update;
 using Application.Interfaces.Repositories;
+using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDetails;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,8 @@ namespace WebApi.Controllers
         private readonly IUpdateTenantCommand _updateTenantCommand;
         private readonly IDeleteTenantCommand _deleteTenantCommand;
 
-        public TenantController(IQueryTenantDetails queryTenantDetails,
+        public TenantController(IQueryTenant tenantQuery,
+                                IQueryTenantDetails queryTenantDetails,
                                 ICreateTenantCommand createTenantCommand,
                                 IUpdateTenantCommand updateTenantCommand,
                                 IDeleteTenantCommand deleteTenantCommand)
@@ -37,24 +40,45 @@ namespace WebApi.Controllers
             _updateTenantCommand = updateTenantCommand;
             _deleteTenantCommand = deleteTenantCommand;
         }
-        
-        
-        [ProducesResponseType(typeof(ApiRequestResponse<TenantDetailsDto>), StatusCodes.Status200OK)]
+
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("{tenantGuidId}")]
+        [HttpGet("{tenantId:int}")]
+        public async Task<IActionResult> GetTenantDetails(int tenantId)
+        {
+            if (tenantId <= 0)
+                return BadRequest("Invalid tenant");
+
+            var response = await _queryTenantDetails.ExecuteAsync(tenantId);
+
+            if (response?.Result is null)
+                return NotFound(ApiRequestResponse<GetTenantResponseDto>.Fail($"Tenant {tenantId} found"));
+
+            var result = 
+                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("{tenantGuidId:guid}")]
         public async Task<IActionResult> GetTenantDetails(Guid tenantGuidId)
         {
             if (tenantGuidId == Guid.Empty)
                 return BadRequest();
-                
+
             var response = await _queryTenantDetails.ExecuteAsync(tenantGuidId);
 
-            if (response.Result is null)
-                return NotFound(ApiRequestResponse<TenantDetailsDto>.Fail("Tenant details not found"));
+            if (response?.Result is null)
+                return NotFound(ApiRequestResponse<GetTenantResponseDto>
+                                    .Fail($"Tenant {tenantGuidId} found"));
 
-            var result = ApiRequestResponse<TenantDetailsDto>.Succeed(result: response.Result);
-            
+            var result = 
+                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+
             return Ok(result);
         }
 
@@ -75,8 +99,9 @@ namespace WebApi.Controllers
 
         [ProducesResponseType(typeof(ApiRequestResponse<UpdateTenantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut("{tenantId}")]
-        public async Task<IActionResult> UpdateTenant([FromBody] UpdateTenantRequestDto request, int tenantId)
+        [HttpPut("{tenantId:int}")]
+        public async Task<IActionResult> UpdateTenant([FromBody] UpdateTenantRequestDto request,
+                                                      int tenantId)
         {
             if (request is null)
                 return BadRequest("Request cannot be empty");
@@ -92,7 +117,7 @@ namespace WebApi.Controllers
 
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("{tenantId}")]
+        [HttpDelete("{tenantId:int}")]
         public async Task<IActionResult> DeleteTenant(int tenantId)
         {
             if (tenantId <= 0)
