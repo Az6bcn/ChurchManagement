@@ -4,13 +4,26 @@
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MonoExePath/@EntryValue">/Library/Frameworks/Mono.framework/Versions/6.12.0/bin/mono</s:String>
 	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">1048576</s:Int64>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/Odumosu/Library/Caches/JetBrains/Rider2021.1/resharper-host/temp/Rider/vAny/CoverageData/_ChurchManagement.2036580791/Snapshot/snapshot.utdcvr</s:String>
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5b42744a_002Da0a3_002D43a9_002Daed5_002Dc9f4d53697fd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TenantDetailsTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0d4e2583_002Dd794_002D4bbd_002Dace1_002D5d7aaad8912b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_WhenCalledIfRequestHasNoName_ShouldThrowRequestValidationException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithValidRequest_ShouldCreateTenantInDatabase&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests.Create_WhenCalledWithExistentTenant_ShouldThrowRequestValidationException&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=92934205_002D396b_002D4691_002Da855_002D909d36277508/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TenantUpdaterTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantUpdaterTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantDeleteTests.Delete_WhenCalled_ShouldMarkTenantAsDeleted&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantCreatorTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7f2980b_002D14ab_002D4a6a_002D939d_002D25bebf9a5e30/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;Application.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::15065AB8-3820-49F5-850D-80BDA9728EC1::net5.0::Application.Tests.Commands.Tenant.TenantCreatorTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	
 	
 	
 	</wpf:ResourceDictionary>

@@ -80,7 +80,7 @@ namespace Infrastructure.Persistence.Mappings
             
             //Ignores :
             // Navigation Properties to Ignore in tenant(Not Mapped)
-            //builder.Ignore(x => x.Currency);
+            //builder.Ignore(x => x.TenantStatusEnum););
 
             // Relationships and Foreign Key Constraints
             // builder.HasOne(t => t.Currency)

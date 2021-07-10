@@ -10,11 +10,11 @@ namespace Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ITenantRepositoryAsync, TenantRepositoryAsync>();
-            services.AddTransient<IMemberRepositoryAsync, MemberRepositoryAsync>();
-            services.AddTransient<IDepartmentReporsitory, DepartmentRepositoryAsync>();
+            services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
+            services.AddScoped<IMemberRepositoryAsync, MemberRepositoryAsync>();
+            services.AddScoped<IDepartmentReporsitory, DepartmentRepositoryAsync>();
         }
     }
 }

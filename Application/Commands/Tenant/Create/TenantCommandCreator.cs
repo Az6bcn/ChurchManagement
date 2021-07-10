@@ -8,45 +8,51 @@ using Application.Interfaces.UnitOfWork;
 using Application.Queries.Tenant;
 using Application.RequestValidators;
 using AutoMapper;
+using Domain.Validators;
 using TenantAggregate = Domain.Entities.TenantAggregate.Tenant;
 
 namespace Application.Commands.Tenant.Create
 {
     public class TenantCommandCreator : ICreateTenantCommand
     {
-        private readonly ITenantRepositoryAsync _tenantRepo;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IValidateTenantRequestDto _requestValidator;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IQueryTenant _tenantQuery;
+        private readonly ITenantRepositoryAsync _tenantRepo;
+        private readonly IValidateTenantInDomain _domainValidator;
+        private readonly IValidateTenantRequestDto _requestValidator;
 
         public TenantCommandCreator(ITenantRepositoryAsync tenantRepo,
                                     IUnitOfWork unitOfWork,
                                     IMapper mapper,
                                     IValidateTenantRequestDto requestValidator,
-                                    IQueryTenant tenantQuery)
+                                    IQueryTenant tenantQuery,
+                                    IValidateTenantInDomain domainValidator)
         {
             _tenantRepo = tenantRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _requestValidator = requestValidator;
             _tenantQuery = tenantQuery;
+            _domainValidator = domainValidator;
         }
-
-
+        
         public async Task<CreateTenantResponseDto> ExecuteAsync(CreateTenantRequestDto request)
         {
-            var tenants = await _tenantRepo.GetAllAsync();
-            var tenantNames = tenants.Select(x => x.Name).ToList();
+            var tenantNames = await _tenantQuery.GetTenantNamesAsync();
 
-            _requestValidator.Validate(request, tenantNames, out IDictionary<string, object> errors);
+            _requestValidator.Validate(request, tenantNames.ToList(), out var errors);
             if (errors.Any())
                 throw new RequestValidationException("Request failed validation", errors);
 
             var tenant = TenantAggregate.Create(request.Name,
                                                 request.LogoUrl ?? string.Empty,
-                                                request.CurrencyEnum,
-                                                request.TenantStatusEnum);
+                                                request.CurrencyId,
+                                                _domainValidator,
+                                                out var domainErrors);
+
+            if (domainErrors.Any())
+                throw new DomainValidationException("Request failed domain validation", domainErrors);
 
             await _tenantRepo.AddAsync(tenant);
             await _unitOfWork.SaveChangesAsync();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Domain.Entities.Helpers;
 using Domain.Interfaces;
+using Domain.Validators;
 using Domain.ValueObjects;
 using Shared.Enums;
 
@@ -16,18 +17,20 @@ namespace Domain.Entities.TenantAggregate
         internal Tenant(string name,
                         string logoUrl,
                         CurrencyEnum currencyEnum,
-                        TenantStatusEnum tenantStatusEnum) : this()
+                        IValidateTenantInDomain validator,
+                        IDictionary<string, object> errors) : this()
         {
-            var currencyEnumValue = GetEnumValue<CurrencyEnum>(currencyEnum);
-            var tenantStatusEnumValue = GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
+            var currencyEnumValue = GetCurrencyEnumValue(currencyEnum);
+            Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
+
             Name = name;
             LogoUrl = logoUrl;
             CreatedAt = DateTime.UtcNow;
-            Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
-            TenantStatus = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
             CurrencyId = Currency.CurrencyId;
-            TenantStatusId = TenantStatus.TenantStatusId;
+            TenantStatusId = (int) TenantStatusEnum.Pending;
             TenantGuidId = Guid.NewGuid();
+
+            validator.Validate(CurrencyId, errors);
         }
 
         public int TenantId { get; private set; }
@@ -39,26 +42,47 @@ namespace Domain.Entities.TenantAggregate
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime? Deleted { get; private set; }
-
-        public CurrencyEnum CurrencyEnum { get; set; }
-        public TenantStatusEnum TenantStatusEnum { get; set; }
         public Currency Currency { get; private set; }
         public TenantStatus TenantStatus { get; private set; }
 
         public static Tenant Create(string name,
                                     string logoUrl,
                                     CurrencyEnum currencyEnum,
-                                    TenantStatusEnum tenantStatusEnum)
-            => new Tenant(name, logoUrl, currencyEnum, tenantStatusEnum);
-
-        public void UpdateTenant(string name,
-                                 string? logoUrl,
-                                 CurrencyEnum CurrencyEnum)
+                                    IValidateTenantInDomain validateTenantInDomain,
+                                    out IDictionary<string, object> errors)
         {
+            errors = new Dictionary<string, object>();
+            return new Tenant(name, logoUrl, currencyEnum, validateTenantInDomain, errors);
+        }
+
+        public void Update(string name,
+                                 string? logoUrl,
+                                 CurrencyEnum currencyEnum,
+                                 TenantStatusEnum tenantStatusEnum,
+                                 IValidateTenantInDomain validator,
+                                 out IDictionary<string, object> errors)
+        {
+            errors = new Dictionary<string, object>();
+
+            var currencyEnumValue = GetCurrencyEnumValue(currencyEnum);
+            var tenantStatusEnumValue = GetTenantStatusEnumValue(tenantStatusEnum);
+            var tenantStatus
+                = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
+            Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
+            
+            validator.Validate(Currency.CurrencyId, tenantStatus.TenantStatusId, errors);
+
             Name = name;
             LogoUrl = logoUrl;
-            CurrencyEnum = CurrencyEnum;
+            CurrencyId = Currency.CurrencyId;
+            TenantStatusId = tenantStatus.TenantStatusId;
             UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AssignValuesToTenantStatusObject(TenantStatusEnum tenantStatusEnum)
+        {
+            var tenantStatusEnumValue = GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
+            TenantStatus = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
         }
 
         public void UpdateStatus()
@@ -71,21 +95,18 @@ namespace Domain.Entities.TenantAggregate
 
         public void Delete() => Deleted = DateTime.UtcNow;
 
-        internal EnumValue GetEnumValue<T>(T enumType) where T : Enum
+
+        private EnumValue GetCurrencyEnumValue(CurrencyEnum currencyEnum)
+            => GetEnumValue<CurrencyEnum>(currencyEnum);
+
+        private EnumValue GetTenantStatusEnumValue(TenantStatusEnum tenantStatusEnum)
+            => GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
+
+        private EnumValue GetEnumValue<T>(T enumType) where T : Enum
         {
             EnumService<T>.GetEnumValue(enumType, out var result);
 
             return result;
-        }
-
-        public IEnumerable<string> Validate()
-        {
-            if (string.IsNullOrWhiteSpace(Name))
-                yield return $"{nameof(Name)} is required to create a tenant";
-
-            if (Currency is null) yield return $"{nameof(Currency)} is required to create a tenant";
-
-            if (TenantStatus is null) yield return $"{nameof(Currency)} is required to create a tenant";
         }
     }
 }

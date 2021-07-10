@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
     <Folder Include="Dtos\Request\Get" />
-    <Folder Include="Dtos\Request\Update" />
     <Folder Include="Dtos\Response\Get" />
-    <Folder Include="Dtos\Response\Update" />
     <Folder Include="Queries\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Dtos\" />

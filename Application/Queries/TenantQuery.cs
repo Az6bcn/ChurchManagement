@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using Application.Queries.Tenant;
 
 namespace Application.Queries
 {
-    public class TenantQuery: IQueryTenant
+    public class TenantQuery : IQueryTenant
     {
         private readonly ITenantRepositoryAsync _tenantRepo;
 
@@ -15,5 +16,17 @@ namespace Application.Queries
             _tenantRepo = tenantRepo;
         }
 
+        public async Task<IEnumerable<Domain.Entities.TenantAggregate.Tenant>> GetTenantsAsync() 
+            => await _tenantRepo.GetAllAsync();
+
+        public async Task<IEnumerable<string>> GetTenantNamesAsync()
+        {
+            var response = await _tenantRepo.GetTenantNamesAsync();
+
+            return response;
+        }
+
+        public async Task<Domain.Entities.TenantAggregate.Tenant?> GetTenantByIdAsync(int id)
+            => await _tenantRepo.GetByIdAsync(id);
     }
 }

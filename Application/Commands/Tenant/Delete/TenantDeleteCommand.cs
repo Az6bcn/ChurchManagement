@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Application.Interfaces.Repositories;
+using Application.Interfaces.UnitOfWork;
+using Application.Queries.Tenant;
+
+namespace Application.Commands.Tenant.Delete
+{
+    public class TenantDeleteCommand: IDeleteTenantCommand
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly ITenantRepositoryAsync _tenantRepo;
+        private readonly IQueryTenant _tenantQuery;
+
+        public TenantDeleteCommand(IUnitOfWork unitOfWork,
+                                   ITenantRepositoryAsync tenantRepo,
+                                   IQueryTenant tenantQuery)
+        {
+            _unitOfWork = unitOfWork;
+            _tenantRepo = tenantRepo;
+            _tenantQuery = tenantQuery;
+        }
+
+        public async Task ExecuteAsync(int tenantId)
+        {
+            var tenant = await _tenantQuery.GetTenantByIdAsync(tenantId);
+
+            if (tenant is null)
+                throw new ArgumentException($"Tenant {tenantId} not found");
+
+            tenant.Delete();
+
+            _tenantRepo.Update(tenant);
+            await _unitOfWork.SaveChangesAsync();
+        }
+    }
+}

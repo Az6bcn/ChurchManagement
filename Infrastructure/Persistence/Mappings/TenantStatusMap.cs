@@ -30,6 +30,15 @@ namespace Infrastructure.Persistence.Mappings
                    .HasMaxLength(200)
                    .ValueGeneratedNever()
                    .IsRequired();
+            
+            // seed
+            builder.HasData(
+                            TenantStatus.Create(1, "Active"),
+                            TenantStatus.Create(2, "On Hold"),
+                            TenantStatus.Create(3, "Suspended"),
+                            TenantStatus.Create(4, "Pending"),
+                            TenantStatus.Create(5, "Cancelled")
+                           );
 
         }
     }
