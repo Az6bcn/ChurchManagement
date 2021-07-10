@@ -28,5 +28,8 @@ namespace Application.Queries
 
         public async Task<Domain.Entities.TenantAggregate.Tenant?> GetTenantByIdAsync(int id)
             => await _tenantRepo.GetByIdAsync(id);
+        
+        public async Task<Domain.Entities.TenantAggregate.Tenant?> GetTenantByGuidIdAsync(Guid id)
+            => await _tenantRepo.GetByGuidAsync(id);
     }
 }

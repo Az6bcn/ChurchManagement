@@ -9,11 +9,11 @@ namespace Application.MappingProfiles
     {
         public DashboardObjectMappings()
         {
-            CreateMap<TenantDetailsProjection, TenantDetailsDto>()
-            .ForMember(dest => dest.Name,
-                opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest => dest.LogoUrl,
-                opt => opt.MapFrom(src => src.LogoUrl));
+            // CreateMap<TenantDetailsProjection, TenantDetailsDto>()
+            // .ForMember(dest => dest.Name,
+            //     opt => opt.MapFrom(src => src.Name))
+            // .ForMember(dest => dest.LogoUrl,
+            //     opt => opt.MapFrom(src => src.LogoUrl));
         }
     }
 }

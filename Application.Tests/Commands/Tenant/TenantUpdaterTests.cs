@@ -13,7 +13,6 @@ namespace Application.Tests.Commands.Tenant
 {
     public class TenantUpdaterTests
     {
-        private ApplicationTestDbContext _context;
         private readonly IServiceProvider _serviceProvider;
 
         public TenantUpdaterTests()
