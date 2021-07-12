@@ -1,8 +1,9 @@
 using Domain.Entities.PersonAggregate;
+using Domain.Interfaces;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IDepartmentReporsitory: IGenericRepositoryAsync<Department>
+    public interface IPersonalManagementRepositoryAsync: IAggregateRoot
     {
         
     }
