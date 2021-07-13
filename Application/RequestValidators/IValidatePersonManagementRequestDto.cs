@@ -1,6 +1,6 @@
 namespace Application.RequestValidators
 {
-    public class IValidatePersonManagementRequestDto
+    public interface IValidatePersonManagementRequestDto
     {
         
     }

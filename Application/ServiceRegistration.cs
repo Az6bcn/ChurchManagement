@@ -1,4 +1,5 @@
 using System.Reflection;
+using Application.Commands.PersonManagement.Create;
 using Application.Commands.Tenant.Create;
 using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
@@ -18,14 +19,18 @@ namespace Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Domain
-            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
-        
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
-            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
+            
             services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
             services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
             services.AddScoped<IDeleteTenantCommand, TenantDeleteCommand>();
+            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
+
+            services.AddScoped<ICreateDepartmentCommand, DepartmentCommandCreator>();
+            services.AddScoped<IValidatePersonManagementRequestDto>();
+            
+            services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
+            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
             services.AddScoped<IQueryTenant, TenantQuery>();
             services.AddScoped<IValidateTenantRequestDto, TenantRequestDtoValidator>();
         }

@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Commands\PersonManagement\Delete" />
+    <Folder Include="Commands\PersonManagement\Update" />
     <Folder Include="Dtos\Request\Get" />
     <Folder Include="Queries\" />
     <Folder Include="Interfaces\" />

@@ -3,8 +3,9 @@ using Domain.Interfaces;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IPersonalManagementRepositoryAsync: IAggregateRoot
+    public interface IPersonManagementRepositoryAsync
     {
+        // Person, Member, NewComer, Department 
         
     }
 }

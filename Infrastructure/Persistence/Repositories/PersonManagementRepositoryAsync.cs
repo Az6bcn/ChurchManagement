@@ -4,10 +4,12 @@ using Infrastructure.Persistence.Context;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    public class PersonalManagementRepositoryAsync: GenericRepositoryAsync<Department>, IPersonalManagementRepositoryAsync
+    public class PersonManagementRepositoryAsync: IPersonManagementRepositoryAsync
     {
-        public PersonalManagementRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
+        private readonly ApplicationDbContext _dbContext;
+        public PersonManagementRepositoryAsync(ApplicationDbContext dbContext)
         {
+            _dbContext = dbContext;
         }
     }
 }

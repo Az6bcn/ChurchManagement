@@ -1,7 +1,11 @@
-namespace Application.Commands.PersonManagement.Delete
+using System.Threading.Tasks;
+using Application.Dtos.Request.Create;
+using Application.Dtos.Response.Create;
+
+namespace Application.Commands.PersonManagement.Create
 {
-    public class ICreateDepartmentCommand
+    public interface ICreateDepartmentCommand
     {
-        
+        Task<CreateDepartmentResponseDto> ExecuteAsync(CreateDepartmentRequestDto request);
     }
 }

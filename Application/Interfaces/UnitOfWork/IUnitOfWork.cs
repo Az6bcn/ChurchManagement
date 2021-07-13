@@ -7,8 +7,7 @@ namespace Application.Interfaces.UnitOfWork
     public interface IUnitOfWork: IDisposable
     {
         ITenantRepositoryAsync Tenants {get;}
-        IMemberRepositoryAsync Members {get;}
-        IDepartmentReporsitory Departments {get;}
+        IPersonManagementRepositoryAsync PersonManagements {get;}
 
         Task<int> SaveChangesAsync();
 
