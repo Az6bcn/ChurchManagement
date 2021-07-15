@@ -11,5 +11,6 @@ namespace Application.Interfaces.Repositories
 
         Task<IEnumerable<string?>> GetDepartmentNamesByTenantIdAsync(int tenantId);
         Task AddAsync<T>(T entity);
+        Task<IEnumerable<Department>> GetDepartmentsByTenantIdAsync(int tenantId);
     }
 }

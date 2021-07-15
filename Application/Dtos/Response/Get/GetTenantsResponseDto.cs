@@ -2,7 +2,7 @@ using System;
 
 namespace Application.Dtos.Response.Get
 {
-    public class GetTenantResponseDto
+    public class GetTenantsResponseDto
     {
         public int TenantId { get; set; }
         public Guid TenantGuidId { get; set; }

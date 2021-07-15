@@ -24,7 +24,7 @@ namespace Application.Tests.Commands.PersonManagement
             _builtServices = TestDependenciesResolver.BuildServices(_services);
         }
 
-        private IServiceCollection GetServices() 
+        private IServiceCollection GetServices()
             => TestDependenciesResolver.AddServices();
 
         private async Task<CreateDepartmentRequestDto> GetRequestAsync(ApplicationDbContext context)
@@ -50,18 +50,36 @@ namespace Application.Tests.Commands.PersonManagement
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
-            //var validator = TestDependenciesResolver.GetService<IValidatePersonManagementRequestDto>(_builtServices);
             var target = TestDependenciesResolver.GetService<ICreateDepartmentCommand>(_builtServices);
-            
+
             TestDbCreator.CreateDatabase(context);
             _request = await GetRequestAsync(context);
-            //await TestDbCreator.SaveChangesAsync(context);
-            
+
             // Act
             var response = await target.ExecuteAsync(_request);
 
             // Assert
             Assert.NotNull(response);
-        } 
+        }
+
+
+        [Fact]
+        public async Task Create_WhenCalledWithValidRequestAndNonExistentTenantId_ShouldThrowException()
+        {
+            // Arrange
+            var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateDepartmentCommand>(_builtServices);
+
+            TestDbCreator.CreateDatabase(context);
+            _request = new CreateDepartmentRequestDto
+            {
+                TenantId = 10000000,
+                Name = "Demo Department"
+            };
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                async () => await target.ExecuteAsync(_request));
+        }
     }
 }

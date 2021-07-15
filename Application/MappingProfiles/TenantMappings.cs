@@ -48,7 +48,7 @@ namespace Application.MappingProfiles
                                => options.MapFrom(src => (CurrencyEnum) src.CurrencyId))
                 .ReverseMap();
 
-            CreateMap<Tenant, GetTenantResponseDto>()
+            CreateMap<Tenant, GetTenantsResponseDto>()
                 .ForMember(dst => dst.TenantId,
                            options
                                => options.MapFrom(src => src.TenantId))
