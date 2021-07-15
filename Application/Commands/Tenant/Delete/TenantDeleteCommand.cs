@@ -26,6 +26,9 @@ namespace Application.Commands.Tenant.Delete
 
         public async Task ExecuteAsync(int tenantId)
         {
+            if (tenantId <= 0)
+                throw new ArgumentOutOfRangeException(nameof(tenantId), "Invalid tenantId");
+            
             var tenant = await _tenantQuery.GetTenantByIdAsync(tenantId);
 
             if (tenant is null)

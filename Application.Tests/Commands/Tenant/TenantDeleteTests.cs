@@ -39,5 +39,32 @@ namespace Application.Tests.Commands.Tenant
             // Assert
             Assert.NotNull(insertedTenant.Deleted);
         }
+        
+        [Fact]
+        public async Task Delete_WhenCalledWithoutTenantId_ShouldThrowException()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_serviceProvider);
+            var target = TestDependenciesResolver.GetService<IDeleteTenantCommand>(_serviceProvider);
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+                 async () => await target.ExecuteAsync(0));
+        }
+        
+        [Fact]
+        public async Task Delete_WhenCalledWithNonExistentTenantId_ShouldThrowException()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_serviceProvider);
+            var target = TestDependenciesResolver.GetService<IDeleteTenantCommand>(_serviceProvider);
+            var validator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_serviceProvider);
+            TestDbCreator.CreateDatabase(context);
+            await TestSeeder.CreateDemoTenant(context, validator);
+            
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                  async () => await target.ExecuteAsync(1000000));
+        }
     }
 }
