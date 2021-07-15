@@ -5,6 +5,7 @@ using Application.Commands.PersonManagement.Create;
 using Application.Commands.Tenant.Create;
 using Application.Dtos.Request.Create;
 using Application.RequestValidators;
+using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,7 +80,45 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentException>(
-                async () => await target.ExecuteAsync(_request));
+                                                        async () => await target.ExecuteAsync(_request));
+        }
+
+        [Fact]
+        public async Task Create_WhenCalledWithoutName_ShouldThrowException()
+        {
+            // Arrange
+            var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateDepartmentCommand>(_builtServices);
+
+            TestDbCreator.CreateDatabase(context);
+            _request = await GetRequestAsync(context);
+            _request.Name = string.Empty;
+
+            // Act and Assert
+            await Assert.ThrowsAsync<RequestValidationException>(
+                    async () => await target.ExecuteAsync(_request));
+        }
+
+        [Fact]
+        public async Task Create_WhenCalledWithExsistingName_ShouldThrowException()
+        {
+            // Arrange
+            var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateDepartmentCommand>(_builtServices);
+
+            TestDbCreator.CreateDatabase(context);
+
+            _request = await GetRequestAsync(context);
+            
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+            await TestSeeder.CreateDemoDepartment(context, tenant);
+            var department = context.Set<Department>().Single();
+
+            _request.Name = department.Name;
+            
+            // Act and Assert
+            await Assert.ThrowsAsync<RequestValidationException>(
+                 async () => await target.ExecuteAsync(_request));
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Application.RequestValidators
 
             if (departmentNames.Any() && departmentNames.Contains(request.Name))
                 errors.Add(nameof(request.Name), "Department name already exist");
-                
         }
     }
 }
