@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\PersonManagement\Delete" />
-    <Folder Include="Commands\PersonManagement\Update" />
     <Folder Include="Queries\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Dtos\" />

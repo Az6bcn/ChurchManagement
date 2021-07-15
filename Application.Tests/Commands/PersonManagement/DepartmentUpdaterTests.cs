@@ -13,13 +13,13 @@ using Xunit;
 
 namespace Application.Tests.Commands.PersonManagement
 {
-    public class DepartmentCreatorTests
+    public class DepartmentUpdaterTests
     {
         private readonly IServiceCollection _services;
         private readonly IServiceProvider _builtServices;
         private CreateDepartmentRequestDto _request;
 
-        public DepartmentCreatorTests()
+        public DepartmentUpdaterTests()
         {
             _services = GetServices();
             _builtServices = TestDependenciesResolver.BuildServices(_services);
@@ -46,7 +46,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
-        public async Task Create_WhenCalledWithValidRequest_UpdatesDepartmentInDatabase()
+        public async Task Create_WhenCalledWithValidRequest_AddsDepartmentToDatabase()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);

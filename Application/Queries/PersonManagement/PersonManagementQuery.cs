@@ -19,11 +19,14 @@ namespace Application.Queries.PersonManagement
 
         public async Task<IEnumerable<string?>> GetDepartmentNamesByTenantIdAsync(int tenantId)
             => await _personManagementRepo.GetDepartmentNamesByTenantIdAsync(tenantId);
+        
+        public async Task<IEnumerable<Department>> GetTenantDepartmentsByTenantIdAsync(int tenantId)
+            => await _personManagementRepo.GetDepartmentsByTenantIdAsync(tenantId);
 
-        public async Task<QueryResult<GetDepartmentsResponseDto>> GetDepartmentsByTenantIdAsync(int 
-        tenantId)
+
+        public async Task<QueryResult<GetDepartmentsResponseDto>> GetDepartmentsByTenantIdAsync(int tenantId)
         {
-            var departments = await _personManagementRepo.GetDepartmentsByTenantIdAsync(tenantId);
+            var departments = await GetTenantDepartmentsByTenantIdAsync(tenantId);
 
             var response = departments
                 .Select(x => new GetDepartmentsResponseDto());
