@@ -29,7 +29,7 @@ namespace Application.Tests.Commands.PersonManagement
 
         private async Task<CreateDepartmentRequestDto> GetRequestAsync(ApplicationDbContext context)
         {
-            var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_builtServices);
+            //var target = TestDependenciesResolver.GetService<ICreateTenantCommand>(_builtServices);
             var validator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
 
             await TestSeeder.CreateDemoTenant(context, validator);
@@ -50,12 +50,12 @@ namespace Application.Tests.Commands.PersonManagement
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
-            var validator = TestDependenciesResolver.GetService<IValidatePersonManagementRequestDto>(_builtServices);
+            //var validator = TestDependenciesResolver.GetService<IValidatePersonManagementRequestDto>(_builtServices);
             var target = TestDependenciesResolver.GetService<ICreateDepartmentCommand>(_builtServices);
             
             TestDbCreator.CreateDatabase(context);
             _request = await GetRequestAsync(context);
-            await TestDbCreator.SaveChangesAsync(context);
+            //await TestDbCreator.SaveChangesAsync(context);
             
             // Act
             var response = await target.ExecuteAsync(_request);
