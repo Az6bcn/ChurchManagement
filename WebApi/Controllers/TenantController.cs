@@ -58,7 +58,7 @@ namespace WebApi.Controllers
             var response = await _queryTenantDetails.ExecuteAsync(tenantId);
 
             if (response?.Result is null)
-                return NotFound(ApiRequestResponse<GetTenantsResponseDto>.Fail($"Tenant {tenantId} found"));
+                return NotFound(ApiRequestResponse<GetTenantsResponseDto>.Fail($"Tenant {tenantId} not found"));
 
             var result = 
                 ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);
@@ -84,7 +84,7 @@ namespace WebApi.Controllers
 
             if (response?.Result is null)
                 return NotFound(ApiRequestResponse<GetTenantsResponseDto>
-                                    .Fail($"Tenant {tenantGuidId} found"));
+                                    .Fail($"Tenant {tenantGuidId} not found"));
 
             var result = 
                 ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);

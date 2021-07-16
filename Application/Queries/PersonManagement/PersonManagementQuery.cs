@@ -26,18 +26,23 @@ namespace Application.Queries.PersonManagement
             => await _personManagementRepo.GetDepartmentsByTenantIdAsync(tenantId);
 
 
-        public async Task<QueryResult<GetDepartmentsResponseDto>> GetDepartmentsByTenantIdAsync(
-            int tenantId)
+        public async Task<QueryResult<GetDepartmentsResponseDto>> GetDepartmentsByTenantIdAsync(int tenantId)
         {
             var departments = await GetTenantDepartmentsByTenantIdAsync(tenantId);
 
             var response = departments
-                .Select(x => new GetDepartmentsResponseDto());
+                .Select(x => new GetDepartmentsResponseDto
+                {
+                    DepartmentId = x.DepartmentId,
+                    Name = x.Name,
+                    TenantId = x.TenantId
+                });
 
             return QueryResult<GetDepartmentsResponseDto>.CreateQueryResults(response);
         }
 
-        public async Task<Department?> GetDepartmentIdAsync(int departmentId, int tenantId)
+        public async Task<Department?> GetDepartmentIdAsync(int departmentId,
+                                                            int tenantId)
             => await _personManagementRepo.GetDepartmentIdAsync(departmentId, tenantId);
     }
 }

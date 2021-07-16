@@ -35,6 +35,7 @@ namespace Application.Commands.PersonManagement.Delete
             department.Delete();
 
             _personManagementRepo.Update(department);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

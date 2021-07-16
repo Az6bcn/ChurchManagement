@@ -21,6 +21,7 @@ namespace Domain.Entities.PersonAggregate
             Name = name;
             TenantId = tenant.TenantId;
             Tenant = tenant;
+            CreatedAt = DateTime.UtcNow;
         }
         
         public int DepartmentId { get; private set; }
@@ -37,6 +38,12 @@ namespace Domain.Entities.PersonAggregate
 
         public static Department Create(string name,
                                   Tenant tenant) => new(name, tenant);
+
+        public void Update(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
 
         public void Delete() => Deleted = DateTime.UtcNow;
 

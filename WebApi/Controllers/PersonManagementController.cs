@@ -43,7 +43,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(ApiRequestResponse<GetDepartmentsResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet("{tenantId:int}/departments")]
+        [HttpGet("tenant/{tenantId:int}/departments")]
         public async Task<IActionResult> GetDepartments(int tenantId)
         {
             if (tenantId <= 0)
@@ -67,15 +67,15 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<CreateDepartmentResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("{tenantId}/departments")]
+        [HttpPost("tenant/{tenantId}/departments")]
         public async Task<IActionResult> CreateDepartment(int tenantId,
                                                           [FromBody] CreateDepartmentRequestDto request)
         {
             if (request is null || tenantId <= 0)
-                BadRequest("Invalid request");
+                return BadRequest("Invalid request");
 
             if (request!.TenantId != tenantId)
-                BadRequest("Invalid request");
+                return BadRequest("Invalid request");
 
             var department =
                 await _createDepartmentCommand.ExecuteAsync(request);
@@ -92,16 +92,16 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<UpdateDepartmentResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut("{tenantId:int}/departments/{departmentId:int}")]
+        [HttpPut("tenant/{tenantId:int}/departments/{departmentId:int}")]
         public async Task<IActionResult> UpdateDepartment(int tenantId,
                                                           int departmentId,
                                                           [FromBody] UpdateDepartmentRequestDto request)
         {
             if (request is null || tenantId <= 0 || request.DepartmentId <= 0)
-                BadRequest("Invalid request");
+                return BadRequest("Invalid request");
 
-            if (request!.TenantId != tenantId)
-                BadRequest("Invalid request");
+            if (request!.TenantId != tenantId || request.DepartmentId != departmentId)
+                return BadRequest("Invalid request");
 
             var department = await _updateDepartmentCommand.ExecuteAsync(request);
 
@@ -116,7 +116,7 @@ namespace WebApi.Controllers
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("{tenantId:int}/departments/{departmentId:int}")]
+        [HttpDelete("tenant/{tenantId:int}/departments/{departmentId:int}")]
         public async Task<IActionResult> DeleteDepartment(int tenantId,
                                                           int departmentId
                                                           )
