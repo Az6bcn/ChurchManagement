@@ -11,19 +11,18 @@ namespace Application.Tests.Commands.Tenant
 {
     public class TenantDeleteTests
     {
-        private readonly IServiceCollection _services;
         private readonly IServiceProvider _serviceProvider;
 
         public TenantDeleteTests()
         {
-            _services = GetServices();
-            _serviceProvider = TestDependenciesResolver.BuildServices(_services);
+            var services = GetServices();
+            _serviceProvider = TestDependenciesResolver.BuildServices(services);
         }
 
         private IServiceCollection GetServices() => TestDependenciesResolver.AddServices();
 
         [Fact]
-        public async Task Delete_WhenCalled_ShouldMarkTenantAsDeleted()
+        public async Task ExecuteAsync_WhenCalled_ShouldMarkTenantAsDeleted()
         {
             // Arrange
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_serviceProvider);
@@ -41,7 +40,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Delete_WhenCalledWithoutTenantId_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithoutTenantId_ShouldThrowException()
         {
             // Arrange
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_serviceProvider);
@@ -53,7 +52,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Delete_WhenCalledWithNonExistentTenantId_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithNonExistentTenantId_ShouldThrowException()
         {
             // Arrange
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_serviceProvider);

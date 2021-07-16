@@ -38,6 +38,8 @@ namespace Domain.Entities.PersonAggregate
         public static Department Create(string name,
                                   Tenant tenant) => new(name, tenant);
 
+        public void Delete() => Deleted = DateTime.UtcNow;
+
     }
 
 

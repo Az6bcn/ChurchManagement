@@ -15,17 +15,16 @@ namespace Application.Tests.Commands.PersonManagement
 {
     public class DepartmentCreatorTests
     {
-        private readonly IServiceCollection _services;
         private readonly IServiceProvider _builtServices;
         private CreateDepartmentRequestDto _request;
 
         public DepartmentCreatorTests()
         {
-            _services = GetServices();
-            _builtServices = TestDependenciesResolver.BuildServices(_services);
+            var services = ResolveServices();
+            _builtServices = TestDependenciesResolver.BuildServices(services);
         }
 
-        private IServiceCollection GetServices()
+        private IServiceCollection ResolveServices()
             => TestDependenciesResolver.AddServices();
 
         private async Task<CreateDepartmentRequestDto> GetRequestAsync(ApplicationDbContext context)
@@ -46,7 +45,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
-        public async Task Create_WhenCalledWithValidRequest_UpdatesDepartmentInDatabase()
+        public async Task ExecuteAsync_WhenCalledWithValidRequest_UpdatesDepartmentInDatabase()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
@@ -64,7 +63,7 @@ namespace Application.Tests.Commands.PersonManagement
 
 
         [Fact]
-        public async Task Create_WhenCalledWithValidRequestAndNonExistentTenantId_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithValidRequestAndNonExistentTenantId_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
@@ -83,7 +82,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
-        public async Task Create_WhenCalledWithoutName_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithoutName_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);
@@ -99,7 +98,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
-        public async Task Create_WhenCalledWithExsistingName_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithExistentName_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_builtServices);

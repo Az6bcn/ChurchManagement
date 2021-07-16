@@ -10,6 +10,8 @@ namespace Infrastructure.Persistence.Repositories
 {
     public class PersonManagementRepositoryAsync : IPersonManagementRepositoryAsync
     {
+        // Person, Member, NewComer, Department 
+
         private readonly ApplicationDbContext _dbContext;
 
         public PersonManagementRepositoryAsync(ApplicationDbContext dbContext)
@@ -33,10 +35,23 @@ namespace Infrastructure.Persistence.Repositories
             await _dbContext.AddAsync(entity);
         }
 
+        public void Update<T>(T entity)
+        {
+            _dbContext.Update(entity);
+        }
+
+
         public async Task<IEnumerable<Department>> GetDepartmentsByTenantIdAsync(int tenantId)
             => await _dbContext.Set<Department>()
                                .Include(x => x.Tenant)
                                .Where(d => d.TenantId == tenantId)
                                .ToListAsync();
+
+        public async Task<Department?> GetDepartmentIdAsync(int departmentId,
+                                                            int tenantId)
+            => await _dbContext.Set<Department>()
+                               .Include(d => d.Tenant)
+                               .SingleOrDefaultAsync(d => d.DepartmentId == departmentId 
+                                                          && d.TenantId == tenantId);
     }
 }

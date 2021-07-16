@@ -23,7 +23,7 @@ namespace Application.RequestValidators
         }
         
         public void ValidateDepartmentUpdate(UpdateDepartmentRequestDto request,
-                                       ICollection<Department?> departments,
+                                       ICollection<Department> departments,
                                        out IDictionary<string, object> errors)
         {
             errors = new Dictionary<string, object>();

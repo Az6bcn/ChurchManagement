@@ -15,17 +15,16 @@ namespace Application.Tests.Commands.PersonManagement
 {
     public class DepartmentUpdaterTests
     {
-        private readonly IServiceCollection _services;
         private readonly IServiceProvider _builtServices;
         private CreateDepartmentRequestDto _request;
 
         public DepartmentUpdaterTests()
         {
-            _services = GetServices();
-            _builtServices = TestDependenciesResolver.BuildServices(_services);
+            var services = ResolveServices();
+            _builtServices = TestDependenciesResolver.BuildServices(services);
         }
 
-        private IServiceCollection GetServices()
+        private IServiceCollection ResolveServices()
             => TestDependenciesResolver.AddServices();
 
         private async Task<CreateDepartmentRequestDto> GetRequestAsync(ApplicationDbContext context)

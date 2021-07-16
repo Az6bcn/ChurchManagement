@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Create;
+using Application.Dtos.Response.Update;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
@@ -37,15 +38,15 @@ namespace Application.Commands.PersonManagement.Update
             _mapper = mapper;
         }
 
-        public async Task<dynamic> ExecuteAsync(UpdateDepartmentRequestDto request)
+        public async Task<UpdateDepartmentResponseDto> ExecuteAsync(UpdateDepartmentRequestDto request)
         {
             var departments = await _personManagementQuery
                                   .GetTenantDepartmentsByTenantIdAsync(request.TenantId);
             
-            if (!departments.Any())
+            if (departments is null || !departments.Any())
                 throw new InvalidOperationException($"No departments for the tenant {request.TenantId} to update");
 
-            var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
+            var tenant = departments.First().Tenant;
 
             if (tenant is null)
                 throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
@@ -57,11 +58,11 @@ namespace Application.Commands.PersonManagement.Update
 
             var department = Department.Create(request.Name, tenant);
 
-            await _personManagementRepo.AddAsync<Department>(department);
+            _personManagementRepo.Update<Department>(department);
 
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<CreateDepartmentResponseDto>(department);
+            return _mapper.Map<UpdateDepartmentResponseDto>(department);
         }
     }
 }
