@@ -13,8 +13,7 @@ namespace Infrastructure
             services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
-            services.AddScoped<IMemberRepositoryAsync, MemberRepositoryAsync>();
-            services.AddScoped<IDepartmentReporsitory, DepartmentRepositoryAsync>();
+            services.AddScoped<IPersonManagementRepositoryAsync, PersonManagementRepositoryAsync>();
         }
     }
 }

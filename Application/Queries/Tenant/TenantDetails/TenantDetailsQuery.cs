@@ -20,28 +20,28 @@ namespace Application.Queries.Tenant.TenantDetails
             _mapper = mapper;
         }
 
-        public async Task<QueryResult<GetTenantResponseDto?>> ExecuteAsync (Guid tenantGuidId)
+        public async Task<QueryResult<GetTenantsResponseDto?>> ExecuteAsync (Guid tenantGuidId)
         {
             var response = await _tenantQuery.GetTenantByGuidIdAsync(tenantGuidId);
 
             if(response is null)
                 return default;
             
-            var tenantDetails = _mapper.Map<GetTenantResponseDto>(response);
+            var tenantDetails = _mapper.Map<GetTenantsResponseDto>(response);
 
-            return QueryResult<GetTenantResponseDto>.CreateQueryResult(tenantDetails);
+            return QueryResult<GetTenantsResponseDto>.CreateQueryResult(tenantDetails);
         }
 
-        public async Task<QueryResult<GetTenantResponseDto?>> ExecuteAsync(int tenantId)
+        public async Task<QueryResult<GetTenantsResponseDto?>> ExecuteAsync(int tenantId)
         {
             var response = await _tenantQuery.GetTenantByIdAsync(tenantId);
 
             if(response is null)
                 return default;
             
-            var tenantDetails = _mapper.Map<GetTenantResponseDto>(response);
+            var tenantDetails = _mapper.Map<GetTenantsResponseDto>(response);
 
-            return QueryResult<GetTenantResponseDto>.CreateQueryResult(tenantDetails);
+            return QueryResult<GetTenantsResponseDto>.CreateQueryResult(tenantDetails);
         }
     }
 }

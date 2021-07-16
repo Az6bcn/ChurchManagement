@@ -8,7 +8,7 @@ namespace Application.Queries.Tenant.TenantDetails
 {
     public interface IQueryTenantDetails
     {
-        Task<QueryResult<GetTenantResponseDto?>> ExecuteAsync (Guid tenantGuidId);
-        Task<QueryResult<GetTenantResponseDto?>> ExecuteAsync (int tenantId);
+        Task<QueryResult<GetTenantsResponseDto?>> ExecuteAsync (Guid tenantGuidId);
+        Task<QueryResult<GetTenantsResponseDto?>> ExecuteAsync (int tenantId);
     }
 }

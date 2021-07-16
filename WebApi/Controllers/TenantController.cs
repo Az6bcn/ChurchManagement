@@ -46,7 +46,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="tenantId"> The Id of the Tenant you desire to get</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantsResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{tenantId:int}")]
@@ -58,10 +58,10 @@ namespace WebApi.Controllers
             var response = await _queryTenantDetails.ExecuteAsync(tenantId);
 
             if (response?.Result is null)
-                return NotFound(ApiRequestResponse<GetTenantResponseDto>.Fail($"Tenant {tenantId} found"));
+                return NotFound(ApiRequestResponse<GetTenantsResponseDto>.Fail($"Tenant {tenantId} not found"));
 
             var result = 
-                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+                ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);
 
             return Ok(result);
         }
@@ -71,7 +71,7 @@ namespace WebApi.Controllers
         /// </summary>
         /// <param name="tenantGuidId"> The GuidId of the Tenant you desire to get</param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantsResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{tenantGuidId:guid}")]
@@ -83,11 +83,11 @@ namespace WebApi.Controllers
             var response = await _queryTenantDetails.ExecuteAsync(tenantGuidId);
 
             if (response?.Result is null)
-                return NotFound(ApiRequestResponse<GetTenantResponseDto>
-                                    .Fail($"Tenant {tenantGuidId} found"));
+                return NotFound(ApiRequestResponse<GetTenantsResponseDto>
+                                    .Fail($"Tenant {tenantGuidId} not found"));
 
             var result = 
-                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+                ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);
 
             return Ok(result);
         }

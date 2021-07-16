@@ -5,9 +5,9 @@ namespace Application.Helpers
 {
     public class QueryResult<T> where T : class
     {
-        private HashSet<T> _queryResultList;
+        private readonly HashSet<T> _queryResultList;
 
-        public QueryResult()
+        private QueryResult()
         {
             _queryResultList = new();
         }
@@ -22,13 +22,11 @@ namespace Application.Helpers
                 Result = data;
         }
 
-
         public IReadOnlyCollection<T> Results => _queryResultList;
         public T? Result { get; private set; }
-
-
+        
         public static QueryResult<T> CreateQueryResults(IEnumerable<T> response) => new(response);
 
-        public static QueryResult<T?> CreateQueryResult(T response) => new(null, response);
+        public static QueryResult<T?> CreateQueryResult(T data) => new(null, data);
     }
 }

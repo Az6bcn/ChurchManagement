@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
+using Domain.Entities.PersonAggregate;
 using Domain.Entities.TenantAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -20,6 +21,15 @@ namespace Application.Tests
                                            out IDictionary<string, object> errors);
 
             await context.AddAsync(demoTenant);
+            await TestDbCreator.SaveChangesAsync(context);
+        }
+
+        public static async Task CreateDemoDepartment(ApplicationDbContext context,
+                                                      Tenant tenant)
+        {
+            var demoDepartment = Department.Create("Demo Department", tenant);
+
+            await context.AddAsync(demoDepartment);
             await TestDbCreator.SaveChangesAsync(context);
         }
     }
