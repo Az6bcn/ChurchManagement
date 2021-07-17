@@ -36,16 +36,16 @@ namespace Domain.Entities.PersonAggregate
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 
 
-        public static Department Create(string name,
+        internal static Department Create(string name,
                                   Tenant tenant) => new(name, tenant);
 
-        public void Update(string name)
+        internal void Update(string name)
         {
             Name = name;
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Delete() => Deleted = DateTime.UtcNow;
+        internal void Delete() => Deleted = DateTime.UtcNow;
 
     }
 

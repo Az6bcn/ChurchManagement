@@ -11,6 +11,8 @@ using Application.RequestValidators;
 using AutoMapper;
 using Domain.Entities.PersonAggregate;
 
+using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
+
 namespace Application.Commands.PersonManagement.Create
 {
     public class DepartmentCommandCreator : ICreateDepartmentCommand
@@ -52,7 +54,8 @@ namespace Application.Commands.PersonManagement.Create
             if (errors.Any())
                 throw new RequestValidationException("Failed validation", errors);
 
-            var department = Department.Create(request.Name, tenant);
+            PersonManagementAggregate.CreateDepartment(request.Name, tenant);
+            var department = PersonManagementAggregate.Department;
 
             await _personManagementRepo.AddAsync<Department>(department);
 

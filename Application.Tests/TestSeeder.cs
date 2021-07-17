@@ -6,6 +6,7 @@ using Domain.Entities.TenantAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Shared.Enums;
+using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 namespace Application.Tests
 {
@@ -27,10 +28,13 @@ namespace Application.Tests
         public static async Task CreateDemoDepartment(ApplicationDbContext context,
                                                       Tenant tenant)
         {
-            var demoDepartment = Department.Create("Demo Department", tenant);
+            PersonManagementAggregate.CreateDepartment("Demo Department", tenant);
 
-            await context.AddAsync(demoDepartment);
+            context.ChangeTracker.Clear();
+            
+            context.Update(PersonManagementAggregate.Department);
             await TestDbCreator.SaveChangesAsync(context);
+
         }
     }
 }

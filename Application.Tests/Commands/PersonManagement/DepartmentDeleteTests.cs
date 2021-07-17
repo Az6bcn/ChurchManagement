@@ -6,6 +6,7 @@ using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -38,7 +39,7 @@ namespace Application.Tests.Commands.PersonManagement
             TestDbCreator.CreateDatabase(context);
 
             await TestSeeder.CreateDemoTenant(context, tenantValidator);
-            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
 
             await TestSeeder.CreateDemoDepartment(context, tenant);
             var department = context.Set<Department>().Single();

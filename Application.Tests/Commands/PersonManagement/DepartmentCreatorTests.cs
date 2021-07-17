@@ -8,6 +8,7 @@ using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -33,11 +34,14 @@ namespace Application.Tests.Commands.PersonManagement
 
             await TestSeeder.CreateDemoTenant(context, validator);
 
-            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+            var tenantId = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+                                  .AsNoTracking()
+                                  .Single()
+                                  .TenantId;
 
             var request = new CreateDepartmentRequestDto
             {
-                TenantId = tenant.TenantId,
+                TenantId = tenantId,
                 Name = "Demo Department"
             };
 
@@ -94,7 +98,8 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAsync<RequestValidationException>(
-                    async () => await target.ExecuteAsync(_request));
+                                                                 async ()
+                                                                     => await target.ExecuteAsync(_request));
         }
 
         [Fact]
@@ -107,16 +112,17 @@ namespace Application.Tests.Commands.PersonManagement
             TestDbCreator.CreateDatabase(context);
 
             _request = await GetRequestAsync(context);
-            
-            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().Single();
+
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
             await TestSeeder.CreateDemoDepartment(context, tenant);
             var department = context.Set<Department>().Single();
 
             _request.Name = department.Name;
-            
+
             // Act and Assert
             await Assert.ThrowsAsync<RequestValidationException>(
-                 async () => await target.ExecuteAsync(_request));
+                                                                 async ()
+                                                                     => await target.ExecuteAsync(_request));
         }
     }
 }
