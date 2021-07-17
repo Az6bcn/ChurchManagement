@@ -4,6 +4,7 @@ using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
 using Application.RequestValidators;
+using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 namespace Application.Commands.PersonManagement.Delete
 {
@@ -32,7 +33,8 @@ namespace Application.Commands.PersonManagement.Delete
             if (department is null)
                 throw new ArgumentException($"Department {department} not found ");
 
-            department.Delete();
+            PersonManagementAggregate.AssignDepartment(department);
+            PersonManagementAggregate.DeleteDepartment();
 
             _personManagementRepo.Update(department);
             await _unitOfWork.SaveChangesAsync();

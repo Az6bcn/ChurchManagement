@@ -11,6 +11,8 @@ using Application.Queries.Tenant;
 using Application.RequestValidators;
 using AutoMapper;
 using Domain.Entities.PersonAggregate;
+using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
+
 
 namespace Application.Commands.PersonManagement.Update
 {
@@ -56,7 +58,9 @@ namespace Application.Commands.PersonManagement.Update
             if (errors.Any())
                 throw new RequestValidationException("Failed validation", errors);
 
-            var department = Department.Create(request.Name, tenant);
+            var department = departments.Single(x => x.DepartmentId == request.DepartmentId);
+            PersonManagementAggregate.AssignDepartment(department);
+            PersonManagementAggregate.UpdateDepartment(request.Name);
 
             _personManagementRepo.Update<Department>(department);
 

@@ -75,8 +75,9 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<string>> GetTenantNamesAsync()
         {
             var response = await _dbContext.Tenants
-                                     .Select(x => x.Name)
-                                     .ToListAsync();
+                                           .AsNoTracking()
+                                           .Select(x => x.Name)
+                                           .ToListAsync();
 
             return response;
         }
