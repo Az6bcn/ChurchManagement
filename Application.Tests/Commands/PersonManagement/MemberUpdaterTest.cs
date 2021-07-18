@@ -26,7 +26,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         private async Task CreateMemberForRequestAsync(ApplicationDbContext context, Domain.Entities.TenantAggregate.Tenant tenant)
-            => await TestSeeder.CreateMember(context, tenant);
+            => await TestSeeder.CreateDemoMember(context, tenant);
 
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithValidRequest_ShouldUpdateMemberInDatabase()

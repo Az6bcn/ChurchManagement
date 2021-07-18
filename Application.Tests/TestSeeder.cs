@@ -38,7 +38,7 @@ namespace Application.Tests
 
         }
 
-        public static async Task CreateMember(ApplicationDbContext context, Tenant tenant)
+        public static async Task CreateDemoMember(ApplicationDbContext context, Tenant tenant)
         {
             var person = Person.Create
                 (tenant.TenantId,
