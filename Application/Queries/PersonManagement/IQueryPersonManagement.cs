@@ -14,5 +14,8 @@ namespace Application.Queries.PersonManagement
         Task<QueryResult<GetDepartmentsResponseDto>> GetDepartmentsByTenantIdAsync(int tenantId);
 
         Task<Department?> GetDepartmentIdAsync(int departmentId, int tenantId);
+
+        Task<Member?> GetMemberByIdAsync(int memberId, int tenantId);
+        Task<QueryResult<GetMembersResponseDto>> GetMembersByTenantIdAsync(int tenantId);
     }
 }

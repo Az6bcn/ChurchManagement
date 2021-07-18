@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
+using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Create;
+using Application.Dtos.Response.Update;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
@@ -15,9 +17,9 @@ using Domain.ValueObjects;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 
-namespace Application.Commands.PersonManagement.Create
+namespace Application.Commands.PersonManagement.Update
 {
-    public class MemberCommandCreator : ICreateMemberCommand
+    public class MemberCommandUpdater : IUpdateMemberCommand
     {
         private readonly IQueryTenant _tenantQuery;
         private readonly IQueryPersonManagement _personManagementQuery;
@@ -26,7 +28,7 @@ namespace Application.Commands.PersonManagement.Create
         private readonly IValidatePersonManagementRequestDto _requestValidator;
         private readonly IMapper _mapper;
 
-        public MemberCommandCreator(IQueryTenant tenantQuery,
+        public MemberCommandUpdater(IQueryTenant tenantQuery,
                                     IQueryPersonManagement personManagementQuery,
                                     IPersonManagementRepositoryAsync personManagementRepo,
                                     IUnitOfWork unitOfWork,
@@ -41,12 +43,15 @@ namespace Application.Commands.PersonManagement.Create
             _mapper = mapper;
         }
 
-        public async Task<CreateMemberResponseDto> ExecuteAsync(CreateMemberRequestDto request)
+        public async Task<UpdateMemberResponseDto> ExecuteAsync(UpdateMemberRequestDto request)
         {
-            var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
+            var member
+                = await _personManagementQuery.GetMemberByIdAsync(request.MemberId,
+                                                                  request.TenantId);
 
-            if (tenant is null)
-                throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
+            if (member is null)
+                throw new
+                    InvalidOperationException($"{request.MemberId} {request.MemberId} not found");
 
             var person = Person.Create(request.TenantId,
                                        request.Name,
@@ -56,23 +61,25 @@ namespace Application.Commands.PersonManagement.Create
                                        request.PhoneNumber);
 
             var personValidationErrors = person.Validate();
+
             if (personValidationErrors.Any())
                 throw new RequestValidationException("Request failed validation",
-                                     new Dictionary<string, object>
+                                                     new Dictionary<string, object>
                                                      {
                                                          {
                                                              "Request errors",
-                                                             string.Join(" , ", personValidationErrors)
+                                                             string.Join(" , ",
+                                                              personValidationErrors)
                                                          }
                                                      });
-            
-            PersonManagementAggregate.CreateMember(person, tenant, request.IsWorker);
-            var member = PersonManagementAggregate.Member;
 
-            await _personManagementRepo.AddAsync<Member>(member);
+            PersonManagementAggregate.AssignMember(member);
+            PersonManagementAggregate.UpdateMember(person, request.IsWorker);
+
+            _personManagementRepo.Update<Member>(PersonManagementAggregate.Member);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<CreateMemberResponseDto>(member);
+            return _mapper.Map<UpdateMemberResponseDto>(PersonManagementAggregate.Member);
         }
     }
 }

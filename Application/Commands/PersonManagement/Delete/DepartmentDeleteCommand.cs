@@ -13,17 +13,14 @@ namespace Application.Commands.PersonManagement.Delete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonManagementRepositoryAsync _personManagementRepo;
         private readonly IQueryPersonManagement _personManagementQuery;
-        private readonly IValidatePersonManagementRequestDto _requestValidator;
 
         public DepartmentDeleteCommand(IUnitOfWork unitOfWork,
                                        IPersonManagementRepositoryAsync personManagementRepo,
-                                       IQueryPersonManagement personManagementQuery,
-                                       IValidatePersonManagementRequestDto requestValidator)
+                                       IQueryPersonManagement personManagementQuery)
         {
             _unitOfWork = unitOfWork;
             _personManagementRepo = personManagementRepo;
             _personManagementQuery = personManagementQuery;
-            _requestValidator = requestValidator;
         }
 
         public async Task ExecuteAsync(int departmentId, int tenantId)
@@ -31,7 +28,7 @@ namespace Application.Commands.PersonManagement.Delete
             var department = await _personManagementQuery.GetDepartmentIdAsync(departmentId, tenantId);
 
             if (department is null)
-                throw new ArgumentException($"Department {department} not found ");
+                throw new ArgumentException($"Department {departmentId} not found ");
 
             PersonManagementAggregate.AssignDepartment(department);
             PersonManagementAggregate.DeleteDepartment();

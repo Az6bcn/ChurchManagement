@@ -51,7 +51,8 @@ namespace Domain.Entities.PersonAggregate
         public Person Person { get; private set; }
         public Tenant Tenant { get; private set; }
 
-        public string FullName => Person.FullName;
+        public string PersonFullName => Person.FullName;
+        public string FullName => $"{Name} {Surname}";
 
         internal static Member Create(Person person,
                                     Tenant tenant,
@@ -59,22 +60,16 @@ namespace Domain.Entities.PersonAggregate
             => new Member(person, tenant, isWorker);
 
 
-        internal void UpdateMember(int tenantId,
-                                 string name,
-                                 string surname,
-                                 string dayMonthBirth,
-                                 string phoneNumber,
+        internal void UpdateMember(Person person,
                                  bool isWorker)
         {
-            // TenantId = tenantId;
-            // Name = name;
-            // Surname = surname;
-            // DateAndMonthOfBirth = dayMonthBirth;
+            TenantId = person.TenantId;
+            Name = person.Name;
+            Surname = person.Surname;
+            DateMonthOfBirth = person.DateAndMonthOfBirth;
             IsWorker = isWorker;
+            PhoneNumber = person.PhoneNumber;
             UpdatedAt = DateTime.UtcNow;
-
-            //if (!string.IsNullOrWhiteSpace(phoneNumber))
-            //PhoneNumber = phoneNumber;
         }
 
         internal void Delete() => Deleted = DateTime.UtcNow;

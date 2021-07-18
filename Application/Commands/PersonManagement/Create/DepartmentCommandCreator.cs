@@ -52,7 +52,7 @@ namespace Application.Commands.PersonManagement.Create
             _requestValidator.ValidateDepartment(request, departmentNames.ToList(), out var errors);
 
             if (errors.Any())
-                throw new RequestValidationException("Failed validation", errors);
+                throw new RequestValidationException("Request failed validation", errors);
 
             PersonManagementAggregate.CreateDepartment(request.Name, tenant);
             var department = PersonManagementAggregate.Department;

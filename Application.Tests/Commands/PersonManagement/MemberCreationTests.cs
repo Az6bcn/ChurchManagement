@@ -27,9 +27,7 @@ namespace Application.Tests.Commands.PersonManagement
 
         private async Task CreateTenantForRequestAsync(IValidateTenantInDomain validator,
                                             ApplicationDbContext context)
-        {
-            await TestSeeder.CreateDemoTenant(context, validator);
-        }
+            => await TestSeeder.CreateDemoTenant(context, validator);
 
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithValidRequest_CreatesMemberInDb()

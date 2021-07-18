@@ -24,6 +24,7 @@ namespace Application
             // Domain
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             
+            // Application
             services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
             services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
             services.AddScoped<IDeleteTenantCommand, TenantDeleteCommand>();
@@ -40,6 +41,7 @@ namespace Application
             services.AddScoped<IValidatePersonManagementRequestDto, PersonManagementRequestDtoValidator>();
 
             services.AddScoped<ICreateMemberCommand, MemberCommandCreator>();
+            services.AddScoped<IUpdateMemberCommand, MemberCommandUpdater>();
 
         }
     }

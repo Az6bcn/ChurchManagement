@@ -53,5 +53,17 @@ namespace Infrastructure.Persistence.Repositories
                                .Include(d => d.Tenant)
                                .SingleOrDefaultAsync(d => d.DepartmentId == departmentId 
                                                           && d.TenantId == tenantId);
+
+        public async Task<Member?> GetMemberByIdAsync(int memberId,
+                                                      int tenantId)
+            => await _dbContext.Set<Member>()
+                               .Include(m => m.Tenant)
+                               .SingleOrDefaultAsync(m => m.MemberId == memberId &&
+                                                          m.TenantId == tenantId);
+
+        public async Task<IEnumerable<Member>> GetMembersByTenantIdAsync(int tenantId)
+            => await _dbContext.Set<Member>()
+                               .Where(m => m.TenantId == tenantId)
+                               .ToListAsync();
     }
 }

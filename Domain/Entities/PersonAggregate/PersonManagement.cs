@@ -1,3 +1,4 @@
+using System;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.ValueObjects;
@@ -30,5 +31,12 @@ namespace Domain.Entities.PersonAggregate
                                         Tenant tenant,
                                         bool isWorker)
             => Member = Member.Create(person, tenant, isWorker);
+
+        public static void UpdateMember(Person person,
+                                        bool isWorker)
+            => Member.UpdateMember(person, isWorker);
+
+        public static void DeleteMember()
+            => Member.Delete();
     }
 }
