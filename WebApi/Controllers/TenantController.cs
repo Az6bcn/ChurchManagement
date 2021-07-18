@@ -41,7 +41,12 @@ namespace WebApi.Controllers
             _deleteTenantCommand = deleteTenantCommand;
         }
 
-        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Gets a tenant by it's Id
+        /// </summary>
+        /// <param name="tenantId"> The Id of the Tenant you desire to get</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantsResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{tenantId:int}")]
@@ -53,15 +58,20 @@ namespace WebApi.Controllers
             var response = await _queryTenantDetails.ExecuteAsync(tenantId);
 
             if (response?.Result is null)
-                return NotFound(ApiRequestResponse<GetTenantResponseDto>.Fail($"Tenant {tenantId} found"));
+                return NotFound(ApiRequestResponse<GetTenantsResponseDto>.Fail($"Tenant {tenantId} not found"));
 
             var result = 
-                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+                ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);
 
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantResponseDto>), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Gets a tenant by it's GuidId
+        /// </summary>
+        /// <param name="tenantGuidId"> The GuidId of the Tenant you desire to get</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetTenantsResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{tenantGuidId:guid}")]
@@ -73,16 +83,21 @@ namespace WebApi.Controllers
             var response = await _queryTenantDetails.ExecuteAsync(tenantGuidId);
 
             if (response?.Result is null)
-                return NotFound(ApiRequestResponse<GetTenantResponseDto>
-                                    .Fail($"Tenant {tenantGuidId} found"));
+                return NotFound(ApiRequestResponse<GetTenantsResponseDto>
+                                    .Fail($"Tenant {tenantGuidId} not found"));
 
             var result = 
-                ApiRequestResponse<GetTenantResponseDto>.Succeed(result: response.Result);
+                ApiRequestResponse<GetTenantsResponseDto>.Succeed(result: response.Result);
 
             return Ok(result);
         }
 
 
+        /// <summary>
+        /// Creates a new tenant
+        /// </summary>
+        /// <param name="request">The request object</param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<CreateTenantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -96,7 +111,12 @@ namespace WebApi.Controllers
             return Ok(ApiRequestResponse<CreateTenantResponseDto>.Succeed(response));
         }
 
-
+        /// <summary>
+        /// Updates a tenant
+        /// </summary>
+        /// <param name="request">The request object for the tenant to update</param>
+        /// <param name="tenantId">Id of the tenant to update</param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<UpdateTenantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{tenantId:int}")]
@@ -114,7 +134,11 @@ namespace WebApi.Controllers
             return Ok(ApiRequestResponse<UpdateTenantResponseDto>.Succeed(response));
         }
 
-
+        /// <summary>
+        /// Deletes a tenant
+        /// </summary>
+        /// <param name="tenantId">Id of the tenant you wish to delete</param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{tenantId:int}")]

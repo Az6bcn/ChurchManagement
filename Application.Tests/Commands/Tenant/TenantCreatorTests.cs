@@ -30,7 +30,7 @@ namespace Application.Tests.Commands.Tenant
         
 
         [Fact]
-        public async Task Create_WhenCalledWithValidRequest_ShouldCreateTenantInDatabase()
+        public async Task ExecuteAsync_WhenCalledWithValidRequest_ShouldCreateTenantInDatabase()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -55,7 +55,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Create_WhenCalledIfRequestHasNoName_ShouldThrowRequestValidationException()
+        public async Task ExecuteAsync_WhenCalledIfRequestHasNoName_ShouldThrowRequestValidationException()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -75,7 +75,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Create_WhenCalledWithExistentTenantNameInDb_ShouldThrowRequestValidationException()
+        public async Task ExecuteAsync_WhenCalledWithExistentTenantNameInDb_ShouldThrowRequestValidationException()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -98,7 +98,7 @@ namespace Application.Tests.Commands.Tenant
         }
         
         [Fact]
-        public async Task Create_WhenCalledWithCurrencyId0_ShouldThrowDomainValidationException()
+        public async Task ExecuteAsync_WhenCalledWithCurrencyId0_ShouldThrowDomainValidationException()
         {
             // Arrange
             _context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);

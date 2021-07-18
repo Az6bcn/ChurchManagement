@@ -24,7 +24,7 @@ namespace Application.Tests.Commands.Tenant
         private IServiceCollection ResolveServices() => TestDependenciesResolver.AddServices();
 
         [Fact]
-        public async Task Update_WhenCalledWithValidRequest_ShouldUpdateTenantInDatabase()
+        public async Task ExecuteAsync_WhenCalledWithValidRequest_ShouldUpdateTenantInDatabase()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -61,7 +61,7 @@ namespace Application.Tests.Commands.Tenant
         }
 
         [Fact]
-        public async Task Update_WhenCalledWithOutName_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithOutName_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -86,7 +86,7 @@ namespace Application.Tests.Commands.Tenant
         }
 
         [Fact]
-        public async Task Update_WhenCalledWithOutCurrency_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithOutCurrency_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);
@@ -111,7 +111,7 @@ namespace Application.Tests.Commands.Tenant
         }
 
         [Fact]
-        public async Task Update_WhenCalledWithOutValidTenantStatus_ShouldThrowException()
+        public async Task ExecuteAsync_WhenCalledWithOutValidTenantStatus_ShouldThrowException()
         {
             // Arrange
             var context = TestDbCreator.GetApplicationTestDbContext(_serviceProvider);

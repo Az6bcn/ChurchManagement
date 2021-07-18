@@ -1,9 +1,13 @@
 using System.Reflection;
+using Application.Commands.PersonManagement.Create;
+using Application.Commands.PersonManagement.Delete;
+using Application.Commands.PersonManagement.Update;
 using Application.Commands.Tenant.Create;
 using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries;
+using Application.Queries.PersonManagement;
 using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDashboardData;
 using Application.Queries.Tenant.TenantDetails;
@@ -18,16 +22,28 @@ namespace Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Domain
-            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
-        
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
-            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
+            
+            // Application
             services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
             services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
             services.AddScoped<IDeleteTenantCommand, TenantDeleteCommand>();
             services.AddScoped<IQueryTenant, TenantQuery>();
+            services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
+            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
             services.AddScoped<IValidateTenantRequestDto, TenantRequestDtoValidator>();
+            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
+
+            services.AddScoped<ICreateDepartmentCommand, DepartmentCommandCreator>();
+            services.AddScoped<IUpdateDepartmentCommand, DepartmentCommandUpdater>();
+            services.AddScoped<IDeleteDepartmentCommand, DepartmentDeleteCommand>();
+            services.AddScoped<IQueryPersonManagement, PersonManagementQuery>();
+            services.AddScoped<IValidatePersonManagementRequestDto, PersonManagementRequestDtoValidator>();
+
+            services.AddScoped<ICreateMemberCommand, MemberCommandCreator>();
+            services.AddScoped<IUpdateMemberCommand, MemberCommandUpdater>();
+            services.AddScoped<IDeleteMemberCommand, MemberDeleteCommand>();
+
         }
     }
 }

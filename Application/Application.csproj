@@ -6,10 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\Request\Get" />
     <Folder Include="Queries\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Dtos\" />
     <Folder Include="MappingProfiles\" />
     <Folder Include="Helpers\" />
     <Folder Include="Interfaces\Repositories\" />

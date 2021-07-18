@@ -15,6 +15,14 @@ namespace Domain.Entities.PersonAggregate
             _members = new();
             _departmentMembers = new();
         }
+
+        private Department(string name, Tenant tenant): this()
+        {
+            Name = name;
+            TenantId = tenant.TenantId;
+            Tenant = tenant;
+            CreatedAt = DateTime.UtcNow;
+        }
         
         public int DepartmentId { get; private set; }
         public int TenantId { get; private set; }
@@ -26,6 +34,18 @@ namespace Domain.Entities.PersonAggregate
         public Tenant Tenant { get; private set; }
         public IReadOnlyCollection<Member> Members => _members;
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
+
+
+        internal static Department Create(string name,
+                                  Tenant tenant) => new(name, tenant);
+
+        internal void Update(string name)
+        {
+            Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        internal void Delete() => Deleted = DateTime.UtcNow;
 
     }
 

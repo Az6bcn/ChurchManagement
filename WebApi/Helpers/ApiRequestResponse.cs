@@ -40,7 +40,10 @@ namespace WebApi.Helpers
         /// <param name="errorMessage"></param>
         /// <returns></returns>
         public static ApiRequestResponse<T> Fail(params string[] errorMessage) => new()
-            {ErrorMessage = errorMessage};
+        {
+            ErrorMessage = errorMessage
+
+        };
 
         /// <summary>
         /// Parse to my custom Response class
