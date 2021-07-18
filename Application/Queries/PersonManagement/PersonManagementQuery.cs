@@ -44,5 +44,30 @@ namespace Application.Queries.PersonManagement
         public async Task<Department?> GetDepartmentIdAsync(int departmentId,
                                                             int tenantId)
             => await _personManagementRepo.GetDepartmentIdAsync(departmentId, tenantId);
+
+
+        public async Task<Member?> GetMemberByIdAsync(int memberId,
+                                                int tenantId)
+            => await _personManagementRepo.GetMemberByIdAsync(memberId, tenantId);
+
+        public async Task<QueryResult<GetMembersResponseDto>> GetMembersByTenantIdAsync(int tenantId)
+        {
+            var members = await _personManagementRepo.GetMembersByTenantIdAsync(tenantId);
+
+            var response = members
+                .Select(x => new GetMembersResponseDto
+                {
+                    MemberId = x.MemberId,
+                    Name = x.Name,
+                    Surname = x.Surname,
+                    DateAndMonthOfBirth = x.DateMonthOfBirth,
+                    Gender = x.Gender,
+                    IsWorker = x.IsWorker,
+                    PhoneNumber = x.PhoneNumber,
+                    FullName = x.FullName
+                });
+
+            return QueryResult<GetMembersResponseDto>.CreateQueryResults(response);
+        }
     }
 }

@@ -6,34 +6,36 @@ using Application.Queries.PersonManagement;
 using Application.RequestValidators;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
+
 namespace Application.Commands.PersonManagement.Delete
 {
-    public class DepartmentDeleteCommand: IDeleteDepartmentCommand
+    public class MemberDeleteCommand: IDeleteMemberCommand
     {
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPersonManagementRepositoryAsync _personManagementRepo;
         private readonly IQueryPersonManagement _personManagementQuery;
 
-        public DepartmentDeleteCommand(IUnitOfWork unitOfWork,
-                                       IPersonManagementRepositoryAsync personManagementRepo,
-                                       IQueryPersonManagement personManagementQuery)
+        public MemberDeleteCommand(IUnitOfWork unitOfWork,
+                                   IPersonManagementRepositoryAsync personManagementRepo,
+                                   IQueryPersonManagement personManagementQuery)
         {
             _unitOfWork = unitOfWork;
             _personManagementRepo = personManagementRepo;
             _personManagementQuery = personManagementQuery;
         }
 
-        public async Task ExecuteAsync(int departmentId, int tenantId)
+        public async Task ExecuteAsync(int memberId, int tenantId)
         {
-            var department = await _personManagementQuery.GetDepartmentIdAsync(departmentId, tenantId);
+            var member = await _personManagementQuery.GetMemberByIdAsync(memberId, tenantId);
 
-            if (department is null)
-                throw new ArgumentException($"Department {departmentId} not found ");
+            if (member is null)
+                throw new ArgumentException($"Member {memberId} not found ");
 
-            PersonManagementAggregate.AssignDepartment(department);
-            PersonManagementAggregate.DeleteDepartment();
+            PersonManagementAggregate.AssignMember(member);
+            PersonManagementAggregate.DeleteMember();
 
-            _personManagementRepo.Update(department);
+            _personManagementRepo.Update(member);
             await _unitOfWork.SaveChangesAsync();
         }
     }

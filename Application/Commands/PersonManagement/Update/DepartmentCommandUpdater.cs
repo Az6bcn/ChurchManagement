@@ -48,15 +48,10 @@ namespace Application.Commands.PersonManagement.Update
             if (departments is null || !departments.Any())
                 throw new InvalidOperationException($"No departments for the tenant {request.TenantId} to update");
 
-            var tenant = departments.First().Tenant;
-
-            if (tenant is null)
-                throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
-
             _requestValidator.ValidateDepartmentUpdate(request, departments.ToList(), out var errors);
 
             if (errors.Any())
-                throw new RequestValidationException("Failed validation", errors);
+                throw new RequestValidationException("Request failed validation", errors);
 
             var department = departments.Single(x => x.DepartmentId == request.DepartmentId);
             PersonManagementAggregate.AssignDepartment(department);
