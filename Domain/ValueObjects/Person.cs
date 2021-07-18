@@ -18,6 +18,7 @@ namespace Domain.ValueObjects
                         string phoneNumber,
                         string gender)
         {
+            TenantId = tenantId;
             Name = name;
             Surname = surname;
             DateAndMonthOfBirth = dayMonthBirth;
@@ -58,7 +59,7 @@ namespace Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(DateAndMonthOfBirth))
                 yield return $"{nameof(DateAndMonthOfBirth)} is required to create a member";
 
-            if (!string.IsNullOrWhiteSpace(PhoneNumber))
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
                 yield return $"{nameof(PhoneNumber)} is required to create a member";
         }
 

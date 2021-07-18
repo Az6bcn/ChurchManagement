@@ -13,25 +13,23 @@ namespace Domain.Entities.PersonAggregate
 
         public Member()
         {
-            _departmentMembers = new ();
+            _departmentMembers = new();
             _departments = new();
         }
 
 
-        internal Member(string name, 
-                        string surname,
-                        string dayMonthBirth,
-                        bool isWorker,
-                        string phoneNumber,
-                        Tenant tenant) : this()
+        internal Member(Person person,
+                        Tenant tenant,
+                        bool isWorker = false) : this()
         {
             Tenant = tenant;
-            // TenantId = tenant.TenantId;
-            // Name = name;
-            // Surname = surname;
-            // DateAndMonthOfBirth = dayMonthBirth;
+            TenantId = tenant.TenantId;
+            Name = person.Name;
+            Surname = person.Surname;
+            DateMonthOfBirth = person.DateAndMonthOfBirth;
             IsWorker = isWorker;
-            //PhoneNumber = phoneNumber;
+            PhoneNumber = person.PhoneNumber;
+            Gender = person.Gender;
             CreatedAt = DateTime.UtcNow;
         }
 
@@ -52,24 +50,21 @@ namespace Domain.Entities.PersonAggregate
         public Minister Minister { get; set; }
         public Person Person { get; private set; }
         public Tenant Tenant { get; private set; }
-        
+
         public string FullName => Person.FullName;
 
-        public static Member Create(string name,
-                                    string surname,
-                                    string dayMonthBirth,
-                                    bool isWorker,
-                                    string phoneNumber,
-                                    Tenant tenant) =>
-            new Member(name, surname, dayMonthBirth, isWorker, phoneNumber, tenant);
+        internal static Member Create(Person person,
+                                    Tenant tenant,
+                                    bool isWorker) 
+            => new Member(person, tenant, isWorker);
 
 
-        public void UpdateMember(int tenantId,
+        internal void UpdateMember(int tenantId,
                                  string name,
                                  string surname,
                                  string dayMonthBirth,
-                                 bool isWorker,
-                                 string phoneNumber)
+                                 string phoneNumber,
+                                 bool isWorker)
         {
             // TenantId = tenantId;
             // Name = name;
@@ -82,6 +77,6 @@ namespace Domain.Entities.PersonAggregate
             //PhoneNumber = phoneNumber;
         }
 
-        public void DeleteMember() => Deleted = DateTime.UtcNow;
+        internal void Delete() => Deleted = DateTime.UtcNow;
     }
 }

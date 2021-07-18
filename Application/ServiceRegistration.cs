@@ -38,7 +38,9 @@ namespace Application
             services.AddScoped<IDeleteDepartmentCommand, DepartmentDeleteCommand>();
             services.AddScoped<IQueryPersonManagement, PersonManagementQuery>();
             services.AddScoped<IValidatePersonManagementRequestDto, PersonManagementRequestDtoValidator>();
-            
+
+            services.AddScoped<ICreateMemberCommand, MemberCommandCreator>();
+
         }
     }
 }
