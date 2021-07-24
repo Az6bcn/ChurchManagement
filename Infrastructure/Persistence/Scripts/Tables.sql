@@ -128,11 +128,12 @@ CREATE TABLE [dbo].[Members](
                                 [Name] [varchar](200) NOT NULL,
                                 [Surname] [varchar](200) NOT NULL,
                                 [DateMonthOfBirth] [varchar](50) NOT NULL,
+                                [Gender] [varchar](10) NOT NULL,
                                 [IsWorker] [bit] NOT NULL,
                                 [PhoneNumber] [varchar](50) NOT NULL,
-                                [CreaedAt] [datetime] NOT NULL,
+                                [CreatedAt] [datetime] NOT NULL,
                                 [UpdatedAt] [datetime] NULL,
-                                [DeletedAt] [datetime] NULL,
+                                [Deleted] [datetime] NULL,
                                 CONSTRAINT [PK_Members_MemberId] PRIMARY KEY CLUSTERED
                                     (
                                      [MemberId] ASC
@@ -303,7 +304,7 @@ CREATE TABLE [dbo].[Finances](
 	[Description] [varchar](max) NULL,
 	[CreatedAt] [datetime] NOT NULL,
 	[UpdatedAt] [datetime] NULL,
-	[DeletedAt] [datetime] NULL,
+	[Deleted] [datetime] NULL,
  CONSTRAINT [PK_Finances_FinanceId] PRIMARY KEY CLUSTERED 
 (
 	[FinanceId] ASC
