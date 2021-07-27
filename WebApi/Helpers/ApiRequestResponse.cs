@@ -17,42 +17,45 @@ namespace WebApi.Helpers
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static ApiRequestResponse<T> Succeed(T result) => new()
-        {
-            Success = true,
-            Result = result
-        };
+        public static ApiRequestResponse<T> Succeed(T result)
+            => new()
+            {
+                Success = true,
+                Result = result
+            };
 
         /// <summary>
         /// Parse to my custom Response class
         /// </summary>
         /// <param name="results"></param>
         /// <returns></returns>
-        public static ApiRequestResponse<T> Succeed(ICollection<T> results) => new()
-        {
-            Success = true,
-            Results = results
-        };
+        public static ApiRequestResponse<T> Succeed(ICollection<T> results)
+            => new()
+            {
+                Success = true,
+                Results = results
+            };
 
         /// <summary>
         /// Parse to my custom Response class
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public static ApiRequestResponse<T> Fail(params string[] errorMessage) => new()
-        {
-            ErrorMessage = errorMessage
-
-        };
+        public static ApiRequestResponse<T> Fail(params string[] errorMessage)
+            => new()
+            {
+                ErrorMessage = errorMessage
+            };
 
         /// <summary>
         /// Parse to my custom Response class
         /// </summary>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public static ApiRequestResponse<T> Fail(ICollection<string> errorMessage) => new()
-        {
-            ErrorMessage = errorMessage
-        };
+        public static ApiRequestResponse<T> Fail(ICollection<string> errorMessage)
+            => new()
+            {
+                ErrorMessage = errorMessage
+            };
     }
 }
