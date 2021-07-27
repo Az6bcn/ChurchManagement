@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using WebApi.Middlewares;
 
 namespace WebApi
 {
@@ -57,10 +58,13 @@ namespace WebApi
         public void Configure(IApplicationBuilder app,
                               IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+            // }
+            
+            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
             //This line enables the app to use Swagger with the configuration in the ConfigureServices method.
             app.UseSwagger();
