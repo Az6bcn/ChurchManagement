@@ -44,6 +44,8 @@ namespace Application
             services.AddScoped<IUpdateMemberCommand, MemberCommandUpdater>();
             services.AddScoped<IDeleteMemberCommand, MemberDeleteCommand>();
 
+            services.AddScoped<ICreateNewComerCommand, NewComerCommandCreator>();
+
         }
     }
 }

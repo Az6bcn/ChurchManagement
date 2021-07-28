@@ -26,7 +26,7 @@ namespace Application.Tests.Commands.PersonManagement
         private IServiceCollection GetServices() => TestDependenciesResolver.AddServices();
 
         private async Task CreateTenantForRequestAsync(IValidateTenantInDomain validator,
-                                            ApplicationDbContext context)
+                                                       ApplicationDbContext context)
             => await TestSeeder.CreateDemoTenant(context, validator);
 
         [Fact]
@@ -53,10 +53,10 @@ namespace Application.Tests.Commands.PersonManagement
                 PhoneNumber = "+447700000000",
                 IsWorker = false
             };
-            
+
             // Act
             var response = await target.ExecuteAsync(request);
-            
+
             // Assert
             Assert.NotNull(response);
             Assert.Equal(1, response.MemberId);
@@ -65,7 +65,7 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
-        public async Task ExecuteAsync_WhenCalledWithIncompleteRequest_ShouldThrowException_()
+        public async Task ExecuteAsync_WhenCalledWithIncompleteRequest_ShouldThrowException()
         {
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
             var target = TestDependenciesResolver.GetService<ICreateMemberCommand>(_builtServices);
@@ -89,13 +89,12 @@ namespace Application.Tests.Commands.PersonManagement
             };
 
             // Act and Assert
-            await Assert.ThrowsAsync<RequestValidationException>(
-                        async ()  => await target.ExecuteAsync(request));
-
+            await Assert.ThrowsAsync<RequestValidationException>(async ()
+                                                                     => await target.ExecuteAsync(request));
         }
 
         [Fact]
-        public async Task ExecuteAsync_WhenCalledWithRequestWithInvalidPhoneNumber_ShouldThrowException_()
+        public async Task ExecuteAsync_WhenCalledWithRequestWithInvalidPhoneNumber_ShouldThrowException()
         {
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
             var target = TestDependenciesResolver.GetService<ICreateMemberCommand>(_builtServices);
@@ -120,8 +119,8 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAsync<RequestValidationException>(
-                     async () => await target.ExecuteAsync(request));
-
+                                                                 async ()
+                                                                     => await target.ExecuteAsync(request));
         }
     }
 }

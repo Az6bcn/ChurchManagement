@@ -1,7 +1,9 @@
 using System;
+using Domain.Entities.Helpers;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.ValueObjects;
+using Shared.Enums;
 
 namespace Domain.Entities.PersonAggregate
 {
@@ -12,21 +14,23 @@ namespace Domain.Entities.PersonAggregate
             
         }
         internal NewComer(
-            string name,
-            string surname,
-            string dayMonthBirth,
-            string phoneNumber,
+            Person person,
             DateTime dateAttended,
-            int serviceTypeId,
-            Tenant tenant) 
+            ServiceEnum serviceTypeEnum,
+            Tenant tenant)
         {
-            // TenantId = tenant.TenantId;
-            // Name = name;
-            // Surname = surname;
-            // DateAndMonthOfBirth = dayMonthBirth;
+            var serviceTypeEnumValue = GetServiceTypeEnumValue(serviceTypeEnum);
+            ServiceType = ServiceType.Create(serviceTypeEnumValue.Id, serviceTypeEnumValue.Value);
+            
+            TenantId = tenant.TenantId;
+            Name = person.Name;
+            Surname = person.Surname;
+            Gender = person.Gender;
+            DateMonthOfBirth = person.DateAndMonthOfBirth;
+            DateAttended = dateAttended;
+            ServiceTypeId = serviceTypeEnumValue.Id;
+            PhoneNumber = person.PhoneNumber;
             CreatedAt = DateTime.UtcNow;
-
-            //PhoneNumber = phoneNumber;
         }
 
         public int NewComerId { get; private set; }
@@ -48,14 +52,13 @@ namespace Domain.Entities.PersonAggregate
         public Tenant Tenant { get; set; }
 
         public static NewComer Create(
-            string name,
-            string surname,
-            string dayMonthBirth,
-            string phoneNumber,
+            Person person,
             DateTime dateAttended,
-            int serviceTypeId,
-            Tenant tenant) => new NewComer(name, surname, dayMonthBirth, phoneNumber, dateAttended, serviceTypeId, tenant);
-     
+            ServiceEnum serviceTypeEnum,
+            Tenant tenant) => new (person, dateAttended, serviceTypeEnum, tenant);
+        
+        private EnumValue GetServiceTypeEnumValue(ServiceEnum serviceTypeEnum)
+            => EnumService<ServiceEnum>.GetValue(serviceTypeEnum);
     }
     
 }
