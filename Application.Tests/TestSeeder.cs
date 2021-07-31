@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
@@ -32,27 +33,44 @@ namespace Application.Tests
             PersonManagementAggregate.CreateDepartment("Demo Department", tenant);
 
             context.ChangeTracker.Clear();
-            
+
             context.Update(PersonManagementAggregate.Department);
             await TestDbCreator.SaveChangesAsync(context);
-
         }
 
-        public static async Task CreateDemoMember(ApplicationDbContext context, Tenant tenant)
+        public static async Task CreateDemoMember(ApplicationDbContext context,
+                                                  Tenant tenant)
         {
-            var person = Person.Create
-                (tenant.TenantId,
-                 "Demo Member",
-                 "Demo Surname",
-                 "17/03",
-                 "Male",
-                 "+7703000000");
+            var person = Person.Create(tenant.TenantId,
+                                       "Demo Member",
+                                       "Demo Surname",
+                                       "17/03",
+                                       "Male",
+                                       "+7703000000");
 
             PersonManagementAggregate.CreateMember(person, tenant, false);
 
             context.ChangeTracker.Clear();
 
             context.Update(PersonManagementAggregate.Member);
+            await TestDbCreator.SaveChangesAsync(context);
+        }
+
+        public static async Task CreateDemoNewComer(ApplicationDbContext context,
+                                                    Tenant tenant)
+        {
+            var person = Person.Create(tenant.TenantId,
+                                       "Demo Member",
+                                       "Demo Surname",
+                                       "17/03",
+                                       "Male",
+                                       "+7703000000");
+
+            PersonManagementAggregate.CreateNewComer(person, DateTime.UtcNow, ServiceEnum.SundayService, tenant);
+
+            //context.ChangeTracker.Clear();
+
+            context.Update(PersonManagementAggregate.NewComer);
             await TestDbCreator.SaveChangesAsync(context);
         }
     }

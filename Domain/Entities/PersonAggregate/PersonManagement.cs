@@ -13,22 +13,18 @@ namespace Domain.Entities.PersonAggregate
         public static Minister Minister { get; private set; }
         public static Department Department { get; private set; }
 
-        public static Department AssignDepartment(Department department)
-            => Department = department;
-        
+        public static Department AssignDepartment(Department department) => Department = department;
+
         public static void CreateDepartment(string name,
                                             Tenant tenant)
             => Department = Department.Create(name, tenant);
 
-        public static void UpdateDepartment(string name)
-            => Department.Update(name);
+        public static void UpdateDepartment(string name) => Department.Update(name);
 
-        public static void DeleteDepartment()
-            => Department.Delete();
-        
-        
+        public static void DeleteDepartment() => Department.Delete();
 
-        public static Member AssignMember(Member member) 
+
+        public static Member AssignMember(Member member)
             => Member = member;
 
         public static void CreateMember(Person person,
@@ -40,18 +36,32 @@ namespace Domain.Entities.PersonAggregate
                                         bool isWorker)
             => Member.UpdateMember(person, isWorker);
 
-        public static void DeleteMember()
-            => Member.Delete();
-        
-        
+        public static void DeleteMember() => Member.Delete();
 
-        public static void AssignNewComer(NewComer newComer)
-            => NewComer = newComer;
+
+        public static void AssignNewComer(NewComer newComer) => NewComer = newComer;
 
         public static void CreateNewComer(Person person,
                                           DateTime dateAttended,
                                           ServiceEnum serviceEnumType,
                                           Tenant tenant)
             => NewComer = NewComer.Create(person, dateAttended, serviceEnumType, tenant);
+
+        public static void UpdateNewComer(Person person,
+                                          DateTime dateAttended,
+                                          ServiceEnum serviceEnumType)
+            => NewComer.Update(person, dateAttended, serviceEnumType);
+
+        public static void DeleteNewComer() => NewComer.Delete();
+        
+        public static void AssignMinister(Minister minister) => Minister = minister;
+
+        public static void CreateMinister(Member member, MinisterTitleEnum ministerTitle) 
+            => Minister = Minister.Create(member, ministerTitle);
+
+        public static void UpdateMinister(Minister minister, MinisterTitleEnum ministerTitle) 
+            => Minister.Update(minister, ministerTitle);
+
+        public static void Delete() => Minister.Delete();
     }
 }

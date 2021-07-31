@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Dtos.Response.Get;
+using Application.Helpers;
 using Domain.Entities.PersonAggregate;
 using Domain.Interfaces;
 
@@ -18,5 +20,15 @@ namespace Application.Interfaces.Repositories
 
         Task<Member?> GetMemberByIdAsync(int memberId, int tenantId);
         Task<IEnumerable<Member>> GetMembersByTenantIdAsync(int tenantId);
+
+        Task<NewComer?> GetNewComerByIdAsync(int newComerId,
+                                             int tenantId);
+
+        Task<IEnumerable<NewComer>> GetNewComersByTenantIdAsync(int tenantId);
+
+        Task<Minister?> GetMinisterByIdAsync(int ministerId,
+                                             int tenantId);
+
+        Task<IEnumerable<Minister>> GetMinistersByTenantIdAsync(int tenantId);
     }
 }

@@ -4,8 +4,8 @@ using Application.Dtos.Response.Update;
 
 namespace Application.Commands.PersonManagement.Update
 {
-    public interface IUpdateNewComerCommand
+    public interface IUpdateMinisterCommand
     {
-        Task<UpdateNewComerResponseDto> ExecuteAsync(UpdateNewComerRequestDto request);
+        Task<UpdateMinisterResponseDto> ExecuteAsync(UpdateMinisterRequestDto request);
     }
 }

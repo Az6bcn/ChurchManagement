@@ -88,7 +88,7 @@ CREATE TABLE [dbo].[NewComers](
 	[Surname] [varchar](200) NOT NULL,
 	[DateMonthOfBirth] [varchar](50) NOT NULL,
 	[Gender] [varchar](10) NOT NULL,
-	[PhoneNumber] [varbinary](50) NOT NULL,
+	[PhoneNumber] [varchar](50) NOT NULL,
 	[DateAttended] [datetime] NOT NULL,
 	[ServiceTypeId] [int] NOT NULL,
 	[CreatedAt] [datetime] NOT NULL,

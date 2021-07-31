@@ -125,5 +125,34 @@ namespace Application.Tests.Commands.PersonManagement
             await Assert.ThrowsAsync<RequestValidationException>(async ()
                                                                      => await target.ExecuteAsync(request));
         }
+        
+        [Fact]
+        public async Task ExecuteAsync_WhenCalledWithRequestWithDefaultDateAttended_ShouldThrowException()
+        {
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateNewComerCommand>(_builtServices);
+            var tenantDomainValidator
+                = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
+
+            TestDbCreator.CreateDatabase(context);
+
+            await CreateTenantForRequestAsync(tenantDomainValidator, context);
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
+
+            var request = new CreateNewComerRequestDto()
+            {
+                TenantId = tenant.TenantId,
+                Name = "Sergio",
+                Surname = "Ramos",
+                DateAndMonthOfBirth = "16/03",
+                ServiceTypeEnum = ServiceEnum.SundayService,
+                Gender = "Male",
+                PhoneNumber = "+447700000000"
+            };
+
+            // Act and Assert
+            await Assert.ThrowsAsync<DomainValidationException>(async ()
+                                                                     => await target.ExecuteAsync(request));
+        }
     }
 }

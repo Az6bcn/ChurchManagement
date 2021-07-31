@@ -1,13 +1,12 @@
 using System;
 using Shared.Enums;
 
-namespace Application.Dtos.Response.Update
+namespace Application.Dtos.Response.Get
 {
-    public class UpdateNewComerResponseDto
+    public class GetNewComersResponseDto
     {
         public int NewComerId { get; set; }
-        public int TenantId { get; set; }
-        public ServiceEnum ServiceTypeEnum { get; set; }
+        public ServiceEnum ServiceType { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string DateAndMonthOfBirth { get; set; }

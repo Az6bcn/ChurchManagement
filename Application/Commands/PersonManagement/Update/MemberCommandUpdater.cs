@@ -50,8 +50,7 @@ namespace Application.Commands.PersonManagement.Update
                                                                   request.TenantId);
 
             if (member is null)
-                throw new
-                    InvalidOperationException($"{request.MemberId} {request.MemberId} not found");
+                throw new InvalidOperationException($"member {request.MemberId} not found");
 
             var person = Person.Create(request.TenantId,
                                        request.Name,
@@ -69,7 +68,7 @@ namespace Application.Commands.PersonManagement.Update
                                                          {
                                                              "Request errors",
                                                              string.Join(" , ",
-                                                              personValidationErrors)
+                                                                         personValidationErrors)
                                                          }
                                                      });
 
