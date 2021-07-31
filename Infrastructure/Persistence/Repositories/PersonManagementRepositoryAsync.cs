@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Dtos.Response.Get;
 using Application.Interfaces.Repositories;
 using Domain.Entities.PersonAggregate;
 using Infrastructure.Persistence.Context;
@@ -51,7 +52,7 @@ namespace Infrastructure.Persistence.Repositories
                                                             int tenantId)
             => await _dbContext.Set<Department>()
                                .Include(d => d.Tenant)
-                               .SingleOrDefaultAsync(d => d.DepartmentId == departmentId 
+                               .SingleOrDefaultAsync(d => d.DepartmentId == departmentId
                                                           && d.TenantId == tenantId);
 
         public async Task<Member?> GetMemberByIdAsync(int memberId,
@@ -63,6 +64,33 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<IEnumerable<Member>> GetMembersByTenantIdAsync(int tenantId)
             => await _dbContext.Set<Member>()
+                               .Where(m => m.TenantId == tenantId)
+                               .ToListAsync();
+
+        public async Task<NewComer?> GetNewComerByIdAsync(int newComerId,
+                                                          int tenantId)
+            => await _dbContext.Set<NewComer>()
+                               .Include(m => m.Tenant)
+                               .SingleOrDefaultAsync(nc => nc.NewComerId == newComerId
+                                                           && nc.TenantId == tenantId);
+
+        public async Task<IEnumerable<NewComer>> GetNewComersByTenantIdAsync(int tenantId)
+            => await _dbContext.Set<NewComer>()
+                               .Include(nc => nc.Tenant)
+                               .ToListAsync();
+
+        public async Task<Minister?> GetMinisterByIdAsync(int ministerId,
+                                                          int tenantId)
+            => await _dbContext.Set<Minister>()
+                               .Include(m => m.Member)
+                               .ThenInclude(m => m.Tenant)
+                               .Include(m => m.Tenant)
+                               .SingleOrDefaultAsync(m => m.MinisterId == ministerId && m.TenantId == tenantId);
+
+        public async Task<IEnumerable<Minister>> GetMinistersByTenantIdAsync(int tenantId)
+            => await _dbContext.Set<Minister>()
+                               .Include(m => m.Member)
+                               .Include(m => m.Tenant)
                                .Where(m => m.TenantId == tenantId)
                                .ToListAsync();
     }

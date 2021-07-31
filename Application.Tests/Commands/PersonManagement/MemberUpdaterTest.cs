@@ -25,7 +25,8 @@ namespace Application.Tests.Commands.PersonManagement
             _builtServices = TestDependenciesResolver.BuildServices(services);
         }
 
-        private async Task CreateMemberForRequestAsync(ApplicationDbContext context, Domain.Entities.TenantAggregate.Tenant tenant)
+        private async Task CreateMemberForRequestAsync(ApplicationDbContext context,
+                                                       Domain.Entities.TenantAggregate.Tenant tenant)
             => await TestSeeder.CreateDemoMember(context, tenant);
 
         [Fact]
@@ -100,7 +101,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<RequestValidationException>(async ()
-                => await target.ExecuteAsync(request));
+                                                                        => await target.ExecuteAsync(request));
         }
 
         [Fact]
@@ -135,7 +136,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                                              => await target.ExecuteAsync(request));
+                                                                       => await target.ExecuteAsync(request));
         }
 
         [Fact]
@@ -170,7 +171,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                => await target.ExecuteAsync(request));
+                                                                       => await target.ExecuteAsync(request));
         }
     }
 }

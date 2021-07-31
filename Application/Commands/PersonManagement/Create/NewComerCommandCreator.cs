@@ -1,11 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
-using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Create;
-using Application.Dtos.Response.Update;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
@@ -14,12 +12,10 @@ using Application.RequestValidators;
 using AutoMapper;
 using Domain.Entities.PersonAggregate;
 using Domain.ValueObjects;
-using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
-
-namespace Application.Commands.PersonManagement.Update
+namespace Application.Commands.PersonManagement.Create
 {
-    public class MemberCommandUpdater : IUpdateMemberCommand
+    public class NewComerCommandCreator : ICreateNewComerCommand
     {
         private readonly IQueryTenant _tenantQuery;
         private readonly IQueryPersonManagement _personManagementQuery;
@@ -28,12 +24,12 @@ namespace Application.Commands.PersonManagement.Update
         private readonly IValidatePersonManagementRequestDto _requestValidator;
         private readonly IMapper _mapper;
 
-        public MemberCommandUpdater(IQueryTenant tenantQuery,
-                                    IQueryPersonManagement personManagementQuery,
-                                    IPersonManagementRepositoryAsync personManagementRepo,
-                                    IUnitOfWork unitOfWork,
-                                    IValidatePersonManagementRequestDto requestValidator,
-                                    IMapper mapper)
+        public NewComerCommandCreator(IQueryTenant tenantQuery,
+                                      IQueryPersonManagement personManagementQuery,
+                                      IPersonManagementRepositoryAsync personManagementRepo,
+                                      IUnitOfWork unitOfWork,
+                                      IValidatePersonManagementRequestDto requestValidator,
+                                      IMapper mapper)
         {
             _tenantQuery = tenantQuery;
             _personManagementQuery = personManagementQuery;
@@ -43,14 +39,12 @@ namespace Application.Commands.PersonManagement.Update
             _mapper = mapper;
         }
 
-        public async Task<UpdateMemberResponseDto> ExecuteAsync(UpdateMemberRequestDto request)
+        public async Task<CreateNewComerResponseDto> ExecuteAsync(CreateNewComerRequestDto request)
         {
-            var member
-                = await _personManagementQuery.GetMemberByIdAsync(request.MemberId,
-                                                                  request.TenantId);
+            var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
 
-            if (member is null)
-                throw new InvalidOperationException($"member {request.MemberId} not found");
+            if (tenant is null)
+                throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
 
             var person = Person.Create(request.TenantId,
                                        request.Name,
@@ -60,25 +54,27 @@ namespace Application.Commands.PersonManagement.Update
                                        request.PhoneNumber);
 
             var personValidationErrors = person.Validate();
-
             if (personValidationErrors.Any())
                 throw new RequestValidationException("Request failed validation",
                                                      new Dictionary<string, object>
                                                      {
                                                          {
                                                              "Request errors",
-                                                             string.Join(" , ",
-                                                                         personValidationErrors)
+                                                             string.Join(" , ", personValidationErrors)
                                                          }
                                                      });
 
-            PersonManagementAggregate.AssignMember(member);
-            PersonManagementAggregate.UpdateMember(person, request.IsWorker);
+            Domain.Entities.PersonAggregate.PersonManagement.CreateNewComer(person,
+                                                                             request.DateAttended,
+                                                                             request.ServiceTypeEnum,
+                                                                             tenant);
+            
+            var newComer = Domain.Entities.PersonAggregate.PersonManagement.NewComer;
 
-            _personManagementRepo.Update<Member>(PersonManagementAggregate.Member);
+            await _personManagementRepo.AddAsync<NewComer>(newComer);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<UpdateMemberResponseDto>(PersonManagementAggregate.Member);
+            return _mapper.Map<CreateNewComerResponseDto>(newComer);
         }
     }
 }

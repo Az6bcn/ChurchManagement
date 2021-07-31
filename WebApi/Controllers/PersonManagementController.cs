@@ -26,6 +26,12 @@ namespace WebApi.Controllers
         private readonly ICreateMemberCommand _createMemberCommand;
         private readonly IUpdateMemberCommand _updateMemberCommand;
         private readonly IDeleteMemberCommand _deleteMemberCommand;
+        private readonly ICreateNewComerCommand _createNewComerCommand;
+        private readonly IUpdateNewComerCommand _updateNewComerCommand;
+        private readonly IDeleteNewComerCommand _deleteNewComerCommand;
+        private readonly ICreateMinisterCommand _createMinisterCommand;
+        private readonly IUpdateMinisterCommand _updateMinisterCommand;
+        private readonly IDeleteMinisterCommand _deleteMinisterCommand;
 
         public PersonManagementController(IQueryPersonManagement personManagementQuery,
                                           ICreateDepartmentCommand createDepartmentCommand,
@@ -33,7 +39,13 @@ namespace WebApi.Controllers
                                           IDeleteDepartmentCommand deleteDepartmentCommand,
                                           ICreateMemberCommand createMemberCommand,
                                           IUpdateMemberCommand updateMemberCommand,
-                                          IDeleteMemberCommand deleteMemberCommand)
+                                          IDeleteMemberCommand deleteMemberCommand,
+                                          ICreateNewComerCommand createNewComerCommand,
+                                          IUpdateNewComerCommand updateNewComerCommand,
+                                          IDeleteNewComerCommand deleteNewComerCommand,
+                                          ICreateMinisterCommand createMinisterCommand,
+                                          IUpdateMinisterCommand updateMinisterCommand,
+                                          IDeleteMinisterCommand deleteMinisterCommand)
         {
             _personManagementQuery = personManagementQuery;
             _createDepartmentCommand = createDepartmentCommand;
@@ -42,7 +54,14 @@ namespace WebApi.Controllers
             _createMemberCommand = createMemberCommand;
             _updateMemberCommand = updateMemberCommand;
             _deleteMemberCommand = deleteMemberCommand;
+            _createNewComerCommand = createNewComerCommand;
+            _updateNewComerCommand = updateNewComerCommand;
+            _deleteNewComerCommand = deleteNewComerCommand;
+            _createMinisterCommand = createMinisterCommand;
+            _updateMinisterCommand = updateMinisterCommand;
+            _deleteMinisterCommand = deleteMinisterCommand;
         }
+
 
         #region Department
 
@@ -194,10 +213,10 @@ namespace WebApi.Controllers
             if (request!.TenantId != tenantId)
                 return BadRequest("Invalid request");
 
-            var department =
+            var member =
                 await _createMemberCommand.ExecuteAsync(request);
 
-            return Ok(ApiRequestResponse<CreateMemberResponseDto>.Succeed(department));
+            return Ok(ApiRequestResponse<CreateMemberResponseDto>.Succeed(member));
         }
 
         /// <summary>
@@ -247,10 +266,204 @@ namespace WebApi.Controllers
         }
 
         #endregion
+        
+        #region NewComers
+        /// <summary>
+        /// Gets all newcomers for provided tenantId
+        /// </summary>
+        /// <param name="tenantId">The id of the tenant which you want to get its newcomers</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetMembersResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("tenant/{tenantId:int}/newcomers")]
+        public async Task<IActionResult> GetNewcomers(int tenantId)
+        {
+            if (tenantId <= 0)
+                return BadRequest("Invalid tenantId");
+
+            var queryResult =
+                await _personManagementQuery.GetNewComersByTenantIdAsync(tenantId);
+
+            if (!queryResult.Results.Any())
+                return NotFound(ApiRequestResponse<GetMembersResponseDto>
+                                    .Fail($"No newcomers found for tenant {tenantId}"));
+
+            return Ok(ApiRequestResponse<GetNewComersResponseDto>.Succeed(queryResult.Results.ToList()));
+        }
+
+        /// <summary>
+        /// Creates a new newcomer for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant you're creating the newComer for. </param>
+        /// <param name="request">The request object</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<CreateNewComerResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("tenant/{tenantId}/newcomers")]
+        public async Task<IActionResult> CreateNewComer(int tenantId,
+                                                      [FromBody] CreateNewComerRequestDto request)
+        {
+            if (request is null || tenantId <= 0)
+                return BadRequest("Invalid request");
+
+            if (request!.TenantId != tenantId)
+                return BadRequest("Invalid request");
+
+            var newComer =
+                await _createNewComerCommand.ExecuteAsync(request);
+
+            return Ok(ApiRequestResponse<CreateNewComerResponseDto>.Succeed(newComer));
+        }
+
+        /// <summary>
+        /// Updates a newcomer for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant you're updating the newcomer for. </param>
+        /// <param name="newcomerId">Id of the newcomer to update for the tenant</param>
+        /// <param name="request">The request object</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<UpdateNewComerResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("tenant/{tenantId:int}/newcomers/{newcomerId:int}")]
+        public async Task<IActionResult> UpdateNewComer(int tenantId,
+                                                      int newcomerId,
+                                                      [FromBody] UpdateNewComerRequestDto request)
+        {
+            if (request is null || tenantId <= 0 || request.NewComerId <= 0)
+                return BadRequest("Invalid request");
+
+            if (request!.TenantId != tenantId || request.NewComerId != newcomerId)
+                return BadRequest("Invalid request");
+
+            var newComer = await _updateNewComerCommand.ExecuteAsync(request);
+
+            return Ok(ApiRequestResponse<UpdateNewComerResponseDto>.Succeed(newComer));
+        }
+
+        /// <summary>
+        /// Deletes a newcomer for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant to delete the newcomer for. </param>
+        /// <param name="newcomerId">Id the of the newcomer to delete for the tenant</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpDelete("tenant/{tenantId:int}/newcomers/{newcomerId:int}")]
+        public async Task<IActionResult> DeleteNewComer(int tenantId,
+                                                      int newcomerId)
+        {
+            if (tenantId <= 0 || newcomerId <= 0)
+                BadRequest("Invalid request");
+
+            await _deleteNewComerCommand.ExecuteAsync(newcomerId, tenantId);
+
+            return Ok(ApiRequestResponse<string>.Succeed("Deleted successfully"));
+        }
+        
+
+        #endregion
 
         #region Ministers
 
-        
+         /// <summary>
+        /// Gets all ministers for provided tenantId
+        /// </summary>
+        /// <param name="tenantId">The id of the tenant which you want to get its ministers</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetMinistersResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("tenant/{tenantId:int}/ministers")]
+        public async Task<IActionResult> GetMinisterss(int tenantId)
+        {
+            if (tenantId <= 0)
+                return BadRequest("Invalid tenantId");
+
+            var queryResult =
+                await _personManagementQuery.GetMinistersByTenantIdAsync(tenantId);
+
+            if (!queryResult.Results.Any())
+                return NotFound(ApiRequestResponse<GetMinistersResponseDto>
+                                    .Fail($"No ministers found for tenant {tenantId}"));
+
+            return Ok(ApiRequestResponse<GetMinistersResponseDto>.Succeed(queryResult.Results.ToList()));
+        }
+
+        /// <summary>
+        /// Creates a new minister for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant you're creating the minister for. </param>
+        /// <param name="request">The request object</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<CreateMinisterResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("tenant/{tenantId}/ministers")]
+        public async Task<IActionResult> CreateMinisters(int tenantId,
+                                                      [FromBody] CreateMinisterRequestDto request)
+        {
+            if (request is null || tenantId <= 0)
+                return BadRequest("Invalid request");
+
+            if (request!.TenantId != tenantId)
+                return BadRequest("Invalid request");
+
+            var minister =
+                await _createMinisterCommand.ExecuteAsync(request);
+
+            return Ok(ApiRequestResponse<CreateMinisterResponseDto>.Succeed(minister));
+        }
+
+        /// <summary>
+        /// Updates a minister for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant you're updating the minister for. </param>
+        /// <param name="ministerId">Id of the minister to update for the tenant</param>
+        /// <param name="request">The request object</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<UpdateMinisterResponseDto>),
+                                 StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("tenant/{tenantId:int}/ministers/{ministerId:int}")]
+        public async Task<IActionResult> UpdateMinister(int tenantId,
+                                                      int ministerId,
+                                                      [FromBody] UpdateMinisterRequestDto request)
+        {
+            if (request is null || tenantId <= 0 || request.MinisterId <= 0)
+                return BadRequest("Invalid request");
+
+            if (request!.TenantId != tenantId || request.MinisterId != ministerId)
+                return BadRequest("Invalid request");
+
+            var minister = await _updateMinisterCommand.ExecuteAsync(request);
+
+            return Ok(ApiRequestResponse<UpdateMinisterResponseDto>.Succeed(minister));
+        }
+
+        /// <summary>
+        /// Deletes a minister for the provided tenant
+        /// </summary>
+        /// <param name="tenantId">Id of tenant to delete the minister for. </param>
+        /// <param name="ministerId">Id the of the minister to delete for the tenant</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpDelete("tenant/{tenantId:int}/ministers/{ministerId:int}")]
+        public async Task<IActionResult> DeleteMinister(int tenantId,
+                                                      int ministerId)
+        {
+            if (tenantId <= 0 || ministerId <= 0)
+                BadRequest("Invalid request");
+
+            await _deleteMinisterCommand.ExecuteAsync(ministerId, tenantId);
+
+            return Ok(ApiRequestResponse<string>.Succeed("Deleted successfully"));
+        }
 
         #endregion
     }

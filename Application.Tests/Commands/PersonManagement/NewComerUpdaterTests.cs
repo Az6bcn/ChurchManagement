@@ -2,22 +2,25 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.PersonManagement.Create;
+using Application.Commands.PersonManagement.Update;
 using Application.Dtos.Request.Create;
+using Application.Dtos.Request.Update;
 using Application.RequestValidators;
+using Domain.Entities.PersonAggregate;
 using Domain.Validators;
-using Domain.ValueObjects;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Enums;
 using Xunit;
 
 namespace Application.Tests.Commands.PersonManagement
 {
-    public class MemberCreationTests
+    public class NewComerUpdaterTests
     {
         private readonly IServiceProvider _builtServices;
 
-        public MemberCreationTests()
+        public NewComerUpdaterTests()
         {
             var services = GetServices();
             _builtServices = TestDependenciesResolver.BuildServices(services);
@@ -29,29 +32,38 @@ namespace Application.Tests.Commands.PersonManagement
                                                        ApplicationDbContext context)
             => await TestSeeder.CreateDemoTenant(context, validator);
 
+        private async Task CreateNewComerForRequestAsync(ApplicationDbContext context,
+                                                       Domain.Entities.TenantAggregate.Tenant tenant)
+            => await TestSeeder.CreateDemoNewComer(context, tenant);
+
         [Fact]
-        public async Task ExecuteAsync_WhenCalledWithValidRequest_CreatesMemberInDb()
+        public async Task ExecuteAsync_WhenCalled_UpdatesNewComer()
         {
             // Arrange
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<IUpdateNewComerCommand>(_builtServices);
             var tenantDomainValidator
                 = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-            var target = TestDependenciesResolver.GetService<ICreateMemberCommand>(_builtServices);
 
             TestDbCreator.CreateDatabase(context);
 
             await CreateTenantForRequestAsync(tenantDomainValidator, context);
             var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
 
-            var request = new CreateMemberRequestDto
+            await CreateNewComerForRequestAsync(context, tenant);
+            var newComer = context.Set<NewComer>().AsNoTracking().Single();
+
+            var request = new UpdateNewComerRequestDto
             {
                 TenantId = tenant.TenantId,
-                Name = "Sergio`",
-                Surname = "Messi",
-                DateAndMonthOfBirth = "16/03",
-                Gender = "Male",
-                PhoneNumber = "+447700000000",
-                IsWorker = false
+                NewComerId = newComer.NewComerId,
+                Name = "Demo new comer updated",
+                Surname = newComer.Surname,
+                DateAttended = newComer.DateAttended,
+                DateAndMonthOfBirth = newComer.DateMonthOfBirth,
+                ServiceTypeEnum = (ServiceEnum)newComer.ServiceTypeId,
+                Gender = newComer.Gender,
+                PhoneNumber = newComer.PhoneNumber
             };
 
             // Act
@@ -59,16 +71,15 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Assert
             Assert.NotNull(response);
-            Assert.Equal(1, response.MemberId);
-            Assert.Equal(request.Name, response.Name);
-            Assert.Equal(request.IsWorker, response.IsWorker);
+            Assert.Equal(request.NewComerId, response.NewComerId);            Assert.Equal(request.DateAttended, response.DateAttended);
+            Assert.Equal(request.ServiceTypeEnum, response.ServiceTypeEnum);
         }
 
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithIncompleteRequest_ShouldThrowException()
         {
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
-            var target = TestDependenciesResolver.GetService<ICreateMemberCommand>(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateNewComerCommand>(_builtServices);
             var tenantDomainValidator
                 = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
 
@@ -77,15 +88,16 @@ namespace Application.Tests.Commands.PersonManagement
             await CreateTenantForRequestAsync(tenantDomainValidator, context);
             var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
 
-            var request = new CreateMemberRequestDto
+            var request = new CreateNewComerRequestDto()
             {
                 TenantId = tenant.TenantId,
-                Name = string.Empty,
+                Name = "Sergio",
                 Surname = "Ramos",
+                DateAttended = DateTime.UtcNow,
                 DateAndMonthOfBirth = "16/03",
+                ServiceTypeEnum = ServiceEnum.SundayService,
                 Gender = "Male",
-                PhoneNumber = "+447700000000",
-                IsWorker = false
+                PhoneNumber = "07700000000"
             };
 
             // Act and Assert
@@ -93,11 +105,12 @@ namespace Application.Tests.Commands.PersonManagement
                                                                      => await target.ExecuteAsync(request));
         }
 
+
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithRequestWithInvalidPhoneNumber_ShouldThrowException()
         {
             var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
-            var target = TestDependenciesResolver.GetService<ICreateMemberCommand>(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateNewComerCommand>(_builtServices);
             var tenantDomainValidator
                 = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
 
@@ -106,20 +119,49 @@ namespace Application.Tests.Commands.PersonManagement
             await CreateTenantForRequestAsync(tenantDomainValidator, context);
             var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
 
-            var request = new CreateMemberRequestDto
+            var request = new CreateNewComerRequestDto()
+            {
+                TenantId = tenant.TenantId,
+                Name = "Sergio",
+                Surname = "Ramos",
+                DateAttended = DateTime.UtcNow,
+                DateAndMonthOfBirth = "16/03",
+                ServiceTypeEnum = ServiceEnum.SundayService,
+                Gender = "Male",
+                PhoneNumber = "07700000000"
+            };
+
+            // Act and Assert
+            await Assert.ThrowsAsync<RequestValidationException>(async ()
+                                                                     => await target.ExecuteAsync(request));
+        }
+        
+        [Fact]
+        public async Task ExecuteAsync_WhenCalledWithRequestWithDefaultSteAttended_ShouldThrowException()
+        {
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<ICreateNewComerCommand>(_builtServices);
+            var tenantDomainValidator
+                = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
+
+            TestDbCreator.CreateDatabase(context);
+
+            await CreateTenantForRequestAsync(tenantDomainValidator, context);
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
+
+            var request = new CreateNewComerRequestDto()
             {
                 TenantId = tenant.TenantId,
                 Name = "Sergio",
                 Surname = "Ramos",
                 DateAndMonthOfBirth = "16/03",
+                ServiceTypeEnum = ServiceEnum.SundayService,
                 Gender = "Male",
-                PhoneNumber = "07700000000",
-                IsWorker = false
+                PhoneNumber = "+447700000000"
             };
 
             // Act and Assert
-            await Assert.ThrowsAsync<RequestValidationException>(
-                                                                 async ()
+            await Assert.ThrowsAsync<DomainValidationException>(async ()
                                                                      => await target.ExecuteAsync(request));
         }
     }

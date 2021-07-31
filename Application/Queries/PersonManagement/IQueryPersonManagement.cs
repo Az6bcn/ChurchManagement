@@ -17,5 +17,15 @@ namespace Application.Queries.PersonManagement
 
         Task<Member?> GetMemberByIdAsync(int memberId, int tenantId);
         Task<QueryResult<GetMembersResponseDto>> GetMembersByTenantIdAsync(int tenantId);
+
+        Task<NewComer?> GetNewComerByIdAsync(int newComerId,
+                                             int tenantId);
+
+        Task<QueryResult<GetNewComersResponseDto>> GetNewComersByTenantIdAsync(int tenantId);
+
+        Task<Minister?> GetMinisterByIdAsync(int ministerId,
+                                             int tenantId);
+
+        Task<QueryResult<GetMinistersResponseDto>> GetMinistersByTenantIdAsync(int tenantId);
     }
 }

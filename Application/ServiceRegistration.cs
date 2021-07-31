@@ -44,6 +44,14 @@ namespace Application
             services.AddScoped<IUpdateMemberCommand, MemberCommandUpdater>();
             services.AddScoped<IDeleteMemberCommand, MemberDeleteCommand>();
 
+            services.AddScoped<ICreateNewComerCommand, NewComerCommandCreator>();
+            services.AddScoped<IUpdateNewComerCommand, NewComerCommandUpdater>();
+            services.AddScoped<IDeleteNewComerCommand, NewComerDeleteCommand>();
+
+            services.AddScoped<ICreateMinisterCommand, MinisterCommandCreator>();
+            services.AddScoped<IUpdateMinisterCommand, MinisterCommandUpdater>();
+            services.AddScoped<IDeleteMinisterCommand, MinisterDeleteCommand>();
+
         }
     }
 }

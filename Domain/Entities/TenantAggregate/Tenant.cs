@@ -81,7 +81,7 @@ namespace Domain.Entities.TenantAggregate
 
         public void AssignValuesToTenantStatusObject(TenantStatusEnum tenantStatusEnum)
         {
-            var tenantStatusEnumValue = GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
+            var tenantStatusEnumValue = EnumService<TenantStatusEnum>.GetValue(tenantStatusEnum);
             TenantStatus = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
         }
 
@@ -97,16 +97,9 @@ namespace Domain.Entities.TenantAggregate
 
 
         private EnumValue GetCurrencyEnumValue(CurrencyEnum currencyEnum)
-            => GetEnumValue<CurrencyEnum>(currencyEnum);
+            => EnumService<CurrencyEnum>.GetValue(currencyEnum);
 
         private EnumValue GetTenantStatusEnumValue(TenantStatusEnum tenantStatusEnum)
-            => GetEnumValue<TenantStatusEnum>(tenantStatusEnum);
-
-        private EnumValue GetEnumValue<T>(T enumType) where T : Enum
-        {
-            EnumService<T>.GetEnumValue(enumType, out var result);
-
-            return result;
-        }
+            => EnumService<TenantStatusEnum>.GetValue(tenantStatusEnum);
     }
 }
