@@ -57,7 +57,6 @@ namespace Application.Tests.Commands.PersonManagement
             await target.ExecuteAsync(newComer.NewComerId, tenant.TenantId);
 
             // Assert
-            var newComerUpdated = context.Set<NewComer>().ToList();
             Assert.NotNull(newComer.Deleted);
         }
 
