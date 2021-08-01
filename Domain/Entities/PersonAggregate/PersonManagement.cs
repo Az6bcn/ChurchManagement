@@ -12,6 +12,7 @@ namespace Domain.Entities.PersonAggregate
         public static NewComer NewComer { get; private set; }
         public static Minister Minister { get; private set; }
         public static Department Department { get; private set; }
+        public static DepartmentMembers DepartmentMembers { get; private set; }
 
         public static Department AssignDepartment(Department department) => Department = department;
 
@@ -53,15 +54,32 @@ namespace Domain.Entities.PersonAggregate
             => NewComer.Update(person, dateAttended, serviceEnumType);
 
         public static void DeleteNewComer() => NewComer.Delete();
-        
+
         public static void AssignMinister(Minister minister) => Minister = minister;
 
-        public static void CreateMinister(Member member, MinisterTitleEnum ministerTitle) 
+        public static void CreateMinister(Member member,
+                                          MinisterTitleEnum ministerTitle)
             => Minister = Minister.Create(member, ministerTitle);
 
-        public static void UpdateMinister(Minister minister, MinisterTitleEnum ministerTitle) 
+        public static void UpdateMinister(Minister minister,
+                                          MinisterTitleEnum ministerTitle)
             => Minister.Update(minister, ministerTitle);
 
-        public static void Delete() => Minister.Delete();
+        public static void DeleteMinister() => Minister.Delete();
+
+        public static void AssignDepartmentMembers(DepartmentMembers departmentMember)
+            => DepartmentMembers = departmentMember;
+
+        public static void AssignMemberToDepartment(Member member,
+                                                    Department department,
+                                                    bool isHod,
+                                                    DateTime dateJoined)
+            => DepartmentMembers = DepartmentMembers.Assign(department, member, isHod, dateJoined);
+
+        public static void UnAssignMemberFromDepartment()
+            => DepartmentMembers.UnAssignMember();
+
+        public static void UnAssignAsHod() => DepartmentMembers.RemoveAsHod();
+        
     }
 }

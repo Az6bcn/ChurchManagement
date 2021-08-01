@@ -52,6 +52,10 @@ namespace Application
             services.AddScoped<IUpdateMinisterCommand, MinisterCommandUpdater>();
             services.AddScoped<IDeleteMinisterCommand, MinisterDeleteCommand>();
 
+            services.AddScoped<IAssignMemberToDepartmentCommand, AssignMemberToDepartmentCommand>();
+            services.AddScoped<IUnAssignMemberFromDepartment, UnAssignMemberFromDepartmentCommand>();
+            services.AddScoped<IUnAssignHeadOfDepartmentCommand, UnAssignHeadOfDepartmentCommand>();
+
         }
     }
 }

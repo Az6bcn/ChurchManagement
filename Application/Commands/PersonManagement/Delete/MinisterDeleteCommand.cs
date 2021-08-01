@@ -30,7 +30,7 @@ namespace Application.Commands.PersonManagement.Delete
                 throw new ArgumentException($"Minister {memberId} not found ");
 
             PersonManagementAggregate.AssignMinister(minister);
-            PersonManagementAggregate.DeleteMember();
+            PersonManagementAggregate.DeleteMinister();
 
             _personManagementRepo.Update(minister);
             await _unitOfWork.SaveChangesAsync();

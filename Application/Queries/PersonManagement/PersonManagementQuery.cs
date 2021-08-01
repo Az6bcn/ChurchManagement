@@ -108,7 +108,7 @@ namespace Application.Queries.PersonManagement
                 .Select(m => new GetMinistersResponseDto
                 {
                     MinisterId = m.MinisterId,
-                    MinisterTitle = (MinisterTitleEnum)m.MinisterTitleId,
+                    MinisterTitle = (MinisterTitleEnum) m.MinisterTitleId,
                     TenantId = m.TenantId,
                     MemberId = m.MemberId,
                     Name = m.Member.Name,
@@ -120,5 +120,10 @@ namespace Application.Queries.PersonManagement
 
             return QueryResult<GetMinistersResponseDto>.CreateQueryResults(response);
         }
+
+        public async Task<DepartmentMembers> GetDepartmentMemberAsync(int departmentId,
+                                                                      int memberId,
+                                                                      int tenantId)
+            => await _personManagementRepo.GetDepartmentMemberAsync(departmentId, memberId, tenantId);
     }
 }
