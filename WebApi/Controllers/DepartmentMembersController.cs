@@ -34,20 +34,16 @@ namespace WebApi.Controllers
         /// Assigns a member to a department.
         /// </summary>
         /// <param name="departmentId"> Department to assign member to.</param>
-        /// <param name="memberId">Member to assign to the department</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("department/{departmentId:int}/assign/member/{memberId:int}")]
+        [HttpPost("department/{departmentId:int}/assign-member")]
         public async Task<IActionResult> AssignMemberToDepartment(int departmentId,
-                                                                  int memberId,
                                                                   [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || memberId <= 0
-                                  || departmentId != request.DepartmentId
-                                  || memberId != request.MemberId)
-                return BadRequest("Invalid department od member Id");
+            if (departmentId <= 0 || departmentId != request.DepartmentId)
+                return BadRequest("Invalid department Id");
 
             await _assignMemberToDepartmentCommand.ExecuteAsync(request);
 
@@ -58,45 +54,37 @@ namespace WebApi.Controllers
         /// Unassigns a member from a department.
         /// </summary>
         /// <param name="departmentId"> Department to un-assign member from.</param>
-        /// <param name="memberId">Member to un-assign to the department</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("department/{departmentId:int}/unassign/member/{memberId:int}")]
+        [HttpPost("department/{departmentId:int}/unassign-member")]
         public async Task<IActionResult> UnAssignMemberToDepartment(int departmentId,
-                                                                    int memberId,
                                                                     [FromBody]
                                                                     AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || memberId <= 0
-                                  || departmentId != request.DepartmentId
-                                  || memberId != request.MemberId)
-                return BadRequest("Invalid department or member Id");
+            if (departmentId <= 0 || departmentId != request.DepartmentId)
+                return BadRequest("Invalid department Id");
 
             await _unAssignHeadOfDepartmentCommand.ExecuteAsync(request);
 
-            return Ok(ApiRequestResponse<string>.Succeed($"Member unassigned to department successfully"));
+            return Ok(ApiRequestResponse<string>.Succeed($"Member unassigned from department successfully"));
         }
         
         /// <summary>
         /// Assigns a member as the HOD a department.
         /// </summary>
         /// <param name="departmentId"> Department to assign the member to as HOD.</param>
-        /// <param name="memberId">Member to assign as the HOD of the department</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("department/{departmentId:int}/assignhod/member/{memberId:int}")]
+        [HttpPost("department/{departmentId:int}/assign-hod")]
         public async Task<IActionResult> AssignAsHod(int departmentId,
-                                                     int memberId,
                                                      [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || memberId <= 0
-                                  || departmentId != request.DepartmentId
-                                  || memberId != request.MemberId)
-                return BadRequest("Invalid department or member Id");
+            if (departmentId <= 0 || departmentId != request.DepartmentId)
+                return BadRequest("Invalid department Id");
 
             await _assignHeadOfDepartmentCommand.ExecuteAsync(request);
 
@@ -107,20 +95,16 @@ namespace WebApi.Controllers
         /// Removes a member as the HOD a department.
         /// </summary>
         /// <param name="departmentId"> Department to remove the member from as HOD.</param>
-        /// <param name="memberId">Member to remove as HOD of the department</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost("department/{departmentId:int}/unassignhod/member/{memberId:int}")]
+        [HttpPost("department/{departmentId:int}/unassign-hod")]
         public async Task<IActionResult> RemoveAsHod(int departmentId,
-                                                     int memberId,
                                                      [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || memberId <= 0
-                                  || departmentId != request.DepartmentId
-                                  || memberId != request.MemberId)
-                return BadRequest("Invalid department or member Id");
+            if (departmentId <= 0 || departmentId != request.DepartmentId)
+                return BadRequest("Invalid department Id");
 
             await _unAssignHeadOfDepartmentCommand.ExecuteAsync(request);
 
