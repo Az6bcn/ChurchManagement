@@ -54,6 +54,7 @@ namespace Application
 
             services.AddScoped<IAssignMemberToDepartmentCommand, AssignMemberToDepartmentCommand>();
             services.AddScoped<IUnAssignMemberFromDepartment, UnAssignMemberFromDepartmentCommand>();
+            services.AddScoped<IAssignHeadOfDepartmentCommand,AssignHeadOfDepartmentCommand>();
             services.AddScoped<IUnAssignHeadOfDepartmentCommand, UnAssignHeadOfDepartmentCommand>();
 
         }

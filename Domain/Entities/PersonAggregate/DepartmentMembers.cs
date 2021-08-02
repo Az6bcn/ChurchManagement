@@ -60,8 +60,11 @@ namespace Domain.Entities.PersonAggregate
 
         public void UnAssignMember() => Deleted = DateTime.UtcNow;
 
+        internal void AssignAsHod() => IsHeadOfDepartment = true;
+
         public void RemoveAsHod() => IsHeadOfDepartment = false;
-        
+
+
         private bool Validate(DateTime dateJoined,
                               out IDictionary<string, object> error)
         {

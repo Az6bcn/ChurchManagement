@@ -209,6 +209,69 @@ namespace Application.Tests.Commands.PersonManagement
         }
 
         [Fact]
+        public async Task WhenCalled_AssignsDepartmentHod()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<IAssignHeadOfDepartmentCommand>(_builtServices);
+            TestDbCreator.CreateDatabase(context);
+            var request = await CreateUnAssignRequestAsync(context, true);
+            
+            // Act
+            await target.ExecuteAsync(request);
+
+            // Assert
+            var departmentMember = context.Set<DepartmentMembers>().Single();
+            Assert.True(departmentMember.IsHeadOfDepartment);
+        }
+        
+        
+        [Fact]
+        public async Task WhenCalled_ToAssignDepartmentHodWithInvalidMemberId_ThrowsException()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<IAssignHeadOfDepartmentCommand>(_builtServices);
+            TestDbCreator.CreateDatabase(context);
+            var request = await CreateRequestAsync(context);
+            request.DateJoined = DateTime.UtcNow;
+            request.MemberId = 99999;
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(async ()=> await target.ExecuteAsync(request));
+        }
+        
+        [Fact]
+        public async Task WhenCalled_ToAssignDepartmentHodWithInvalidDepartmentId_ThrowsException()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<IAssignHeadOfDepartmentCommand>(_builtServices);
+            TestDbCreator.CreateDatabase(context);
+            var request = await CreateRequestAsync(context);
+            request.DateJoined = DateTime.UtcNow;
+            request.DepartmentId = 99999;
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(async ()=> await target.ExecuteAsync(request));
+        }
+        
+        [Fact]
+        public async Task WhenCalled_ToAssignDepartmentHodWithInvalidTenantId_ThrowsException()
+        {
+            // Arrange
+            var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
+            var target = TestDependenciesResolver.GetService<IAssignHeadOfDepartmentCommand>(_builtServices);
+            TestDbCreator.CreateDatabase(context);
+            var request = await CreateRequestAsync(context);
+            request.DateJoined = DateTime.UtcNow;
+            request.TenantId = 99999;
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(async ()=> await target.ExecuteAsync(request));
+        }
+
+        [Fact]
         public async Task WhenCalled_UnAssignsDepartmentHod()
         {
             // Arrange

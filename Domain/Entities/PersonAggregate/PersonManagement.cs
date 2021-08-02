@@ -78,8 +78,10 @@ namespace Domain.Entities.PersonAggregate
 
         public static void UnAssignMemberFromDepartment()
             => DepartmentMembers.UnAssignMember();
+        public static void AssignAsHod() => DepartmentMembers.AssignAsHod();
 
         public static void UnAssignAsHod() => DepartmentMembers.RemoveAsHod();
+
         
     }
 }
