@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
 using Domain.Entities.PersonAggregate;
@@ -7,6 +8,7 @@ using Domain.Entities.TenantAggregate;
 using Domain.Validators;
 using Domain.ValueObjects;
 using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using Shared.Enums;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
@@ -72,6 +74,45 @@ namespace Application.Tests
 
             context.Update(PersonManagementAggregate.NewComer);
             await TestDbCreator.SaveChangesAsync(context);
+        }
+
+        public static async Task<AssignMemberToDepartmentRequestDto>
+            CreateDemoDepartmentMemberAsync(ApplicationDbContext context,
+                                            IValidateTenantInDomain validator,
+                                            bool isHod)
+        {
+            await TestSeeder.CreateDemoTenant(context, validator);
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+                                .AsNoTracking()
+                                .Single();
+
+            await TestSeeder.CreateDemoMember(context, tenant);
+
+            await TestSeeder.CreateDemoDepartment(context, tenant);
+            context.ChangeTracker.Clear();
+            var member = context.Set<Member>()
+                                .AsNoTracking()
+                                .Single();
+
+            var department = context.Set<Department>()
+                                    .AsNoTracking()
+                                    .Single();
+
+            context.ChangeTracker.Clear();
+            var departs = new DepartmentMembers(member.MemberId, department.DepartmentId, isHod, DateTime.UtcNow);
+
+            await context.AddAsync(departs);
+            await TestDbCreator.SaveChangesAsync(context);
+
+            var request = new AssignMemberToDepartmentRequestDto
+            {
+                TenantId = tenant.TenantId,
+                DepartmentId = department.DepartmentId,
+                MemberId = member.MemberId,
+                IsHeadOfDepartment = isHod
+            };
+
+            return request;
         }
     }
 }

@@ -93,5 +93,16 @@ namespace Infrastructure.Persistence.Repositories
                                .Include(m => m.Tenant)
                                .Where(m => m.TenantId == tenantId)
                                .ToListAsync();
+
+        public async Task<DepartmentMembers> GetDepartmentMemberAsync(int departmentId,
+                                                                      int memberId,
+                                                                      int tenantId)
+            => await _dbContext.Set<DepartmentMembers>()
+                               .Include(dm => dm.Member)
+                               .Include(dm => dm.Department)
+                               .SingleOrDefaultAsync(dm => dm.MemberId == memberId
+                                                           && dm.DepartmentId == departmentId
+                                                           && dm.Member.TenantId == tenantId
+                                                           && dm.Department.TenantId == tenantId);
     }
 }
