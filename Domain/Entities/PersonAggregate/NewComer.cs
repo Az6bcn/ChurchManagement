@@ -21,7 +21,7 @@ namespace Domain.Entities.PersonAggregate
                           Tenant tenant)
         {
             if (!Validate(dateAttended, out IDictionary<string, object> error))
-                throw new DomainValidationException("Failed validation", error);
+                throw new DomainValidationException("Failed domain validation", error);
             
             var serviceTypeEnumValue = GetServiceTypeEnumValue(serviceTypeEnum);
             ServiceType = ServiceType.Create(serviceTypeEnumValue.Id, serviceTypeEnumValue.Value);
@@ -65,7 +65,7 @@ namespace Domain.Entities.PersonAggregate
                                   ServiceEnum serviceEnumType)
         {
             if (!Validate(dateAttended, out IDictionary<string, object> error))
-                throw new DomainValidationException("Failed validation", error);
+                throw new DomainValidationException("Failed domain validation", error);
             
             TenantId = person.TenantId;
             Name = person.Name;

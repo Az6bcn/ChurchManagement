@@ -28,7 +28,7 @@ namespace Domain.Entities.PersonAggregate
                                    DateTime dateJoined)
         {
             if (!Validate(dateJoined, out IDictionary<string, object> error))
-                throw new DomainValidationException("Failed validation", error);
+                throw new DomainValidationException("Failed domain validation", error);
 
             DepartmentId = department.DepartmentId;
             MemberId = member.MemberId;
