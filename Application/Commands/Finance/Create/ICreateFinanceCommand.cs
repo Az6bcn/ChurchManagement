@@ -1,10 +1,7 @@
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
-using Application.Dtos.Response.Create;
-using Application.Interfaces.UnitOfWork;
-using AutoMapper;
 
-namespace Application.Commands.PersonManagement.Create
+namespace Application.Commands.Finance.Create
 {
     public interface ICreateFinanceCommand
     {

@@ -1,4 +1,6 @@
 using System.Reflection;
+using Application.Commands.Finance.Create;
+using Application.Commands.Finance.Update;
 using Application.Commands.PersonManagement.Create;
 using Application.Commands.PersonManagement.Delete;
 using Application.Commands.PersonManagement.Update;
@@ -63,7 +65,7 @@ namespace Application
             services.AddScoped<IUnAssignHeadOfDepartmentCommand, UnAssignHeadOfDepartmentCommand>();
 
             services.AddScoped<ICreateFinanceCommand, FinanceCreatorCommand>();
-
+            services.AddScoped<IUpdateFinanceCommand, FinanceUpdaterCommand>();
         }
     }
 }

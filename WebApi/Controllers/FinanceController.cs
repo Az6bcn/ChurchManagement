@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Commands.Finance.Create;
 using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Microsoft.AspNetCore.Http;

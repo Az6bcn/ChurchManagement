@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Commands.Finance.Create;
 using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Domain.Validators;
@@ -47,7 +48,7 @@ namespace Application.Tests.Commands.Finance
                 CurrencyTypeEnum = CurrencyEnum.UsDollars,
                 Amount = 234.5m,
                 GivenDate = DateTime.Now.Date,
-                Description = "Fires Thanksgiving Offering"
+                Description = "First Thanksgiving Offering"
             };
 
             // Act

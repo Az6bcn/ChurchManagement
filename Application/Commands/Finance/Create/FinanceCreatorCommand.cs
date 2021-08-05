@@ -1,16 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
-using Application.Dtos.Response.Create;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finance;
 using Application.Queries.Tenant;
 using AutoMapper;
-using Domain.Entities.FinanceAggregate;
 using Domain.Validators;
 
-namespace Application.Commands.PersonManagement.Create
+namespace Application.Commands.Finance.Create
 {
     public class FinanceCreatorCommand : ICreateFinanceCommand
     {
@@ -42,14 +40,14 @@ namespace Application.Commands.PersonManagement.Create
             if (tenant is null)
                 throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
 
-            var finance = Finance.Create(_validator,
-                                        tenant,
-                                        request.Amount,
-                                        request.FinanceTypeEnum,
-                                        request.ServiceTypeEnum,
-                                        request.CurrencyTypeEnum,
-                                        request.GivenDate,
-                                        request.Description);
+            var finance = Domain.Entities.FinanceAggregate.Finance.Create(_validator,
+                                                                          tenant,
+                                                                          request.Amount,
+                                                                          request.FinanceTypeEnum,
+                                                                          request.ServiceTypeEnum,
+                                                                          request.CurrencyTypeEnum,
+                                                                          request.GivenDate,
+                                                                          request.Description);
 
             await _financeRepo.AddAsync(finance);
             await _unitOfWork.SaveChangesAsync();
