@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IGenericRepositoryAsync<T> where T : class
+    public interface IGenericRepositoryAsync<T> where T : class, IAggregateRoot
     {
         Task<ICollection<T>> GetAllAsync();
         Task<ICollection<T>> GetAsync(Expression<Func<T, bool>> predicate);

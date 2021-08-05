@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
+using Domain.Entities.FinanceAggregate;
 using Domain.Entities.PersonAggregate;
 using Domain.Entities.TenantAggregate;
 using Domain.Validators;
@@ -113,6 +114,31 @@ namespace Application.Tests
             };
 
             return request;
+        }
+
+        public static async Task CreateDemoFinance(IValidateTenantInDomain tenantValidator,
+                                                   IValidateFinanceInDomain financeValidator,
+                                                   ApplicationDbContext context)
+        {
+            await CreateDemoTenant(context, tenantValidator);
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+                                .AsNoTracking()
+                                .Single();
+            context.ChangeTracker.Clear();
+
+            var finance = Finance.Create(financeValidator,
+                                         tenant,
+                                  50m,
+                                         FinanceEnum.Thanksgiving,
+                                         ServiceEnum.SundayService,
+                                         CurrencyEnum.UsDollars,
+                                         DateTime.Now,
+                             "Demo");
+
+            context.ChangeTracker.Clear();
+
+            context.Update(finance);
+            await TestDbCreator.SaveChangesAsync(context);
         }
     }
 }

@@ -1,4 +1,7 @@
 using System.Reflection;
+using Application.Commands.Finance.Create;
+using Application.Commands.Finance.Delete;
+using Application.Commands.Finance.Update;
 using Application.Commands.PersonManagement.Create;
 using Application.Commands.PersonManagement.Delete;
 using Application.Commands.PersonManagement.Update;
@@ -7,6 +10,7 @@ using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries;
+using Application.Queries.Finance;
 using Application.Queries.PersonManagement;
 using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDashboardData;
@@ -22,22 +26,26 @@ namespace Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Domain
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
+            services.AddScoped<IValidateFinanceInDomain, FinanceInDomainValidator>();
             
             // Application
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            
             services.AddScoped<ICreateTenantCommand, TenantCommandCreator>();
             services.AddScoped<IUpdateTenantCommand, TenantCommandUpdater>();
             services.AddScoped<IDeleteTenantCommand, TenantDeleteCommand>();
-            services.AddScoped<IQueryTenant, TenantQuery>();
             services.AddScoped<IQueryTenantDetails, TenantDetailsQuery>();
-            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
             services.AddScoped<IValidateTenantRequestDto, TenantRequestDtoValidator>();
-            services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
+            
+            services.AddScoped<IQueryTenant, TenantQuery>();
+            services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
+            services.AddScoped<IQueryPersonManagement, PersonManagementQuery>();
+            services.AddScoped<IQueryFinance, FinanceQuery>();
 
             services.AddScoped<ICreateDepartmentCommand, DepartmentCommandCreator>();
             services.AddScoped<IUpdateDepartmentCommand, DepartmentCommandUpdater>();
             services.AddScoped<IDeleteDepartmentCommand, DepartmentDeleteCommand>();
-            services.AddScoped<IQueryPersonManagement, PersonManagementQuery>();
             services.AddScoped<IValidatePersonManagementRequestDto, PersonManagementRequestDtoValidator>();
 
             services.AddScoped<ICreateMemberCommand, MemberCommandCreator>();
@@ -57,6 +65,9 @@ namespace Application
             services.AddScoped<IAssignHeadOfDepartmentCommand,AssignHeadOfDepartmentCommand>();
             services.AddScoped<IUnAssignHeadOfDepartmentCommand, UnAssignHeadOfDepartmentCommand>();
 
+            services.AddScoped<ICreateFinanceCommand, FinanceCreatorCommand>();
+            services.AddScoped<IUpdateFinanceCommand, FinanceUpdaterCommand>();
+            services.AddScoped<IDeleteFinanceCommand, FinanceDeleteCommand>();
         }
     }
 }
