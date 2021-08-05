@@ -124,6 +124,7 @@ namespace Application.Tests
             var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
                                 .AsNoTracking()
                                 .Single();
+            context.ChangeTracker.Clear();
 
             var finance = Finance.Create(financeValidator,
                                          tenant,
@@ -134,9 +135,9 @@ namespace Application.Tests
                                          DateTime.Now,
                              "Demo");
 
-            //context.ChangeTracker.Clear();
+            context.ChangeTracker.Clear();
 
-            await context.AddAsync(finance);
+            context.Update(finance);
             await TestDbCreator.SaveChangesAsync(context);
         }
     }

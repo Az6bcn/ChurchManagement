@@ -1,17 +1,19 @@
-using System;
-using System.Threading.Tasks;
-using Application.Dtos.Request.Update;
+﻿using Application.Dtos.Request.Update;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finance;
 using Application.Queries.Tenant;
 using AutoMapper;
-using Domain.Entities.TenantAggregate;
 using Domain.Validators;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Application.Commands.Finance.Update
+namespace Application.Commands.Finance.Delete
 {
-    public class FinanceUpdaterCommand: IUpdateFinanceCommand
+    public class FinanceDeleteCommand: IDeleteFinanceCommand
     {
         private readonly IQueryFinance _financeQuery;
         private readonly IFinanceRepositoryAsync _financeRepo;
@@ -20,7 +22,7 @@ namespace Application.Commands.Finance.Update
         private readonly IValidateFinanceInDomain _validator;
         private readonly IMapper _mapper;
 
-        public FinanceUpdaterCommand(IQueryFinance financeQuery,
+        public FinanceDeleteCommand(IQueryFinance financeQuery,
                                      IFinanceRepositoryAsync financeRepo,
                                      IQueryTenant tenantQuery,
                                      IUnitOfWork unitOfWork,
@@ -35,20 +37,13 @@ namespace Application.Commands.Finance.Update
             _mapper = mapper;
         }
 
-        public async Task ExecuteAsync(UpdateFinanceRequestDto request)
+        public async Task ExecuteAsync(int financeId, int tenantId)
         {
-            var finance = await _financeQuery.GetFinanceByIdAndTenantIdAsync(request.FinanceId, request.TenantId);
+            var finance = await _financeQuery.GetFinanceByIdAndTenantIdAsync(financeId, tenantId);
             if (finance is null)
-                throw new InvalidOperationException($"Finace {request.FinanceId} not found");
-            
-            finance.Update(_validator,
-                        finance.Tenant,
-                        request.Amount,
-                        request.FinanceTypeEnum,
-                        request.ServiceTypeEnum,
-                        request.CurrencyTypeEnum,
-                        request.GivenDate,
-                        request.Description);
+                throw new InvalidOperationException($"Finace {financeId} not found");
+
+            finance.Delete();
 
             _financeRepo.Update(finance);
             await _unitOfWork.SaveChangesAsync();

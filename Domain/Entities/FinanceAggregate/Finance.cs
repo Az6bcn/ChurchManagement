@@ -80,7 +80,40 @@ namespace Domain.Entities.FinanceAggregate
                              DateTime givenDate,
                              string? description)
             => new(validator, tenant, amount, financeEnum, serviceEnum, currencyEnum, givenDate, description);
-        
+
+        public void Update(IValidateFinanceInDomain validator,
+                             Tenant tenant,
+                             decimal amount,
+                             FinanceEnum financeEnum,
+                             ServiceEnum serviceEnum,
+                             CurrencyEnum currencyEnum,
+                             DateTime givenDate,
+                             string? description)
+        {
+            if (!validator.Validate(amount, givenDate, out var errors))
+                throw new DomainValidationException("Request failed domain validation", errors);
+
+            var serviceEnumValue = GetServiceTypeEnumValue(serviceEnum);
+            var financeEnumValue = GetFinanceTypeEnumValue(financeEnum);
+            var currencyEnumValue = GetCurrencyTypeEnumValue(currencyEnum);
+
+            Tenant = tenant;
+            TenantId = tenant.TenantId;
+            FinanceTypeId = financeEnumValue.Id;
+            ServiceTypeId = serviceEnumValue.Id;
+            CurrencyId = currencyEnumValue.Id;
+            Amount = amount;
+            GivenDate = givenDate.Date;
+
+            if (!string.IsNullOrWhiteSpace(description))
+                Description = description;
+
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+
+        public void Delete() => Deleted = DateTime.UtcNow;
+
         private EnumValue GetServiceTypeEnumValue(ServiceEnum serviceEnum)
             => EnumService<ServiceEnum>.GetValue(serviceEnum);
         
