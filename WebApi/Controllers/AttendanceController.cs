@@ -11,6 +11,7 @@ using Application.Commands.Finance.Update;
 using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
+using Application.Queries.PersonManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Helpers;
@@ -19,15 +20,15 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AttendanceController : ControllerBase
+    public class AttendancesController : ControllerBase
     {
         private readonly ICreateAttendanceCommand _createAttendanceCommand;
         private readonly IUpdateAttendanceCommand _updateAttendanceCommand;
         private readonly IDeleteAttendanceCommand _deleteAttendanceCommand;
 
-        public AttendanceController(ICreateAttendanceCommand createAttendanceCommand,
-                                    IUpdateAttendanceCommand updateAttendanceCommand,
-                                    IDeleteAttendanceCommand deleteAttendanceCommand)
+        public AttendancesController(ICreateAttendanceCommand createAttendanceCommand,
+                                     IUpdateAttendanceCommand updateAttendanceCommand,
+                                     IDeleteAttendanceCommand deleteAttendanceCommand)
         {
             _createAttendanceCommand = createAttendanceCommand;
             _updateAttendanceCommand = updateAttendanceCommand;
@@ -37,12 +38,12 @@ namespace WebApi.Controllers
         /// <summary>
         /// Create a new attendance entry for the tenant.
         /// </summary>
-        /// <param name="tenantId">Tenant to create the attendance entry record for</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpPost("{tenant:int}")]
-        public async Task<IActionResult> CreateAttendance(int tenantId, [FromBody] CreateAttendanceRequestDto request)
+        [HttpPost]
+        public async Task<IActionResult> CreateAttendance([FromBody] CreateAttendanceRequestDto request)
         {
+            var tenantId = 0;
             if (request is null)
                 return BadRequest("Invalid request");
 
@@ -55,40 +56,39 @@ namespace WebApi.Controllers
         /// <summary>
         /// Updates attendance for the indicated tenant
         /// </summary>
-        /// <param name="tenantId">Tenant to update the attendance record for</param>
         /// <param name="attendanceId">Attendance record Id to be updated</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpPut("{tenant:int}/attendances/{attendanceId:int}")]
-        public async Task<IActionResult> UpdateAttendance(int tenantId, int attendanceId, [FromBody] 
+        [HttpPut("{attendanceId:int}")]
+        public async Task<IActionResult> UpdateAttendance(int attendanceId, [FromBody] 
         UpdateAttendanceRequestDto 
         request)
         {
+            var tenantId = 0;
             if (tenantId != request.TenantId || attendanceId != request.AttendanceId)
                 return BadRequest("Invalid request");
 
             await _updateAttendanceCommand.ExecuteAsync(request);
 
-            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfuly"));
+            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfully"));
         }
 
 
         /// <summary>
         /// Deletes attendance for the indicated tenant
         /// </summary>
-        /// <param name="tenantId">Tenant to delete the finance record for</param>
         /// <param name="attendanceId">Attendance record Id to be deleted</param>
-        /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpDelete("{tenant:int}/attendances/{attendanceId:int}")]
-        public async Task<IActionResult> DeleteFinance(int tenantId, int attendanceId)
+        [HttpDelete("{attendanceId:int}")]
+        public async Task<IActionResult> DeleteFinance(int attendanceId)
         {
-            if (tenantId != request.TenantId || attendanceId != request.FinanceId)
+            var tenantId = 0;
+            if (tenantId <= 0 || attendanceId <= 0)
                 return BadRequest("Invalid request");
 
-            await _deleteAttendanceCommand.ExecuteAsync(request);
+            await _deleteAttendanceCommand.ExecuteAsync(attendanceId, tenantId);
 
-            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfuly"));
+            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfully"));
         }
     }
 }

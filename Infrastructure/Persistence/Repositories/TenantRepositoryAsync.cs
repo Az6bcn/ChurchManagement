@@ -42,8 +42,7 @@ namespace Infrastructure.Persistence.Repositories
             return response;
         }
 
-        public async Task<Tenant?> GetMonthDashboardDataAsync(Guid tenantGuidId,
-                                                              int tenantId)
+        public async Task<Tenant?> GetMonthDashboardDataAsync(int tenantId)
         {
             var today = DateTime.Now;
             var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
@@ -65,8 +64,7 @@ namespace Infrastructure.Persistence.Repositories
                                            // .Include(t => t.Currency)
                                            // .Where(t => t.TenantId == tenantId && t.TenantGuidId == tenantGuidId)
                                            // .AsSplitQuery()
-                                           .SingleOrDefaultAsync(t => t.TenantId == tenantId &&
-                                                                      t.TenantGuidId == tenantGuidId);
+                                           .SingleOrDefaultAsync(t => t.TenantId == tenantId);
             //&& t.TenantStausId == (int)TenantStatusEnum.Active);
 
             return response;

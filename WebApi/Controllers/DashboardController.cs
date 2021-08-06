@@ -26,10 +26,11 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(ApiRequestResponse<DashboardDataDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("tenant/{tenantGuidId}")]
-        public async Task<IActionResult> GetMonthDashboard(Guid tenantGuidId)
+        [HttpGet()]
+        public async Task<IActionResult> GetMonthDashboard()
         {
-            var response = await _queryTenantDashboardData.ExecuteAsync(tenantGuidId);
+            int tenantId = 0;
+            var response = await _queryTenantDashboardData.ExecuteAsync(tenantId);
 
             if (response is null)
                 return NotFound(ApiRequestResponse<DashboardDataDto>.Fail("Not found"));

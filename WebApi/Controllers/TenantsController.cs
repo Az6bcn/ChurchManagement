@@ -22,14 +22,14 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TenantController : ControllerBase
+    public class TenantsController : ControllerBase
     {
         private readonly IQueryTenantDetails _queryTenantDetails;
         private readonly ICreateTenantCommand _createTenantCommand;
         private readonly IUpdateTenantCommand _updateTenantCommand;
         private readonly IDeleteTenantCommand _deleteTenantCommand;
 
-        public TenantController(IQueryTenant tenantQuery,
+        public TenantsController(IQueryTenant tenantQuery,
                                 IQueryTenantDetails queryTenantDetails,
                                 ICreateTenantCommand createTenantCommand,
                                 IUpdateTenantCommand updateTenantCommand,
