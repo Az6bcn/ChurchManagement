@@ -10,7 +10,7 @@ namespace Application.Interfaces.Repositories
     {
         Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
         Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId);
-        Task<Tenant?> GetMonthDashboardDataAsync(Guid tenantGuidId, int tenantId);
+        Task<Tenant?> GetMonthDashboardDataAsync(int tenantId);
         Task<IEnumerable<string>> GetTenantNamesAsync();
     }
 }

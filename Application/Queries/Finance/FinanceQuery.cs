@@ -9,7 +9,7 @@ namespace Application.Queries.Finance
 
         public FinanceQuery(IFinanceRepositoryAsync financeRepo)
         {
-            _financeRepo =financeRepo;
+            _financeRepo = financeRepo;
         }
 
         public async Task<Domain.Entities.FinanceAggregate.Finance?> GetFinanceByIdAndTenantIdAsync(int financeId, int tenantId)

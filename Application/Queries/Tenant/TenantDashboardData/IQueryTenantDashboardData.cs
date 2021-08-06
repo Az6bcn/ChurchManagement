@@ -7,6 +7,6 @@ namespace Application.Queries.Tenant.TenantDashboardData
 {
     public interface IQueryTenantDashboardData
     {
-        Task<QueryResult<DashboardDataDto>> ExecuteAsync(Guid tenantGuidId);
+        Task<QueryResult<DashboardDataDto>> ExecuteAsync(int tenantId);
     }
 }

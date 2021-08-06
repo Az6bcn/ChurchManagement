@@ -17,10 +17,9 @@ namespace Application.Queries.Tenant.TenantDashboardData
             _tenantRepo = tenantRepo;
         }
         
-        public async Task<QueryResult<DashboardDataDto>> ExecuteAsync(Guid tenantGuidId)
+        public async Task<QueryResult<DashboardDataDto>> ExecuteAsync(int tenantId)
         {
-            var tenant = await _tenantRepo.GetTenantByGuidIdAsync(tenantGuidId);
-            var result = await _tenantRepo.GetMonthDashboardDataAsync(tenantGuidId, tenant.TenantId);
+            var result = await _tenantRepo.GetMonthDashboardDataAsync(tenantId);
 
             if (result is null)
                 return default;

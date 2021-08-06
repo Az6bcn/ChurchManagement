@@ -39,7 +39,7 @@ namespace Application.Commands.Finance.Update
         {
             var finance = await _financeQuery.GetFinanceByIdAndTenantIdAsync(request.FinanceId, request.TenantId);
             if (finance is null)
-                throw new InvalidOperationException($"Finace {request.FinanceId} not found");
+                throw new InvalidOperationException($"Finance {request.FinanceId} not found");
             
             finance.Update(_validator,
                         finance.Tenant,

@@ -1,4 +1,7 @@
 using System.Reflection;
+using Application.Commands.Attendance.Create;
+using Application.Commands.Attendance.Delete;
+using Application.Commands.Attendance.Update;
 using Application.Commands.Finance.Create;
 using Application.Commands.Finance.Delete;
 using Application.Commands.Finance.Update;
@@ -10,6 +13,7 @@ using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries;
+using Application.Queries.Attendance;
 using Application.Queries.Finance;
 using Application.Queries.PersonManagement;
 using Application.Queries.Tenant;
@@ -28,6 +32,7 @@ namespace Application
             // Domain
             services.AddScoped<IValidateTenantInDomain, TenantInDomainValidator>();
             services.AddScoped<IValidateFinanceInDomain, FinanceInDomainValidator>();
+            services.AddScoped<IValidateAttendanceInDomain, AttendanceInDomainValidator>();
             
             // Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -42,6 +47,7 @@ namespace Application
             services.AddScoped<IQueryTenantDashboardData, TenantDashboardQuery>();
             services.AddScoped<IQueryPersonManagement, PersonManagementQuery>();
             services.AddScoped<IQueryFinance, FinanceQuery>();
+            services.AddScoped<IQueryAttendance, AttendanceQuery>();
 
             services.AddScoped<ICreateDepartmentCommand, DepartmentCommandCreator>();
             services.AddScoped<IUpdateDepartmentCommand, DepartmentCommandUpdater>();
@@ -68,6 +74,11 @@ namespace Application
             services.AddScoped<ICreateFinanceCommand, FinanceCreatorCommand>();
             services.AddScoped<IUpdateFinanceCommand, FinanceUpdaterCommand>();
             services.AddScoped<IDeleteFinanceCommand, FinanceDeleteCommand>();
+
+            services.AddScoped<ICreateAttendanceCommand, AttendanceCreatorCommand>();
+            services.AddScoped<IUpdateAttendanceCommand, AttendanceUpdaterCommand>();
+            services.AddScoped<IDeleteAttendanceCommand, AttendanceDeleteCommand>();
+            
         }
     }
 }

@@ -16,13 +16,13 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FinanceController : ControllerBase
+    public class FinancesController : ControllerBase
     {
         private readonly ICreateFinanceCommand _createFinanceCommand;
         private readonly IUpdateFinanceCommand _updateFinanceCommand;
         private readonly IDeleteFinanceCommand _deleteFinanceCommand;
 
-        public FinanceController(
+        public FinancesController(
             ICreateFinanceCommand createFinanceCommand, IUpdateFinanceCommand updateFinanceCommand,
             IDeleteFinanceCommand deleteFinanceCommand)
         {
@@ -34,12 +34,12 @@ namespace WebApi.Controllers
         /// <summary>
         /// Create a new finance entry for the tenant.
         /// </summary>
-        /// <param name="tenantId">Tenant to create the finance entry record for</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpPost("{tenant:int}")]
-        public async Task<IActionResult> CreateFinance(int tenantId, [FromBody] CreateFinanceRequestDto request)
+        [HttpPost]
+        public async Task<IActionResult> CreateFinance([FromBody] CreateFinanceRequestDto request)
         {
+            var tenantId = 0;
             if (request is null)
                 return BadRequest("Invalid request");
 
@@ -52,38 +52,37 @@ namespace WebApi.Controllers
         /// <summary>
         /// Updates finance for the indicated tenant
         /// </summary>
-        /// <param name="tenantId">Tenant to update the finance record for</param>
         /// <param name="financeId">Finance record Id to be updated</param>
         /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpPut("{tenant:int}/finances/{financeId:int}")]
-        public async Task<IActionResult> UpdateFinance(int tenantId, int financeId, [FromBody] UpdateFinanceRequestDto request)
+        [HttpPut("{financeId:int}")]
+        public async Task<IActionResult> UpdateFinance(int financeId, [FromBody] UpdateFinanceRequestDto request)
         {
+            var tenantId = 0;
             if (tenantId != request.TenantId || financeId != request.FinanceId)
                 return BadRequest("Invalid request");
 
             await _updateFinanceCommand.ExecuteAsync(request);
 
-            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfuly"));
+            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfully"));
         }
 
 
         /// <summary>
         /// Deletes finance for the indicated tenant
         /// </summary>
-        /// <param name="tenantId">Tenant to delete the finance record for</param>
         /// <param name="financeId">Finance record Id to be deleted</param>
-        /// <param name="request">The request object</param>
         /// <returns></returns>
-        [HttpDelete("{tenant:int}/finances/{financeId:int}")]
-        public async Task<IActionResult> DeleteFinance(int tenantId, int financeId, [FromBody] UpdateFinanceRequestDto request)
+        [HttpDelete("{financeId:int}")]
+        public async Task<IActionResult> DeleteFinance(int financeId)
         {
-            if (tenantId != request.TenantId || financeId != request.FinanceId)
+            var tenantId = 0;
+            if (tenantId <= 0 || financeId <= 0)
                 return BadRequest("Invalid request");
 
-            await _updateFinanceCommand.ExecuteAsync(request);
+            await _deleteFinanceCommand.ExecuteAsync(financeId, tenantId);
 
-            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfuly"));
+            return Ok(ApiRequestResponse<string>.Succeed("Updated Successfully"));
         }
     }
 }
