@@ -1,5 +1,6 @@
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
+using Application.Queries.Attendance;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace Infrastructure
             services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
             services.AddScoped<IPersonManagementRepositoryAsync, PersonManagementRepositoryAsync>();
             services.AddScoped<IFinanceRepositoryAsync, FinanceRepositoryAsync>();
+            services.AddScoped<IAttendanceRepositoryAsync, AttendanceRepositoryAsync>();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Create;
+using Domain.Entities.AttendanceAggregate;
 using Domain.Entities.FinanceAggregate;
 using Domain.Entities.PersonAggregate;
 using Domain.Entities.TenantAggregate;
@@ -138,6 +139,31 @@ namespace Application.Tests
             context.ChangeTracker.Clear();
 
             context.Update(finance);
+            await TestDbCreator.SaveChangesAsync(context);
+        }
+        
+        public static async Task CreateDemoAttendance(IValidateTenantInDomain tenantValidator,
+                                                   IValidateAttendanceInDomain attendanceValidator,
+                                                   ApplicationDbContext context)
+        {
+            await CreateDemoTenant(context, tenantValidator);
+            var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+                                .AsNoTracking()
+                                .Single();
+            context.ChangeTracker.Clear();
+
+            var attendance = Attendance.Create(attendanceValidator,
+                                               tenant,
+                                               DateTime.Now,
+                                               20,
+                                               30,
+                                               17,
+                                               20,
+                                               ServiceEnum.SundayService);
+
+            context.ChangeTracker.Clear();
+
+            context.Update(attendance);
             await TestDbCreator.SaveChangesAsync(context);
         }
     }

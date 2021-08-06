@@ -334,6 +334,7 @@ CREATE TABLE [dbo].[Attendances](
 	[Male] [int] NOT NULL,
 	[Female] [int] NOT NULL,
 	[NewComers] [int] NOT NULL,
+    [ServiceTypeId] [int] NOT NULL,
 	[CreatedAt] [datetime] NOT NULL,
 	[UpdatedAt] [datetime] NULL,
 	[Deleted] [datetime] NULL,

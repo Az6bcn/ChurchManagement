@@ -41,7 +41,7 @@ namespace Application.Commands.Finance.Delete
         {
             var finance = await _financeQuery.GetFinanceByIdAndTenantIdAsync(financeId, tenantId);
             if (finance is null)
-                throw new InvalidOperationException($"Finace {financeId} not found");
+                throw new InvalidOperationException($"Finance {financeId} not found");
 
             finance.Delete();
 
