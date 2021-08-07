@@ -29,7 +29,8 @@ namespace WebApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetMonthDashboard()
         {
-            int tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             var response = await _queryTenantDashboardData.ExecuteAsync(tenantId);
 
             if (response is null)

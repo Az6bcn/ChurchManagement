@@ -60,7 +60,8 @@ namespace WebApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetDepartments()
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0)
                 return BadRequest("Invalid tenantId");
 
@@ -86,7 +87,8 @@ namespace WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0)
                 return BadRequest("Invalid request");
 
@@ -113,8 +115,9 @@ namespace WebApi.Controllers
                                                           [FromBody]
                                                           UpdateDepartmentRequestDto request)
         {
-            var tenantId = 0;
-            if (request is null || tenantId <= 0 || request.DepartmentId <= 0)
+            var tenantId = HttpContext.GetTenantId();
+
+            if (request is null || tenantId <= 0 || request.DepartmentId <= 0 || tenantId != request.TenantId)
                 return BadRequest("Invalid request");
 
             if (request!.TenantId != tenantId || request.DepartmentId != departmentId)
@@ -133,11 +136,11 @@ namespace WebApi.Controllers
         [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{departmentId:int}")]
-        public async Task<IActionResult> DeleteDepartment(int departmentId
-            )
+        public async Task<IActionResult> DeleteDepartment(int departmentId)
         {
-            var tenantId = 0;
-            if (tenantId <= 0 || departmentId <= 0)
+            var tenantId = HttpContext.GetTenantId();
+
+            if (tenantId <= 0 || departmentId <= 0 )
                 BadRequest("Invalid request");
 
             await _deleteDepartmentCommand.ExecuteAsync(departmentId, tenantId);
@@ -158,8 +161,10 @@ namespace WebApi.Controllers
         public async Task<IActionResult> AssignMemberToDepartment(int departmentId,
                                                                   [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || departmentId != request.DepartmentId)
-                return BadRequest("Invalid department Id");
+            var tenantId = HttpContext.GetTenantId();
+
+            if (departmentId <= 0 || departmentId != request.DepartmentId || tenantId != request.TenantId)
+                return BadRequest("Invalid request");
 
             await _assignMemberToDepartmentCommand.ExecuteAsync(request);
 
@@ -179,8 +184,10 @@ namespace WebApi.Controllers
                                                                     [FromBody]
                                                                     AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || departmentId != request.DepartmentId)
-                return BadRequest("Invalid department Id");
+            var tenantId = HttpContext.GetTenantId();
+            
+            if (departmentId <= 0 || departmentId != request.DepartmentId || tenantId != request.TenantId)
+                return BadRequest("Invalid request");
 
             await _unAssignHeadOfDepartmentCommand.ExecuteAsync(request);
 
@@ -199,8 +206,9 @@ namespace WebApi.Controllers
         public async Task<IActionResult> AssignAsHod(int departmentId,
                                                      [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || departmentId != request.DepartmentId)
-                return BadRequest("Invalid department Id");
+            var tenantId = HttpContext.GetTenantId();
+            if (departmentId <= 0 || departmentId != request.DepartmentId || tenantId != request.TenantId)
+                return BadRequest("Invalid request");
 
             await _assignHeadOfDepartmentCommand.ExecuteAsync(request);
 
@@ -219,8 +227,10 @@ namespace WebApi.Controllers
         public async Task<IActionResult> RemoveAsHod(int departmentId,
                                                      [FromBody] AssignMemberToDepartmentRequestDto request)
         {
-            if (departmentId <= 0 || departmentId != request.DepartmentId)
-                return BadRequest("Invalid department Id");
+            var tenantId = HttpContext.GetTenantId();
+            
+            if (departmentId <= 0 || departmentId != request.DepartmentId || tenantId != request.TenantId)
+                return BadRequest("Invalid request");
 
             await _unAssignHeadOfDepartmentCommand.ExecuteAsync(request);
 

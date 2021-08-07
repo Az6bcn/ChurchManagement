@@ -63,7 +63,8 @@ namespace WebApi
             //     app.UseDeveloperExceptionPage();
             //     app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
             // }
-            
+
+            app.UseMiddleware<TenantMiddleware>();
             app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
             //This line enables the app to use Swagger with the configuration in the ConfigureServices method.

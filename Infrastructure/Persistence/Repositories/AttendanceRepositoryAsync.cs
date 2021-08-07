@@ -17,7 +17,8 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         public async Task<Attendance?> GetAttendanceByIdAndTenantIdAsync(int attendanceId, int tenantId)
-            => await _dbContext.Set<Attendance>().SingleOrDefaultAsync(a => a.AttendanceId == attendanceId 
-                                                                            && a.TenantId == tenantId);
+            => await _dbContext.Set<Attendance>()
+                               .Include(a => a.Tenant)
+                               .SingleOrDefaultAsync(a => a.AttendanceId == attendanceId && a.TenantId == tenantId);
     }
 }

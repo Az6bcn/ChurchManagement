@@ -8,7 +8,7 @@ namespace Infrastructure.Persistence.Mappings
     {
         public void Configure(EntityTypeBuilder<Attendance> builder)
         {
-            builder.ToTable("Attendance");
+            builder.ToTable("Attendances");
 
             builder.HasQueryFilter(m => m.Deleted == null);
 

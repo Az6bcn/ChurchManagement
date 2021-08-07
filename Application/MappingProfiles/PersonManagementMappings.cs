@@ -148,6 +148,18 @@ namespace Application.MappingProfiles
                            options
                                => options.MapFrom(src => (MinisterTitleEnum)src.MinisterTitleId))
                 .ReverseMap();
+            
+            CreateMap<Minister, UpdateMinisterResponseDto>()
+                .ForMember(dst => dst.MinisterId,
+                           options
+                               => options.MapFrom(src => src.MinisterId))
+                .ForMember(dst => dst.MemberId,
+                           options
+                               => options.MapFrom(src => src.MemberId))
+                .ForMember(dst => dst.MinisterTitle,
+                           options
+                               => options.MapFrom(src => (MinisterTitleEnum)src.MinisterTitleId))
+                .ReverseMap();
         }
     }
 }

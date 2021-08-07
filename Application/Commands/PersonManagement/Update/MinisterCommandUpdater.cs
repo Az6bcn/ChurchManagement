@@ -55,7 +55,7 @@ namespace Application.Commands.PersonManagement.Update
             _personManagementRepo.Update<Minister>(PersonManagementAggregate.Minister);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<UpdateMinisterResponseDto>(PersonManagementAggregate.Member);
+            return _mapper.Map<UpdateMinisterResponseDto>(minister);
         }
     }
 }
