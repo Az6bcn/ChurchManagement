@@ -101,8 +101,8 @@ namespace Infrastructure.Persistence.Mappings
 
             // Relationships and Foreign Key Constraints
             builder.HasOne(x => x.Tenant)
-                   .WithOne()
-                   .HasForeignKey<Member>(x => x.TenantId)
+                   .WithMany()
+                   .HasForeignKey(x => x.TenantId)
                    .HasConstraintName("FK_Departments_TenantId_Tenants_TenantId");
             
             builder.HasMany(m => m.Departments)

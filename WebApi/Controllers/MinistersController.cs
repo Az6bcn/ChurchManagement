@@ -48,7 +48,8 @@ namespace WebApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetMinisters()
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+            
             if (tenantId <= 0)
                 return BadRequest("Invalid tenantId");
 
@@ -73,7 +74,8 @@ namespace WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> CreateMinisters([FromBody] CreateMinisterRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+            
             if (request is null || tenantId <= 0)
                 return BadRequest("Invalid request");
 
@@ -99,7 +101,8 @@ namespace WebApi.Controllers
         public async Task<IActionResult> UpdateMinister(int ministerId,
                                                       [FromBody] UpdateMinisterRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0 || request.MinisterId <= 0)
                 return BadRequest("Invalid request");
 
@@ -121,7 +124,8 @@ namespace WebApi.Controllers
         [HttpDelete("{ministerId:int}")]
         public async Task<IActionResult> DeleteMinister(int ministerId)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0 || ministerId <= 0)
                 BadRequest("Invalid request");
 

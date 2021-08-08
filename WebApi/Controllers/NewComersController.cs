@@ -48,7 +48,8 @@ namespace WebApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetNewcomers()
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0)
                 return BadRequest("Invalid tenantId");
 
@@ -73,7 +74,8 @@ namespace WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> CreateNewComer([FromBody] CreateNewComerRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0)
                 return BadRequest("Invalid request");
 
@@ -99,7 +101,8 @@ namespace WebApi.Controllers
         public async Task<IActionResult> UpdateNewComer(int newcomerId,
                                                       [FromBody] UpdateNewComerRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0 || request.NewComerId <= 0)
                 return BadRequest("Invalid request");
 
@@ -121,7 +124,8 @@ namespace WebApi.Controllers
         [HttpDelete("{newcomerId:int}")]
         public async Task<IActionResult> DeleteNewComer(int newcomerId)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0 || newcomerId <= 0)
                 BadRequest("Invalid request");
 

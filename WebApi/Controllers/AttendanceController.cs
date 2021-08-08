@@ -43,8 +43,9 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAttendance([FromBody] CreateAttendanceRequestDto request)
         {
-            var tenantId = 0;
-            if (request is null)
+            var tenantId = HttpContext.GetTenantId();
+
+            if (request is null || tenantId != request.TenantId)
                 return BadRequest("Invalid request");
 
             await _createAttendanceCommand.ExecuteAsync(request);
@@ -60,11 +61,11 @@ namespace WebApi.Controllers
         /// <param name="request">The request object</param>
         /// <returns></returns>
         [HttpPut("{attendanceId:int}")]
-        public async Task<IActionResult> UpdateAttendance(int attendanceId, [FromBody] 
-        UpdateAttendanceRequestDto 
-        request)
+        public async Task<IActionResult> UpdateAttendance(int attendanceId,
+                                                          [FromBody] UpdateAttendanceRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+            
             if (tenantId != request.TenantId || attendanceId != request.AttendanceId)
                 return BadRequest("Invalid request");
 
@@ -82,7 +83,8 @@ namespace WebApi.Controllers
         [HttpDelete("{attendanceId:int}")]
         public async Task<IActionResult> DeleteFinance(int attendanceId)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0 || attendanceId <= 0)
                 return BadRequest("Invalid request");
 

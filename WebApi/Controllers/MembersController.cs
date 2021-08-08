@@ -47,7 +47,8 @@ namespace WebApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetMembers()
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+            
             if (tenantId <= 0)
                 return BadRequest("Invalid tenantId");
 
@@ -72,7 +73,8 @@ namespace WebApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> CreateMember([FromBody] CreateMemberRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0)
                 return BadRequest("Invalid request");
 
@@ -98,7 +100,8 @@ namespace WebApi.Controllers
         public async Task<IActionResult> UpdateMember(int memberId,
                                                       [FromBody] UpdateMemberRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null || tenantId <= 0 || request.MemberId <= 0)
                 return BadRequest("Invalid request");
 
@@ -120,7 +123,8 @@ namespace WebApi.Controllers
         [HttpDelete("{memberId:int}")]
         public async Task<IActionResult> DeleteMember(int memberId)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0 || memberId <= 0)
                 BadRequest("Invalid request");
 

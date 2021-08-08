@@ -51,7 +51,7 @@ namespace Application.Commands.PersonManagement.Create
             PersonManagementAggregate.CreateMinister(member, request.MinisterTitle);
             var minister = PersonManagementAggregate.Minister;
 
-            await _personManagementRepo.AddAsync<Minister>(minister);
+            await _personManagementRepo.AddAsync(minister);
             await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<CreateMinisterResponseDto>(minister);

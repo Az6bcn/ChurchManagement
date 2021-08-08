@@ -78,8 +78,8 @@ namespace Infrastructure.Persistence.Mappings
                    .HasConstraintName("FK_Ministers_TenantId_Tenants_TenantId");
             //
             builder.HasOne(t => t.Member)
-                .WithOne(m => m.Minister)
-                .HasForeignKey<Minister>(m => m.MinisterId)
+                .WithOne()
+                .HasForeignKey<Minister>(m => m.MemberId)
                 .HasConstraintName("FK_Ministers_MinisterId_Members_MemberId")
                 .OnDelete(DeleteBehavior.Restrict);
             

@@ -39,7 +39,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFinance([FromBody] CreateFinanceRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (request is null)
                 return BadRequest("Invalid request");
 
@@ -58,7 +59,8 @@ namespace WebApi.Controllers
         [HttpPut("{financeId:int}")]
         public async Task<IActionResult> UpdateFinance(int financeId, [FromBody] UpdateFinanceRequestDto request)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId != request.TenantId || financeId != request.FinanceId)
                 return BadRequest("Invalid request");
 
@@ -76,7 +78,8 @@ namespace WebApi.Controllers
         [HttpDelete("{financeId:int}")]
         public async Task<IActionResult> DeleteFinance(int financeId)
         {
-            var tenantId = 0;
+            var tenantId = HttpContext.GetTenantId();
+
             if (tenantId <= 0 || financeId <= 0)
                 return BadRequest("Invalid request");
 
