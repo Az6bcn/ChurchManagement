@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Domain.Entities.AttendanceAggregate;
@@ -20,5 +23,13 @@ namespace Infrastructure.Persistence.Repositories
             => await _dbContext.Set<Attendance>()
                                .Include(a => a.Tenant)
                                .SingleOrDefaultAsync(a => a.AttendanceId == attendanceId && a.TenantId == tenantId);
+
+        public async Task<IEnumerable<Attendance>> GetAttendancesBetweenDatesByTenantIdAsync(int tenantId,
+                                                                                       DateTime startDate,
+                                                                                       DateTime endDate)
+            => await _dbContext.Set<Attendance>()
+                               .Where(f => f.TenantId == tenantId
+                                           && f.ServiceDate >= startDate && f.ServiceDate <= endDate)
+                               .ToListAsync();
     }
 }
