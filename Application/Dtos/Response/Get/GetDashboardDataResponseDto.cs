@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace Application.Dtos
+namespace Application.Dtos.Response.Get
 {
-    public class DashboardDataDto
+    public class GetDashboardDataResponseDto
     {
         public int Members{ get; set; }
         public decimal Tithe { get; set; }
@@ -11,7 +11,7 @@ namespace Application.Dtos
         public decimal Expenses { get; set; }
         public decimal Offering { get; set; }
         public int MonthAttendance { get; set; }
-        public IDictionary<DateTime, AttendanceDto> Attendance { get; set; }
+        public IDictionary<DateTime, GetAttendanceResponseDto> Attendance { get; set; }
         public int NewComers { get; set; }
     }
 }

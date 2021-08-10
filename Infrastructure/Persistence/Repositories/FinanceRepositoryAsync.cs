@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Application.Interfaces.Repositories;
 using Domain.Entities.FinanceAggregate;
 using Infrastructure.Persistence.Context;
@@ -16,7 +18,17 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Finance?> GetFinanceByIdAndTenantIdAsync(int financeId, int tenantId)
-            => await _dbContext.Set<Finance>().SingleOrDefaultAsync(f => f.FinanceId == financeId && f.TenantId == tenantId);
+        public async Task<Finance?> GetFinanceByIdAndTenantIdAsync(int financeId,
+                                                                   int tenantId)
+            => await _dbContext.Set<Finance>()
+                               .SingleOrDefaultAsync(f => f.FinanceId == financeId && f.TenantId == tenantId);
+
+        public async Task<IEnumerable<Finance>> GetFinancesBetweenDatesByTenantIdAsync(int tenantId,
+                                                                                        DateTime startDate,
+                                                                                        DateTime endDate)
+            => await _dbContext.Set<Finance>()
+                               .Where(f => f.TenantId == tenantId
+                                           && f.GivenDate >= startDate && f.GivenDate <= endDate)
+                               .ToListAsync();
     }
 }

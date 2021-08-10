@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Dtos.Response.Get;
@@ -37,5 +38,7 @@ namespace Application.Interfaces.Repositories
         Task<DepartmentMembers> GetDepartmentMemberAsync(int departmentId,
                                                          int memberId,
                                                          int tenantId);
+
+        Task<(int members, int newComers)> GetPersonsBetweenDatesByTenantIdAsync(int tenantId);
     }
 }

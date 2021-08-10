@@ -16,7 +16,6 @@ namespace Application.Tests.Commands.PersonManagement
     public class DepartmentMemberTests
     {
         private readonly IServiceProvider _builtServices;
-        private AssignMemberToDepartmentRequestDto _request;
 
         public DepartmentMemberTests()
         {

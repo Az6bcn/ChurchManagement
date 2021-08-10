@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,15 +22,11 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         public async Task<IEnumerable<string?>> GetDepartmentNamesByTenantIdAsync(int tenantId)
-        {
-            var departmentNames = await _dbContext.Set<Department>()
-                                                  .Include(x => x.Tenant)
-                                                  .Where(d => d.TenantId == tenantId)
-                                                  .Select(d => d.Name)
-                                                  .ToListAsync();
-
-            return departmentNames;
-        }
+            => await _dbContext.Set<Department>()
+                              .Include(x => x.Tenant)
+                              .Where(d => d.TenantId == tenantId)
+                              .Select(d => d.Name)
+                              .ToListAsync();
 
         public async Task AddAsync<T>(T entity)
         {
@@ -104,5 +101,18 @@ namespace Infrastructure.Persistence.Repositories
                                                            && dm.DepartmentId == departmentId
                                                            && dm.Member.TenantId == tenantId
                                                            && dm.Department.TenantId == tenantId);
+
+        public async Task<(int members, int newComers)> GetPersonsBetweenDatesByTenantIdAsync(int tenantId)
+        {
+            var members = await _dbContext.Set<Member>()
+                                          .Where(f => f.TenantId == tenantId)
+                                          .CountAsync();
+            
+            var newComers = await _dbContext.Set<NewComer>()
+                                            .Where(f => f.TenantId == tenantId)
+                                            .CountAsync();
+
+            return (members, newComers);
+        }
     }
 }

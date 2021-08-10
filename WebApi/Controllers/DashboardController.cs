@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos;
+using Application.Dtos.Response.Get;
 using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDashboardData;
 using Microsoft.AspNetCore.Http;
@@ -23,20 +24,26 @@ namespace WebApi.Controllers
         }
 
 
-        [ProducesResponseType(typeof(ApiRequestResponse<DashboardDataDto>), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Get dashboard data for the month, if start and end date not provides
+        /// </summary>
+        /// <param name="startDate">start date for the dashboard data</param>
+        /// <param name="endDate">end date for the dashboard data</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetDashboardDataResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet()]
-        public async Task<IActionResult> GetMonthDashboard()
+        [HttpGet("from/{startDate}/to/{endDate}")]
+        public async Task<IActionResult> GetMonthDashboard(DateTime? startDate = null, DateTime? endDate = null)
         {
             var tenantId = HttpContext.GetTenantId();
 
-            var response = await _queryTenantDashboardData.ExecuteAsync(tenantId);
+            var response = await _queryTenantDashboardData.ExecuteAsync(tenantId, startDate, endDate);
 
             if (response is null)
-                return NotFound(ApiRequestResponse<DashboardDataDto>.Fail("Not found"));
+                return NotFound(ApiRequestResponse<GetDashboardDataResponseDto>.Fail("Not found"));
 
-            var result = ApiRequestResponse<DashboardDataDto>.Succeed(response.Result);
+            var result = ApiRequestResponse<GetDashboardDataResponseDto>.Succeed(response.Result);
             return Ok(result);
         }
     }
