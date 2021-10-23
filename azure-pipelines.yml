@@ -39,14 +39,11 @@ steps:
     projects: '**/*.csproj'
   displayName: 'Build for $(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    testSelector: 'testAssemblies'
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    testAssemblyVer2: |
-      **\*Application.Tests*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-      !**\bin\**\ref\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration)'
+    publishTestResults: true
+    projects: '**/*Application.Tests/*.csproj' # update with your test project directory
+  displayName: 'Run Tests'
+
