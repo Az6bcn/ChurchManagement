@@ -6,7 +6,6 @@ using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finance;
 using Application.Queries.Tenant;
 using AutoMapper;
-using Domain.Entities.TenantAggregate;
 using Domain.Validators;
 
 namespace Application.Commands.Finance.Update

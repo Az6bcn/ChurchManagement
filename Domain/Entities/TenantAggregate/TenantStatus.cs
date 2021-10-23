@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using Domain.Abstracts;
 using Domain.Interfaces;
 
 namespace Domain.Entities.TenantAggregate

@@ -24,11 +24,12 @@ namespace Infrastructure.Persistence.Repositories
                                .SingleOrDefaultAsync(f => f.FinanceId == financeId && f.TenantId == tenantId);
 
         public async Task<IEnumerable<Finance>> GetFinancesBetweenDatesByTenantIdAsync(int tenantId,
-                                                                                        DateTime startDate,
-                                                                                        DateTime endDate)
+                                                                                       DateOnly startDate,
+                                                                                       DateOnly endDate)
             => await _dbContext.Set<Finance>()
                                .Where(f => f.TenantId == tenantId
-                                           && f.GivenDate >= startDate && f.GivenDate <= endDate)
+                                           && f.GivenDate >= startDate.ToDateTime(new TimeOnly(0,0)) 
+                                           && f.GivenDate <= endDate.ToDateTime(new TimeOnly(0,0)))
                                .ToListAsync();
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.PersonManagement.Create;
-using Application.Commands.Tenant.Create;
 using Application.Dtos.Request.Create;
 using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;

@@ -60,6 +60,12 @@ namespace Infrastructure.Persistence.Mappings
                    //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
+            
+            builder.Property(t => t.ServiceDate)
+                   .HasColumnName("ServiceDate")
+                   .HasColumnType("date")
+                   .IsRequired()
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.CreatedAt)
                    .HasColumnName("CreatedAt")

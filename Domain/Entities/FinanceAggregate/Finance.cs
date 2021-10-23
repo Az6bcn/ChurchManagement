@@ -1,5 +1,4 @@
 ﻿using System;
-using Domain.Abstracts;
 using Domain.Entities.Helpers;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
@@ -22,7 +21,7 @@ namespace Domain.Entities.FinanceAggregate
                         FinanceEnum financeEnum,
                         ServiceEnum serviceEnum,
                         CurrencyEnum currencyEnum,
-                        DateTime givenDate,
+                        DateOnly givenDate,
                         string? description)
         {
             if (!validator.Validate(amount, givenDate, out var errors))
@@ -42,7 +41,7 @@ namespace Domain.Entities.FinanceAggregate
             ServiceTypeId = serviceEnumValue.Id;
             CurrencyId = currencyEnumValue.Id;
             Amount = amount;
-            GivenDate = givenDate.Date;
+            GivenDate = givenDate.ToDateTime(new TimeOnly(0,0));
             
             if(!string.IsNullOrWhiteSpace(description))
                 Description = description;
@@ -77,7 +76,7 @@ namespace Domain.Entities.FinanceAggregate
                              FinanceEnum financeEnum,
                              ServiceEnum serviceEnum,
                              CurrencyEnum currencyEnum,
-                             DateTime givenDate,
+                             DateOnly givenDate,
                              string? description)
             => new(validator, tenant, amount, financeEnum, serviceEnum, currencyEnum, givenDate, description);
 
@@ -87,7 +86,7 @@ namespace Domain.Entities.FinanceAggregate
                              FinanceEnum financeEnum,
                              ServiceEnum serviceEnum,
                              CurrencyEnum currencyEnum,
-                             DateTime givenDate,
+                             DateOnly givenDate,
                              string? description)
         {
             if (!validator.Validate(amount, givenDate, out var errors))
@@ -103,7 +102,7 @@ namespace Domain.Entities.FinanceAggregate
             ServiceTypeId = serviceEnumValue.Id;
             CurrencyId = currencyEnumValue.Id;
             Amount = amount;
-            GivenDate = givenDate.Date;
+            GivenDate = givenDate.ToDateTime(new TimeOnly(0,0));
 
             if (!string.IsNullOrWhiteSpace(description))
                 Description = description;

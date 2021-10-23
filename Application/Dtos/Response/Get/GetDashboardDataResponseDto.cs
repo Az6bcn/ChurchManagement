@@ -10,8 +10,9 @@ namespace Application.Dtos.Response.Get
         public decimal Thanksgiving { get; set; }
         public decimal Expenses { get; set; }
         public decimal Offering { get; set; }
-        public int MonthAttendance { get; set; }
-        public IDictionary<DateTime, GetAttendanceResponseDto> Attendance { get; set; }
+        public IDictionary<DateTime, GetAttendanceResponseDto>? CurrentMonthAttendance { get; set; }
+        public IDictionary<DateTime, GetAttendanceResponseDto>? LastYearAttendance { get; set; }
+        public IDictionary<DateTime, GetAttendanceResponseDto>? CurrentYearAttendance { get; set; }
         public int NewComers { get; set; }
     }
 }

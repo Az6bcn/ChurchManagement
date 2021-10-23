@@ -52,7 +52,9 @@ namespace Application.Tests
                                        "Male",
                                        "+7703000000");
 
-            PersonManagementAggregate.CreateMember(person, tenant, false);
+            PersonManagementAggregate.CreateMember(person,
+                                                   tenant,
+                                                   false);
 
             context.ChangeTracker.Clear();
 
@@ -70,7 +72,10 @@ namespace Application.Tests
                                        "Male",
                                        "+7703000000");
 
-            PersonManagementAggregate.CreateNewComer(person, DateTime.UtcNow, ServiceEnum.SundayService, tenant);
+            PersonManagementAggregate.CreateNewComer(person,
+                                                     DateTime.UtcNow,
+                                                     ServiceEnum.SundayService,
+                                                     tenant);
 
             //context.ChangeTracker.Clear();
 
@@ -101,7 +106,10 @@ namespace Application.Tests
                                     .Single();
 
             context.ChangeTracker.Clear();
-            var departs = new DepartmentMembers(member.MemberId, department.DepartmentId, isHod, DateTime.UtcNow);
+            var departs = new DepartmentMembers(member.MemberId,
+                                                department.DepartmentId,
+                                                isHod,
+                                                DateTime.UtcNow);
 
             await context.AddAsync(departs);
             await TestDbCreator.SaveChangesAsync(context);
@@ -129,22 +137,22 @@ namespace Application.Tests
 
             var finance = Finance.Create(financeValidator,
                                          tenant,
-                                  50m,
+                                         50m,
                                          FinanceEnum.Thanksgiving,
                                          ServiceEnum.SundayService,
                                          CurrencyEnum.UsDollars,
-                                         DateTime.Now,
-                             "Demo");
+                                         DateOnly.FromDateTime(DateTime.Now),
+                                         "Demo");
 
             context.ChangeTracker.Clear();
 
             context.Update(finance);
             await TestDbCreator.SaveChangesAsync(context);
         }
-        
+
         public static async Task CreateDemoAttendance(IValidateTenantInDomain tenantValidator,
-                                                   IValidateAttendanceInDomain attendanceValidator,
-                                                   ApplicationDbContext context)
+                                                      IValidateAttendanceInDomain attendanceValidator,
+                                                      ApplicationDbContext context)
         {
             await CreateDemoTenant(context, tenantValidator);
             var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
@@ -154,7 +162,7 @@ namespace Application.Tests
 
             var attendance = Attendance.Create(attendanceValidator,
                                                tenant,
-                                               DateTime.Now,
+                                               DateOnly.FromDateTime(DateTime.Now),
                                                20,
                                                30,
                                                17,

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Attendance;
-using Application.Queries.Finance;
 using Application.Queries.Tenant;
 using AutoMapper;
 using Domain.Validators;

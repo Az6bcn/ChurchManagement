@@ -10,7 +10,7 @@ namespace Application.Dtos.Request.Create
         public ServiceEnum ServiceTypeEnum { get; set; }
         public CurrencyEnum CurrencyTypeEnum { get; set; }
         public decimal Amount { get; set; }
-        public DateTime GivenDate { get; set; }
+        public DateOnly GivenDate { get; set; }
         public string? Description { get; set; }
     }
 }

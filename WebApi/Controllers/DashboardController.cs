@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Application.Dtos;
 using Application.Dtos.Response.Get;
-using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDashboardData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,12 +34,17 @@ namespace WebApi.Controllers
         {
             var tenantId = HttpContext.GetTenantId();
 
-            var response = await _queryTenantDashboardData.ExecuteAsync(tenantId, startDate, endDate);
+            var response
+                = await _queryTenantDashboardData.ExecuteAsync(tenantId,
+                                                               startDate,
+                                                               endDate);
 
-            if (response is null)
+            if (response.Result is null)
                 return NotFound(ApiRequestResponse<GetDashboardDataResponseDto>.Fail("Not found"));
 
-            var result = ApiRequestResponse<GetDashboardDataResponseDto>.Succeed(response.Result);
+            var result 
+                = ApiRequestResponse<GetDashboardDataResponseDto>.Succeed(response.Result);
+            
             return Ok(result);
         }
     }

@@ -1,4 +1,3 @@
-using Domain.Entities.PersonAggregate;
 using Shared.Enums;
 
 namespace Application.Dtos.Response.Get

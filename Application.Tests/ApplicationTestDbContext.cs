@@ -1,8 +1,5 @@
 using System.Data.Common;
-using Domain.Entities.TenantAggregate;
-using Domain.ValueObjects;
 using Infrastructure.Persistence.Context;
-using Infrastructure.Persistence.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 

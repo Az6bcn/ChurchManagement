@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Domain.Entities.TenantAggregate;
-using Domain.ValueObjects;
 
 namespace Domain.Validators
 {

@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Application.Dtos.Response.Get;
-using Application.Helpers;
 using Domain.Entities.PersonAggregate;
-using Domain.Interfaces;
 
 namespace Application.Interfaces.Repositories
 {

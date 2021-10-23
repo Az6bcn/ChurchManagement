@@ -5,7 +5,6 @@ using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Application.RequestValidators;
 using Domain.Validators;
-using Domain.ValueObjects;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

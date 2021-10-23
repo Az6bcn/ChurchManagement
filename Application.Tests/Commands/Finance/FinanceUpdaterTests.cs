@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Application.Commands.Finance.Update;
-using Application.Commands.PersonManagement.Create;
-using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -49,7 +47,7 @@ namespace Application.Tests.Commands.Finance
                 ServiceTypeEnum = ServiceEnum.Thanksgiving,
                 CurrencyTypeEnum = CurrencyEnum.Naira,
                 Amount = 1500m,
-                GivenDate = DateTime.Now.Date,
+                GivenDate = DateOnly.FromDateTime(DateTime.Now.Date),
                 Description = "Updated Thanksgiving Offering"
             };
             

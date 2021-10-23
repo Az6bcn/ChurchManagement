@@ -1,17 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.Tenant.Create;
 using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
-using Application.Dtos;
 using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Create;
 using Application.Dtos.Response.Get;
 using Application.Dtos.Response.Update;
-using Application.Interfaces.Repositories;
 using Application.Queries.Tenant;
 using Application.Queries.Tenant.TenantDetails;
 using Microsoft.AspNetCore.Http;

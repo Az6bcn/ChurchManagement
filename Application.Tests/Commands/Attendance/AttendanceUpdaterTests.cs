@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Application.Commands.Attendance.Update;
-using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -44,7 +43,7 @@ namespace Application.Tests.Commands.Attendance
             {
                 AttendanceId = attendance.AttendanceId,
                 TenantId = attendance.TenantId,
-                ServiceDate = DateTime.UtcNow.Date,
+                ServiceDate = DateOnly.FromDateTime(DateTime.UtcNow.Date),
                 Male = 27,
                 Female = 89,
                 Children = 23,

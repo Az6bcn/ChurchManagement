@@ -16,7 +16,6 @@ namespace Application.Tests
             var services = new ServiceCollection();
 
             // Add in memory sqlite db for test
-            //services.Add
             AddSqlLiteTestDb(services);
 
             // Add all dependencies

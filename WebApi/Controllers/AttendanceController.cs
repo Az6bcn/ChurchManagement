@@ -1,18 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.Attendance.Create;
 using Application.Commands.Attendance.Delete;
 using Application.Commands.Attendance.Update;
-using Application.Commands.Finance.Create;
-using Application.Commands.Finance.Delete;
-using Application.Commands.Finance.Update;
-using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
-using Application.Queries.PersonManagement;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Helpers;
 

@@ -1,14 +1,10 @@
-﻿using Application.Dtos.Request.Update;
-using Application.Interfaces.Repositories;
+﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finance;
 using Application.Queries.Tenant;
 using AutoMapper;
 using Domain.Validators;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Commands.Finance.Delete

@@ -6,7 +6,7 @@ namespace Domain.Validators
 {
     public class AttendanceInDomainValidator: IValidateAttendanceInDomain
     {
-        public bool Validate(DateTime serviceDate,
+        public bool Validate(DateOnly serviceDate,
                              int male, 
                              int female,
                              int children,
@@ -15,7 +15,7 @@ namespace Domain.Validators
         {
             errors = new Dictionary<string, object>();
             
-            if(serviceDate == new DateTime())
+            if(serviceDate == new DateOnly())
                 errors.Add(nameof(serviceDate), "Date is required");
             
             if(male < 0 || female < 0 || children< 0 || newComer < 0)
