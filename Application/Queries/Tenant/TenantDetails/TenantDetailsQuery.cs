@@ -1,9 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Application.Dtos;
 using Application.Dtos.Response.Get;
 using Application.Helpers;
-using Application.Interfaces.Repositories;
 using AutoMapper;
 
 namespace Application.Queries.Tenant.TenantDetails

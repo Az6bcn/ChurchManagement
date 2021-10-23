@@ -1,3 +1,5 @@
+using System;
+
 namespace Application.Dtos.Response.Create
 {
     public class CreateMemberResponseDto
@@ -9,5 +11,7 @@ namespace Application.Dtos.Response.Create
         public string Gender { get; set; }
         public string PhoneNumber { get; set; }
         public bool IsWorker { get; set; }
+        public DateTime DateAttended { get; private set; }
+        public int ServiceTypeId { get; private set; }
     }
 }

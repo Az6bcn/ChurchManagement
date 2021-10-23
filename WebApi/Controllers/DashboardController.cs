@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Application.Dtos;
-using Application.Queries.Tenant;
+using Application.Dtos.Response.Get;
 using Application.Queries.Tenant.TenantDashboardData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,18 +20,31 @@ namespace WebApi.Controllers
         }
 
 
-        [ProducesResponseType(typeof(ApiRequestResponse<DashboardDataDto>), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Get dashboard data for the month, if start and end date not provides
+        /// </summary>
+        /// <param name="startDate">start date for the dashboard data</param>
+        /// <param name="endDate">end date for the dashboard data</param>
+        /// <returns></returns>
+        [ProducesResponseType(typeof(ApiRequestResponse<GetDashboardDataResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("tenant/{tenantGuidId}")]
-        public async Task<IActionResult> GetMonthDashboard(Guid tenantGuidId)
+        [HttpGet("from/{startDate}/to/{endDate}")]
+        public async Task<IActionResult> GetMonthDashboard(DateTime? startDate = null, DateTime? endDate = null)
         {
-            var response = await _queryTenantDashboardData.ExecuteAsync(tenantGuidId);
+            var tenantId = HttpContext.GetTenantId();
 
-            if (response is null)
-                return NotFound(ApiRequestResponse<DashboardDataDto>.Fail("Not found"));
+            var response
+                = await _queryTenantDashboardData.ExecuteAsync(tenantId,
+                                                               startDate,
+                                                               endDate);
 
-            var result = ApiRequestResponse<DashboardDataDto>.Succeed(response.Result);
+            if (response.Result is null)
+                return NotFound(ApiRequestResponse<GetDashboardDataResponseDto>.Fail("Not found"));
+
+            var result 
+                = ApiRequestResponse<GetDashboardDataResponseDto>.Succeed(response.Result);
+            
             return Ok(result);
         }
     }

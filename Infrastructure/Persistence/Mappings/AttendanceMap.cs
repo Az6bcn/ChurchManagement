@@ -8,7 +8,7 @@ namespace Infrastructure.Persistence.Mappings
     {
         public void Configure(EntityTypeBuilder<Attendance> builder)
         {
-            builder.ToTable("Attendance");
+            builder.ToTable("Attendances");
 
             builder.HasQueryFilter(m => m.Deleted == null);
 
@@ -54,6 +54,18 @@ namespace Infrastructure.Persistence.Mappings
                    //.HasColumnType("int")
                    .ValueGeneratedNever()
                    .IsRequired();
+            
+            builder.Property(t => t.ServiceTypeId)
+                   .HasColumnName("ServiceTypeId")
+                   //.HasColumnType("int")
+                   .ValueGeneratedNever()
+                   .IsRequired();
+            
+            builder.Property(t => t.ServiceDate)
+                   .HasColumnName("ServiceDate")
+                   .HasColumnType("date")
+                   .IsRequired()
+                   .ValueGeneratedNever();
 
             builder.Property(t => t.CreatedAt)
                    .HasColumnName("CreatedAt")

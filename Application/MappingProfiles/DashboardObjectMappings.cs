@@ -1,7 +1,4 @@
-﻿using System;
-using Application.Dtos;
-using AutoMapper;
-using Domain.ProjectionEntities;
+﻿using AutoMapper;
 
 namespace Application.MappingProfiles
 {

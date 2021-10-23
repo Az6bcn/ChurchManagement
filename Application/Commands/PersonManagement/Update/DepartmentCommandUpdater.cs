@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Update;
-using Application.Dtos.Response.Create;
 using Application.Dtos.Response.Update;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;

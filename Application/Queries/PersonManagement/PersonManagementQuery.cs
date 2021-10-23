@@ -5,6 +5,7 @@ using Application.Dtos.Response.Get;
 using Application.Helpers;
 using Application.Interfaces.Repositories;
 using Domain.Entities.PersonAggregate;
+using Shared.Enums;
 
 namespace Application.Queries.PersonManagement
 {
@@ -47,7 +48,7 @@ namespace Application.Queries.PersonManagement
 
 
         public async Task<Member?> GetMemberByIdAsync(int memberId,
-                                                int tenantId)
+                                                      int tenantId)
             => await _personManagementRepo.GetMemberByIdAsync(memberId, tenantId);
 
         public async Task<QueryResult<GetMembersResponseDto>> GetMembersByTenantIdAsync(int tenantId)
@@ -69,5 +70,60 @@ namespace Application.Queries.PersonManagement
 
             return QueryResult<GetMembersResponseDto>.CreateQueryResults(response);
         }
+
+        public async Task<QueryResult<GetNewComersResponseDto>> GetNewComersByTenantIdAsync(int tenantId)
+        {
+            var newComers = await _personManagementRepo.GetNewComersByTenantIdAsync(tenantId);
+
+            var response = newComers
+                .Select(x => new GetNewComersResponseDto
+                {
+                    NewComerId = x.NewComerId,
+                    Name = x.Name,
+                    Surname = x.Surname,
+                    DateAndMonthOfBirth = x.DateMonthOfBirth,
+                    Gender = x.Gender,
+                    DateAttended = x.DateAttended,
+                    PhoneNumber = x.PhoneNumber,
+                    ServiceType = (ServiceEnum) x.ServiceTypeId
+                });
+
+            return QueryResult<GetNewComersResponseDto>.CreateQueryResults(response);
+        }
+
+        public async Task<NewComer?> GetNewComerByIdAsync(int newComerId,
+                                                          int tenantId)
+            => await _personManagementRepo.GetNewComerByIdAsync(newComerId, tenantId);
+
+
+        public async Task<Minister?> GetMinisterByIdAsync(int ministerId,
+                                                          int tenantId)
+            => await _personManagementRepo.GetMinisterByIdAsync(ministerId, tenantId);
+
+        public async Task<QueryResult<GetMinistersResponseDto>> GetMinistersByTenantIdAsync(int tenantId)
+        {
+            var ministers = await _personManagementRepo.GetMinistersByTenantIdAsync(tenantId);
+
+            var response = ministers
+                .Select(m => new GetMinistersResponseDto
+                {
+                    MinisterId = m.MinisterId,
+                    MinisterTitle = (MinisterTitleEnum) m.MinisterTitleId,
+                    TenantId = m.TenantId,
+                    MemberId = m.MemberId,
+                    Name = m.Member.Name,
+                    Surname = m.Member.Surname,
+                    DateMonthOfBirth = m.Member.DateMonthOfBirth,
+                    Gender = m.Member.Gender,
+                    PhoneNumber = m.Member.PhoneNumber
+                });
+
+            return QueryResult<GetMinistersResponseDto>.CreateQueryResults(response);
+        }
+
+        public async Task<DepartmentMembers> GetDepartmentMemberAsync(int departmentId,
+                                                                      int memberId,
+                                                                      int tenantId)
+            => await _personManagementRepo.GetDepartmentMemberAsync(departmentId, memberId, tenantId);
     }
 }

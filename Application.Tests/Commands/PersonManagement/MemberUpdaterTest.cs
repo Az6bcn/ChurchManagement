@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Commands.PersonManagement.Create;
 using Application.Commands.PersonManagement.Update;
-using Application.Dtos.Request.Create;
 using Application.Dtos.Request.Update;
 using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Application.Tests.Commands.PersonManagement
@@ -25,7 +22,8 @@ namespace Application.Tests.Commands.PersonManagement
             _builtServices = TestDependenciesResolver.BuildServices(services);
         }
 
-        private async Task CreateMemberForRequestAsync(ApplicationDbContext context, Domain.Entities.TenantAggregate.Tenant tenant)
+        private async Task CreateMemberForRequestAsync(ApplicationDbContext context,
+                                                       Domain.Entities.TenantAggregate.Tenant tenant)
             => await TestSeeder.CreateDemoMember(context, tenant);
 
         [Fact]
@@ -100,7 +98,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<RequestValidationException>(async ()
-                => await target.ExecuteAsync(request));
+                                                                        => await target.ExecuteAsync(request));
         }
 
         [Fact]
@@ -135,7 +133,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                                              => await target.ExecuteAsync(request));
+                                                                       => await target.ExecuteAsync(request));
         }
 
         [Fact]
@@ -170,7 +168,7 @@ namespace Application.Tests.Commands.PersonManagement
 
             // Act and Assert
             await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                => await target.ExecuteAsync(request));
+                                                                       => await target.ExecuteAsync(request));
         }
     }
 }

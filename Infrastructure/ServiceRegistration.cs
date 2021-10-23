@@ -14,6 +14,8 @@ namespace Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
             services.AddScoped<IPersonManagementRepositoryAsync, PersonManagementRepositoryAsync>();
+            services.AddScoped<IFinanceRepositoryAsync, FinanceRepositoryAsync>();
+            services.AddScoped<IAttendanceRepositoryAsync, AttendanceRepositoryAsync>();
         }
     }
 }

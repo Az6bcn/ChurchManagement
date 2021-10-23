@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Application.Dtos;
 
 namespace Application.Helpers
 {
@@ -27,6 +26,6 @@ namespace Application.Helpers
         
         public static QueryResult<T> CreateQueryResults(IEnumerable<T> response) => new(response);
 
-        public static QueryResult<T?> CreateQueryResult(T data) => new(null, data);
+        public static QueryResult<T> CreateQueryResult(T data) => new(null, data);
     }
 }

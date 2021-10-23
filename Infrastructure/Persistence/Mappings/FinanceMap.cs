@@ -63,7 +63,7 @@ namespace Infrastructure.Persistence.Mappings
 
             builder.Property(t => t.GivenDate)
              .HasColumnName("GivenDate")
-             .HasColumnType("datetime")
+             .HasColumnType("date")
              .ValueGeneratedNever()
              .HasDefaultValueSql("null")
              .IsRequired();

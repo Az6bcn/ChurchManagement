@@ -1,12 +1,7 @@
 using System;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Infrastructure.Persistence.Context;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Application.Tests
 {
@@ -29,8 +24,7 @@ namespace Application.Tests
         /// </summary>
         /// <param name="builtServicesCollection"></param>
         /// <returns></returns>
-        public static ApplicationDbContext GetApplicationTestDbContext(
-            IServiceProvider builtServicesCollection)
+        public static ApplicationDbContext GetApplicationTestDbContext(IServiceProvider builtServicesCollection)
             => builtServicesCollection.GetRequiredService<ApplicationDbContext>();
 
 

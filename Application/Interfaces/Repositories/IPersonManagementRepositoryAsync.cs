@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Entities.PersonAggregate;
-using Domain.Interfaces;
 
 namespace Application.Interfaces.Repositories
 {
@@ -14,9 +13,28 @@ namespace Application.Interfaces.Repositories
         void Update<T>(T entity);
         Task<IEnumerable<Department>> GetDepartmentsByTenantIdAsync(int tenantId);
 
-        Task<Department?> GetDepartmentIdAsync(int departmentId, int tenantId);
+        Task<Department?> GetDepartmentIdAsync(int departmentId,
+                                               int tenantId);
 
-        Task<Member?> GetMemberByIdAsync(int memberId, int tenantId);
+        Task<Member?> GetMemberByIdAsync(int memberId,
+                                         int tenantId);
+
         Task<IEnumerable<Member>> GetMembersByTenantIdAsync(int tenantId);
+
+        Task<NewComer?> GetNewComerByIdAsync(int newComerId,
+                                             int tenantId);
+
+        Task<IEnumerable<NewComer>> GetNewComersByTenantIdAsync(int tenantId);
+
+        Task<Minister?> GetMinisterByIdAsync(int ministerId,
+                                             int tenantId);
+
+        Task<IEnumerable<Minister>> GetMinistersByTenantIdAsync(int tenantId);
+
+        Task<DepartmentMembers> GetDepartmentMemberAsync(int departmentId,
+                                                         int memberId,
+                                                         int tenantId);
+
+        Task<(int members, int newComers)> GetPersonsBetweenDatesByTenantIdAsync(int tenantId);
     }
 }

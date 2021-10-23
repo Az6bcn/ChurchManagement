@@ -47,7 +47,6 @@ namespace Domain.Entities.PersonAggregate
         public IReadOnlyCollection<Department> Departments => _departments;
         public IReadOnlyCollection<DepartmentMembers> DepartmentMembers => _departmentMembers;
 
-        public Minister Minister { get; set; }
         public Person Person { get; private set; }
         public Tenant Tenant { get; private set; }
 
