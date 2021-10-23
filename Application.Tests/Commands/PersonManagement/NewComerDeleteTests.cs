@@ -1,17 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Commands.PersonManagement.Create;
 using Application.Commands.PersonManagement.Delete;
-using Application.Dtos.Request.Create;
-using Application.Dtos.Request.Update;
-using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Enums;
 using Xunit;
 
 namespace Application.Tests.Commands.PersonManagement

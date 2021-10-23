@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Update;
@@ -11,7 +9,6 @@ using Application.Queries.Tenant;
 using Application.RequestValidators;
 using AutoMapper;
 using Domain.Entities.PersonAggregate;
-using Domain.ValueObjects;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 namespace Application.Commands.PersonManagement.Update

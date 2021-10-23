@@ -1,5 +1,4 @@
 using System;
-using Application.Dtos.Request.Create;
 using Shared.Enums;
 
 namespace Application.Dtos.Response.Create

@@ -5,7 +5,7 @@ namespace Domain.Validators
 {
     public interface IValidateAttendanceInDomain
     {
-        bool Validate(DateTime serviceDate,
+        bool Validate(DateOnly serviceDate,
                       int male, 
                       int female,
                       int children,

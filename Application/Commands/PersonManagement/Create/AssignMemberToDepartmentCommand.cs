@@ -6,7 +6,6 @@ using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
 using Application.Queries.Tenant;
 using AutoMapper;
-using Domain.Entities.PersonAggregate;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 namespace Application.Commands.PersonManagement.Create

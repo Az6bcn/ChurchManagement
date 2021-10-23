@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Dtos;
 using Application.Dtos.Response.Get;
 using Application.Helpers;
 using Application.Interfaces.Repositories;
-using Domain.Entities.PersonAggregate;
 using Shared.Enums;
 
 namespace Application.Queries.Tenant.TenantDashboardData
@@ -33,41 +31,95 @@ namespace Application.Queries.Tenant.TenantDashboardData
                                                                                  DateTime? startDate,
                                                                                  DateTime? endDate)
         {
+            var today = DateTime.UtcNow;
+            DateOnly currentMonthStartDate = startDate.HasValue ? DateOnly.FromDateTime(startDate.Value) : default;
+            DateOnly currentMonthEndDate = endDate.HasValue ? DateOnly.FromDateTime(endDate.Value) : default;
+
             if (!startDate.HasValue || !endDate.HasValue)
             {
-                var today = DateTime.UtcNow;
-                startDate = new DateTime(today.Year, today.Month, 1);
-                endDate = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
+                currentMonthStartDate = new DateOnly(today.Year,
+                                                     today.Month,
+                                                     1);
+                currentMonthEndDate = new DateOnly(today.Year,
+                                                   today.Month,
+                                                   DateTime.DaysInMonth(today.Year, today.Month));
             }
 
             var personManagement = await _personMangeRpo.GetPersonsBetweenDatesByTenantIdAsync(tenantId);
-            var finances = await _financeRepo.GetFinancesBetweenDatesByTenantIdAsync(tenantId,
-                            startDate.Value.Date,
-                            endDate.Value.Date);
+
+            var finances
+                = await _financeRepo.GetFinancesBetweenDatesByTenantIdAsync(tenantId,
+                                                                            currentMonthStartDate,
+                                                                            currentMonthEndDate);
+
+            // var attendances 
+            //     = await _attendanceRepo.GetAttendancesBetweenDatesByTenantIdAsync(tenantId,
+            //                                                                       _startDate,
+            //                                                                       _endDate);
+            var lastYearStartDate = new DateOnly(today.Year,
+                                                 1,
+                                                 1);
+            var currentDate = new DateOnly(today.Year,
+                                           today.Month,
+                                           DateTime.DaysInMonth(today.Year, today.Month));
             var attendances
                 = await _attendanceRepo.GetAttendancesBetweenDatesByTenantIdAsync(tenantId,
-                   startDate.Value.Date,
-                   endDate.Value.Date);
+                                                                                  lastYearStartDate,
+                                                                                  currentDate);
 
-            var dashboardData = MapDashboardData(personManagement.members, personManagement.newComers, finances.ToList(), 
-            attendances.ToList());
-            
-            var allAttendances = attendances
-                .GroupBy(x => x.ServiceDate.Date)
-                .ToDictionary(x => x.Key,
-                    x => new GetAttendanceResponseDto(x.ToList()));
-            
-            dashboardData.Attendance = allAttendances;
+            var allAttendancesGroupedByDate = attendances
+                                              .GroupBy(x => x.ServiceDate)
+                                              .ToDictionary(x => x.Key,
+                                                            x => new GetAttendanceResponseDto(x.ToList()));
 
-            var response = QueryResult<GetDashboardDataResponseDto>.CreateQueryResult(dashboardData);
+            var lastYearAttendances
+                = ExtractLastYearAttendances(allAttendancesGroupedByDate, currentDate);
+
+            var currentYearAttendances
+                = ExtractCurrentYearAttendances(allAttendancesGroupedByDate, lastYearAttendances);
+
+            var currentMonthAttendances
+                = ExtractCurrentMonthAttendances(currentYearAttendances,
+                                                 currentMonthStartDate,
+                                                 currentMonthEndDate);
+
+            var dashboardData = MapDashboardData(personManagement.members,
+                                                 personManagement.newComers,
+                                                 finances.ToList());
+
+            dashboardData.CurrentMonthAttendance = currentMonthAttendances;
+            dashboardData.CurrentYearAttendance = currentYearAttendances;
+            dashboardData.LastYearAttendance = lastYearAttendances;
+
+            var response
+                = QueryResult<GetDashboardDataResponseDto>.CreateQueryResult(dashboardData);
 
             return response;
         }
 
-        private static GetDashboardDataResponseDto MapDashboardData(int members,
+        private Dictionary<DateTime, GetAttendanceResponseDto>? ExtractCurrentMonthAttendances(Dictionary<DateTime, GetAttendanceResponseDto>? currentYearAttendances,
+                                                                                               DateOnly currentMonthStartDate,
+                                                                                               DateOnly currentMonthEndDate)
+        => currentYearAttendances.Where(x => DateOnly.FromDateTime(x.Key) >= currentMonthStartDate
+                                                      && DateOnly.FromDateTime(x.Key) <= currentMonthEndDate)
+                                          .ToDictionary(x => x.Key,
+                                                        x => x.Value);
+        private Dictionary<DateTime, GetAttendanceResponseDto>? ExtractLastYearAttendances(Dictionary<DateTime, GetAttendanceResponseDto>? allAttendancesGroupedByDate,
+                                                                                           DateOnly currentDate)
+        => allAttendancesGroupedByDate.Where(x => x.Key.Year == currentDate.AddYears(-1).Year)
+                                      .ToDictionary(x => x.Key,
+                                                    x => x.Value);
+        
+        private Dictionary<DateTime, GetAttendanceResponseDto>? ExtractCurrentYearAttendances(Dictionary<DateTime, GetAttendanceResponseDto>? allAttendancesGroupedByDate,
+                                                                                              Dictionary<DateTime, GetAttendanceResponseDto>? lastYearAttendances)
+            => allAttendancesGroupedByDate.ExceptBy(lastYearAttendances.Select(x => x.Key),
+                                                    x => x.Key)
+                                          .ToDictionary(x => x.Key,
+                                                        x => x.Value);
+
+        private GetDashboardDataResponseDto MapDashboardData(int members,
                                                                     int newComers,
-                                                                    ICollection<Domain.Entities.FinanceAggregate.Finance> finances,
-                                                                    ICollection<Domain.Entities.AttendanceAggregate.Attendance> attendances)
+                                                                    ICollection<Domain.Entities.FinanceAggregate.Finance> finances)
         {
             return new GetDashboardDataResponseDto
             {
@@ -85,15 +137,7 @@ namespace Application.Queries.Tenant.TenantDashboardData
                            .Where(t => t.FinanceTypeId == (int)FinanceEnum.Offering ||
                                        t.FinanceTypeId == (int)FinanceEnum.MidWeekServiceOffering)
                            .Sum(a => a.Amount),
-                NewComers = newComers,
-                MonthAttendance = attendances
-                                  .Select(x =>
-                                  {
-                                      var sum = x.Male + x.Female + x.Children;
-
-                                      return sum;
-                                  })
-                                  .Sum()
+                NewComers = newComers
             };
         }
     }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagement;
-using Application.RequestValidators;
 using PersonManagementAggregate = Domain.Entities.PersonAggregate.PersonManagement;
 
 

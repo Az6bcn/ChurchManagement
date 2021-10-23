@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.Finance.Create;
-using Application.Commands.PersonManagement.Create;
 using Application.Dtos.Request.Create;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -47,7 +45,7 @@ namespace Application.Tests.Commands.Finance
                 ServiceTypeEnum = ServiceEnum.Thanksgiving,
                 CurrencyTypeEnum = CurrencyEnum.UsDollars,
                 Amount = 234.5m,
-                GivenDate = DateTime.Now.Date,
+                GivenDate = DateOnly.FromDateTime(DateTime.Now.Date),
                 Description = "First Thanksgiving Offering"
             };
 
@@ -79,14 +77,14 @@ namespace Application.Tests.Commands.Finance
                 ServiceTypeEnum = ServiceEnum.Thanksgiving,
                 CurrencyTypeEnum = CurrencyEnum.UsDollars,
                 Amount = 234.5m,
-                GivenDate = DateTime.Now.Date,
+                GivenDate = DateOnly.FromDateTime(DateTime.Now.Date),
                 Description = "Fires Thanksgiving Offering"
             };
 
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentException>(async () => await target.ExecuteAsync(request));
         }
-        
+
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithNegativeAmount_ThrowsException()
         {
@@ -105,14 +103,14 @@ namespace Application.Tests.Commands.Finance
                 ServiceTypeEnum = ServiceEnum.Thanksgiving,
                 CurrencyTypeEnum = CurrencyEnum.UsDollars,
                 Amount = -234.5m,
-                GivenDate = DateTime.Now.Date,
+                GivenDate = DateOnly.FromDateTime(DateTime.Now.Date),
                 Description = "Fires Thanksgiving Offering"
             };
-            
+
             // Act and Assert
             await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
         }
-        
+
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithDefaultGivenDate_ThrowsException()
         {
@@ -133,7 +131,7 @@ namespace Application.Tests.Commands.Finance
                 Amount = 234.5m,
                 Description = "Fires Thanksgiving Offering"
             };
-            
+
             // Act and Assert
             await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
         }

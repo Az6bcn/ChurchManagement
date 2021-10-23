@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Application.Commands.Attendance.Create;
-using Application.Commands.Finance.Create;
 using Application.Dtos.Request.Create;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -42,7 +41,7 @@ namespace Application.Tests.Commands.Attendance
             var request = new CreateAttendanceRequestDto()
             {
                 TenantId = tenant.TenantId,
-                ServiceDate = DateTime.UtcNow.Date,
+                ServiceDate = DateOnly.FromDateTime(DateTime.UtcNow.Date),
                 Male = 27,
                 Female = 89,
                 Children = 23,
@@ -72,7 +71,7 @@ namespace Application.Tests.Commands.Attendance
             var request = new CreateAttendanceRequestDto()
             {
                 TenantId = 99999,
-                ServiceDate = DateTime.UtcNow.Date,
+                ServiceDate = DateOnly.FromDateTime(DateTime.UtcNow.Date),
                 Male = 27,
                 Female = 89,
                 Children = 23,
@@ -83,7 +82,7 @@ namespace Application.Tests.Commands.Attendance
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentException>(async () => await target.ExecuteAsync(request));
         }
-        
+
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithNegativeCounts_ThrowsException()
         {
@@ -98,18 +97,18 @@ namespace Application.Tests.Commands.Attendance
             var request = new CreateAttendanceRequestDto()
             {
                 TenantId = tenant.TenantId,
-                ServiceDate = DateTime.UtcNow.Date,
+                ServiceDate = DateOnly.FromDateTime(DateTime.UtcNow.Date),
                 Male = -3,
                 Female = -5,
                 Children = -3,
                 NewComers = -6,
                 ServiceTypeEnum = ServiceEnum.Thanksgiving
             };
-            
+
             // Act and Assert
             await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
         }
-        
+
         [Fact]
         public async Task ExecuteAsync_WhenCalledWithDefaultServiceDate_ThrowsException()
         {
@@ -130,7 +129,7 @@ namespace Application.Tests.Commands.Attendance
                 NewComers = 16,
                 ServiceTypeEnum = ServiceEnum.Thanksgiving
             };
-            
+
             // Act and Assert
             await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
         }

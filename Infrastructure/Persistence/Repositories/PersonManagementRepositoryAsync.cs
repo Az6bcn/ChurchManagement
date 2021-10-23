@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Application.Dtos.Response.Get;
 using Application.Interfaces.Repositories;
 using Domain.Entities.PersonAggregate;
 using Infrastructure.Persistence.Context;

@@ -1,5 +1,4 @@
 using System;
-using Domain.Abstracts;
 using Domain.Entities.Helpers;
 using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
@@ -17,7 +16,7 @@ namespace Domain.Entities.AttendanceAggregate
 
         internal Attendance(IValidateAttendanceInDomain validator,
                             Tenant tenant,
-                            DateTime serviceDate,
+                            DateOnly serviceDate,
                             int male,
                             int female,
                             int children,
@@ -35,7 +34,7 @@ namespace Domain.Entities.AttendanceAggregate
             Female = female;
             Children = children;
             NewComers = newComers;
-            ServiceDate = serviceDate;
+            ServiceDate = serviceDate.ToDateTime(new TimeOnly(0,0));
             CreatedAt = DateTime.UtcNow;
         }
 
@@ -55,7 +54,7 @@ namespace Domain.Entities.AttendanceAggregate
 
         public static Attendance Create(IValidateAttendanceInDomain validator,
                                         Tenant tenant,
-                                        DateTime serviceDate,
+                                        DateOnly serviceDate,
                                         int male,
                                         int female,
                                         int children,
@@ -65,7 +64,7 @@ namespace Domain.Entities.AttendanceAggregate
 
         public void Update(IValidateAttendanceInDomain validator,
                            Tenant tenant,
-                           DateTime serviceDate,
+                           DateOnly serviceDate,
                            int male,
                            int female,
                            int children,
@@ -84,7 +83,7 @@ namespace Domain.Entities.AttendanceAggregate
             Female = female;
             Children = children;
             NewComers = newComers;
-            ServiceDate = serviceDate;
+            ServiceDate = serviceDate.ToDateTime(new TimeOnly(0,0));
             UpdatedAt = DateTime.UtcNow;
         }
 

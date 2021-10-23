@@ -6,7 +6,7 @@ namespace Application.Dtos.Request.Create
     public class CreateAttendanceRequestDto
     {
         public int TenantId { get;  set; }
-        public DateTime ServiceDate { get; set; }
+        public DateOnly ServiceDate { get; set; }
         public int Male { get; set; }
         public int Female { get; set; }
         public int Children { get; set; }

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Commands.PersonManagement.Delete;
-using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;

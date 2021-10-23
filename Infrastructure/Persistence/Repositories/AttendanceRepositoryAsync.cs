@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Domain.Entities.AttendanceAggregate;
-using Domain.Entities.FinanceAggregate;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,11 +24,21 @@ namespace Infrastructure.Persistence.Repositories
                                .SingleOrDefaultAsync(a => a.AttendanceId == attendanceId && a.TenantId == tenantId);
 
         public async Task<IEnumerable<Attendance>> GetAttendancesBetweenDatesByTenantIdAsync(int tenantId,
-                                                                                       DateTime startDate,
-                                                                                       DateTime endDate)
+                                                                                             DateOnly startDate,
+                                                                                             DateOnly endDate)
             => await _dbContext.Set<Attendance>()
                                .Where(f => f.TenantId == tenantId
-                                           && f.ServiceDate >= startDate && f.ServiceDate <= endDate)
+                                           && f.ServiceDate >= startDate.ToDateTime(new TimeOnly(0,0)) 
+                                           && f.ServiceDate <= endDate.ToDateTime(new TimeOnly(0,0)))
+                               .ToListAsync();
+
+        public async Task<IEnumerable<Attendance>> GetAttendancesForLastYearAndCurrentYearByTenantIdAsync(int tenantId,
+                                                                                                          DateOnly startDate,
+                                                                                                          DateOnly endDate)
+            => await _dbContext.Set<Attendance>()
+                               .Where(f => f.TenantId == tenantId
+                                           && f.ServiceDate >= startDate.ToDateTime(new TimeOnly(0,0)) 
+                                           && f.ServiceDate <= endDate.ToDateTime(new TimeOnly(0,0)))
                                .ToListAsync();
     }
 }

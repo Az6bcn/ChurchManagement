@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Application.Commands.Attendance.Delete;
-using Application.Commands.Finance.Delete;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;

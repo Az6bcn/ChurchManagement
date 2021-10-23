@@ -11,8 +11,8 @@ namespace Application.Interfaces.Repositories
                                                       int tenantId);
 
         Task<IEnumerable<Finance>> GetFinancesBetweenDatesByTenantIdAsync(int tenantId,
-                                                                          DateTime startDate,
-                                                                          DateTime endDate);
+                                                                          DateOnly startDate,
+                                                                          DateOnly endDate);
 
     }
 }

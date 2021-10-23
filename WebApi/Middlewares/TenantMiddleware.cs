@@ -12,11 +12,9 @@ namespace WebApi.Middlewares
         private readonly RequestDelegate _next;
         private readonly ITenantRepositoryAsync _tenantRepo;
 
-        public TenantMiddleware(RequestDelegate next
-                                )
+        public TenantMiddleware(RequestDelegate next)
         {
             _next = next;
-            
         }
 
         public async Task InvokeAsync(HttpContext context, ITenantRepositoryAsync _tenantRepo)

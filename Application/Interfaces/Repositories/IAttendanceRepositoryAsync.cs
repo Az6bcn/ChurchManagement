@@ -11,7 +11,11 @@ namespace Application.Interfaces.Repositories
                                                             int tenantId);
 
         Task<IEnumerable<Attendance>> GetAttendancesBetweenDatesByTenantIdAsync(int tenantId,
-            DateTime startDate,
-            DateTime endDate);
+                                                                                DateOnly startDate,
+                                                                                DateOnly endDate);
+
+        Task<IEnumerable<Attendance>> GetAttendancesForLastYearAndCurrentYearByTenantIdAsync(int tenantId,
+                                                                                             DateOnly startDate,
+                                                                                             DateOnly endDate);
     }
 }

@@ -11,7 +11,6 @@ using Application.Commands.PersonManagement.Update;
 using Application.Commands.Tenant.Create;
 using Application.Commands.Tenant.Delete;
 using Application.Commands.Tenant.Update;
-using Application.Interfaces.UnitOfWork;
 using Application.Queries;
 using Application.Queries.Attendance;
 using Application.Queries.Finance;

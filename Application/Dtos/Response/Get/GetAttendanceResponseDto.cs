@@ -11,12 +11,11 @@ namespace Application.Dtos.Response.Get
         public int Children { get; set; }
         public int Total => Men + Women + Children;
 
-        public GetAttendanceResponseDto(IEnumerable<Attendance> attendance)
+        public GetAttendanceResponseDto(ICollection<Attendance> attendance)
         {
             Men = attendance.Sum(x => x.Male);
             Women = attendance.Sum(x => x.Female);
             Children = attendance.Sum(x => x.Children);
-            
         }
     }
 }
