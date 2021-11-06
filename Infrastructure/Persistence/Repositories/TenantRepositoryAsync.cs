@@ -28,16 +28,18 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId)
         {
-            var response = await _dbContext.Tenants
+            var tenant = await _dbContext.Tenants
                                            .Where(t => t.TenantGuidId == tenantGuidId)
                                            .AsNoTracking()
-                                           .Select(t => new TenantDetailsProjection
-                                           {
-                                               Name = t.Name,
-                                               LogoUrl = t.LogoUrl,
-                                               TenantId = t.TenantId
-                                           })
                                            .SingleOrDefaultAsync();
+            
+            var response = new TenantDetailsProjection
+            {
+                Name = tenant.Name,
+                LogoUrl = tenant.LogoUrl,
+                TenantId = tenant.TenantId,
+                CurrencyCode =  tenant.CurrencyCode
+            };
 
             return response;
         }

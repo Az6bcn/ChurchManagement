@@ -352,3 +352,30 @@ GO
 
 ALTER TABLE [dbo].[Attendances] CHECK CONSTRAINT [FK_Attendances_TenantId_Tenants_TenantId]
 GO
+
+-- Financetypes
+CREATE TABLE [dbo].[FinanceTypes](
+ [FinanceTypeId] [int] IDENTITY(10000,1) NOT NULL,
+ [Name] [varchar](20) NOT NULL
+     CONSTRAINT [PK_FinanceTypes] PRIMARY KEY CLUSTERED
+     ([FinanceTypeId] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+-- ServiceTypes
+CREATE TABLE [dbo].[ServiceTypes](
+ [ServiceTypeId] [int] IDENTITY(10000,1) NOT NULL,
+ [Name] [varchar](20) NOT NULL
+     CONSTRAINT [PK_ServiceTypes] PRIMARY KEY CLUSTERED
+     ([ServiceTypeId] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+-- CurrencyTypes
+CREATE TABLE [dbo].[CurrencyTypes](
+  [CurrencyTypeId] [int] IDENTITY(10000,1) NOT NULL,
+  [Name] [varchar](20) NOT NULL
+      CONSTRAINT [PK_CurrencyTypes] PRIMARY KEY CLUSTERED
+      ([CurrencyTypeId] ASC)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO

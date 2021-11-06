@@ -26,6 +26,7 @@ namespace WebApi.Middlewares
                 var tenant = await _tenantRepo.GetTenantByGuidIdAsync(Guid.Parse(tenantKey));
 
                 context.Items.TryAdd("tenantId", tenant.TenantId);
+                context.Items.TryAdd("tenantCurrencyCode", tenant.CurrencyCode);
             }
                 
             // call next middleware in the pipeline

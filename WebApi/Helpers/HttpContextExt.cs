@@ -11,5 +11,13 @@ namespace WebApi.Helpers
 
             return default;
         }
+        
+        public static string? GetTenantCurrencyCode(this HttpContext context)
+        {
+            if(context.Items.TryGetValue("tenantCurrencyCode", out var value))
+                return (string)value;
+
+            return default;
+        }
     }
 }

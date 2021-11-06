@@ -8,6 +8,7 @@ namespace Application.Queries.Tenant.TenantDashboardData
     public interface IQueryTenantDashboardData
     {
         Task<QueryResult<GetDashboardDataResponseDto>> ExecuteAsync(int tenantId,
+                                                                    string currencyCode,
                                                                     DateTime? startDate,
                                                                     DateTime? endDate);
     }

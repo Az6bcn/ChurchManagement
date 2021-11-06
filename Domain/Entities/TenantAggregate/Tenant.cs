@@ -12,6 +12,12 @@ namespace Domain.Entities.TenantAggregate
     {
         public Tenant()
         {
+            _currencyCodes = new Dictionary<CurrencyEnum, string>
+            {
+                { CurrencyEnum.Naira, "NGN" },
+                { CurrencyEnum.UsDollars, "USD" },
+                { CurrencyEnum.BritishPounds, "GBP" }
+            };
         }
 
         internal Tenant(string name,
@@ -26,7 +32,7 @@ namespace Domain.Entities.TenantAggregate
             Name = name;
             LogoUrl = logoUrl;
             CreatedAt = DateTime.UtcNow;
-            CurrencyId = Currency.CurrencyId;
+            CurrencyId = Currency.CurrencyValueObjectId;
             TenantStatusId = (int) TenantStatusEnum.Pending;
             TenantGuidId = Guid.NewGuid();
 
@@ -44,6 +50,8 @@ namespace Domain.Entities.TenantAggregate
         public DateTime? Deleted { get; private set; }
         public Currency Currency { get; private set; }
         public TenantStatus TenantStatus { get; private set; }
+        public string CurrencyCode => _currencyCodes[(CurrencyEnum)CurrencyId];
+        private readonly IReadOnlyDictionary<CurrencyEnum, string> _currencyCodes;
 
         public static Tenant Create(string name,
                                     string logoUrl,
@@ -70,11 +78,11 @@ namespace Domain.Entities.TenantAggregate
                 = TenantStatus.Create(tenantStatusEnumValue.Id, tenantStatusEnumValue.Value);
             Currency = Currency.Create(currencyEnumValue.Id, currencyEnumValue.Value);
             
-            validator.Validate(Currency.CurrencyId, tenantStatus.TenantStatusId, errors);
+            validator.Validate(Currency.CurrencyValueObjectId, tenantStatus.TenantStatusId, errors);
 
             Name = name;
             LogoUrl = logoUrl;
-            CurrencyId = Currency.CurrencyId;
+            CurrencyId = Currency.CurrencyValueObjectId;
             TenantStatusId = tenantStatus.TenantStatusId;
             UpdatedAt = DateTime.UtcNow;
         }

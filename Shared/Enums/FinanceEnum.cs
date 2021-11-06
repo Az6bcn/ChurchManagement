@@ -8,6 +8,7 @@
         Donation = 4,
         Tithe = 5,
         MidWeekServiceOffering = 6,
-        Others = 7
+        SpecialThanksgiving = 7,
+        Others = 8
     }
 }

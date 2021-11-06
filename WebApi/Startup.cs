@@ -51,6 +51,16 @@ namespace WebApi
                 //... and tell Swagger to use those XML comments.
                 c.IncludeXmlComments(xmlPath);
             });
+            services.AddCors(op =>
+            {
+                op.AddPolicy("webApp",
+                             config =>
+                             {
+                                 config.AllowAnyOrigin();
+                                 config.AllowAnyMethod();
+                                 config.AllowAnyHeader();
+                             });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +90,8 @@ namespace WebApi
 
             app.UseRouting();
 
+            app.UseCors("webApp");
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

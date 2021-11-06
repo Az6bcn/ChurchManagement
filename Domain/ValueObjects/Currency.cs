@@ -1,13 +1,21 @@
 using System;
+using System.Collections.Generic;
 using Domain.Abstracts;
+using Shared.Enums;
 
 namespace Domain.ValueObjects
 {
     public class Currency: ValueObject
     {
+        private readonly IReadOnlyDictionary<CurrencyEnum, string> _currencyCodes;
         public Currency()
         {
-            
+            _currencyCodes = new Dictionary<CurrencyEnum, string>
+            {
+                { CurrencyEnum.Naira, "NGN" },
+                { CurrencyEnum.UsDollars, "USD" },
+                { CurrencyEnum.BritishPounds, "GBP" }
+            };
         }
         
         internal Currency(int id, string name)
@@ -17,8 +25,9 @@ namespace Domain.ValueObjects
         }
         
         
-        public int CurrencyId { get; private set; }
-        public string Name { get; private set; }
+        private int CurrencyId { get; init ; }
+        private string Name { get; init; }
+        public string CurrencyCode => _currencyCodes[(CurrencyEnum)CurrencyId];
         public int CurrencyValueObjectId => CurrencyId;
         
         

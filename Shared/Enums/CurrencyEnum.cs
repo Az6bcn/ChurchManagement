@@ -3,7 +3,7 @@
     public enum CurrencyEnum
     {
         Naira = 1,
-        BritishPounds = 2,
-        UsDollars = 3
+        UsDollars = 2,
+        BritishPounds = 3
     }
 }
