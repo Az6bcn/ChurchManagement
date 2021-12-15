@@ -1,10 +1,7 @@
-using System.Collections.Generic;
+namespace Application.Dtos.Response.Get;
 
-namespace Application.Dtos.Response.Get
+public class GetMonthAttendanceSummaryResponseDto
 {
-    public class GetMonthAttendanceSummaryResponseDto
-    {
-        public string Title { get; set; }
-        public int Value { get; set; }
-    }
+    public string Title { get; set; }
+    public int Value { get; set; }
 }

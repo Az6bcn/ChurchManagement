@@ -1,9 +1,8 @@
-﻿namespace Shared.Enums
+﻿namespace Shared.Enums;
+
+public enum CurrencyEnum
 {
-    public enum CurrencyEnum
-    {
-        Naira = 1,
-        UsDollars = 2,
-        BritishPounds = 3
-    }
+    Naira = 1,
+    UsDollars = 2,
+    BritishPounds = 3
 }

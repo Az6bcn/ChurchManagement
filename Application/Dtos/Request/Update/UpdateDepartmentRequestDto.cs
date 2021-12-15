@@ -1,9 +1,8 @@
 using Application.Dtos.Request.Create;
 
-namespace Application.Dtos.Request.Update
+namespace Application.Dtos.Request.Update;
+
+public class UpdateDepartmentRequestDto: CreateDepartmentRequestDto
 {
-    public class UpdateDepartmentRequestDto: CreateDepartmentRequestDto
-    {
-        public int DepartmentId { get; set; }   
-    }
+    public int DepartmentId { get; set; }   
 }

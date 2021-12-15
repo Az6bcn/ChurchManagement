@@ -1,9 +1,8 @@
-namespace Application.Dtos.Response.Get
+namespace Application.Dtos.Response.Get;
+
+public class GetDepartmentsResponseDto
 {
-    public class GetDepartmentsResponseDto
-    {
-        public int DepartmentId { get; set; }
-        public int TenantId { get; set; }
-        public string Name { get; set; }
-    }
+    public int DepartmentId { get; set; }
+    public int TenantId { get; set; }
+    public string Name { get; set; }
 }

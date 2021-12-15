@@ -1,7 +1,6 @@
-namespace Domain.Interfaces
+namespace Domain.Interfaces;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot
-    {
-        //List<INotification> Events { get; }
-    }
+    //List<INotification> Events { get; }
 }

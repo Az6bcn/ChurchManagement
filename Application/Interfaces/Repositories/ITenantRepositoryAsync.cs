@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Domain.Entities.TenantAggregate;
 using Domain.ProjectionEntities;
 
-namespace Application.Interfaces.Repositories
+namespace Application.Interfaces.Repositories;
+
+public interface ITenantRepositoryAsync: IGenericRepositoryAsync<Tenant>
 {
-    public interface ITenantRepositoryAsync: IGenericRepositoryAsync<Tenant>
-    {
-        Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
-        Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId);
-        Task<Tenant?> GetMonthDashboardDataAsync(int tenantId);
-        Task<IEnumerable<string>> GetTenantNamesAsync();
-    }
+    Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId);
+    Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId);
+    Task<Tenant?> GetMonthDashboardDataAsync(int tenantId);
+    Task<IEnumerable<string>> GetTenantNamesAsync();
 }
