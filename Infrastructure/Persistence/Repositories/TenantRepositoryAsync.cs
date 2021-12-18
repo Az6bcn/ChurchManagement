@@ -1,83 +1,80 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
 using Domain.Entities.TenantAggregate;
 using Domain.ProjectionEntities;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories;
+
+public class TenantRepositoryAsync : GenericRepositoryAsync<Tenant>, ITenantRepositoryAsync
 {
-    public class TenantRepositoryAsync : GenericRepositoryAsync<Tenant>, ITenantRepositoryAsync
+    private readonly ApplicationDbContext _dbContext;
+
+    public TenantRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
     {
-        private readonly ApplicationDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public TenantRepositoryAsync(ApplicationDbContext dbContext) : base(dbContext)
+    public async Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId)
+        => await _dbContext
+                 .Tenants
+                 //.Include(t => t.Members.Where(m => m.TenantId == tenantId))
+                 .Where(t => t.TenantId == tenantId)
+                 .ToListAsync();
+
+    public async Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId)
+    {
+        var tenant = await _dbContext.Tenants
+                                     .Where(t => t.TenantGuidId == tenantGuidId)
+                                     .AsNoTracking()
+                                     .SingleOrDefaultAsync();
+            
+        var response = new TenantDetailsProjection
         {
-            _dbContext = dbContext;
-        }
+            Name = tenant.Name,
+            LogoUrl = tenant.LogoUrl,
+            TenantId = tenant.TenantId,
+            CurrencyCode =  tenant.CurrencyCode
+        };
 
-        public async Task<IReadOnlyCollection<Tenant>> GetTenantMembersByTenantGuidAsync(int tenantId)
-            => await _dbContext
-                     .Tenants
-                     //.Include(t => t.Members.Where(m => m.TenantId == tenantId))
-                     .Where(t => t.TenantId == tenantId)
-                     .ToListAsync();
+        return response;
+    }
 
-        public async Task<TenantDetailsProjection?> GetTenantByGuidIdAsync(Guid tenantGuidId)
-        {
-            var response = await _dbContext.Tenants
-                                           .Where(t => t.TenantGuidId == tenantGuidId)
-                                           .AsNoTracking()
-                                           .Select(t => new TenantDetailsProjection
-                                           {
-                                               Name = t.Name,
-                                               LogoUrl = t.LogoUrl,
-                                               TenantId = t.TenantId
-                                           })
-                                           .SingleOrDefaultAsync();
+    public async Task<Tenant?> GetMonthDashboardDataAsync(int tenantId)
+    {
+        var today = DateTime.Now;
+        var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+        var lastDayOfMonth = new DateTime(today.Year,
+                                          today.Month,
+                                          DateTime.DaysInMonth(today.Year, today.Month));
 
-            return response;
-        }
+        var firstDayOfYear = new DateTime(today.Year, 01, 01);
 
-        public async Task<Tenant?> GetMonthDashboardDataAsync(int tenantId)
-        {
-            var today = DateTime.Now;
-            var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
-            var lastDayOfMonth = new DateTime(today.Year,
-                                              today.Month,
-                                              DateTime.DaysInMonth(today.Year, today.Month));
+        var response = await _dbContext.Tenants
+                                       // .Include(t => t.Members)
+                                       // .Include(t => t.Finances.Where(x => x.ServiceDate.Value.Date >= firstDayOfMonth.Date
+                                       //                                     && x.ServiceDate.Value.Date <= lastDayOfMonth.Date))
+                                       // .Include(t => t.Attendance.Where(x => x.ServiceDate.Date >= firstDayOfYear.Date
+                                       //                                       && x.ServiceDate <= lastDayOfMonth.Date))
+                                       // .Include(t => t.NewComers.Where(x => x.DateAttended.Date >= firstDayOfMonth.Date
+                                       //                                      && x.DateAttended <= lastDayOfMonth.Date))
+                                       // .ThenInclude(nc => nc.ServiceType)
+                                       // .Include(t => t.Currency)
+                                       // .Where(t => t.TenantId == tenantId && t.TenantGuidId == tenantGuidId)
+                                       // .AsSplitQuery()
+                                       .SingleOrDefaultAsync(t => t.TenantId == tenantId);
+        //&& t.TenantStausId == (int)TenantStatusEnum.Active);
 
-            var firstDayOfYear = new DateTime(today.Year, 01, 01);
+        return response;
+    }
 
-            var response = await _dbContext.Tenants
-                                           // .Include(t => t.Members)
-                                           // .Include(t => t.Finances.Where(x => x.ServiceDate.Value.Date >= firstDayOfMonth.Date
-                                           //                                     && x.ServiceDate.Value.Date <= lastDayOfMonth.Date))
-                                           // .Include(t => t.Attendance.Where(x => x.ServiceDate.Date >= firstDayOfYear.Date
-                                           //                                       && x.ServiceDate <= lastDayOfMonth.Date))
-                                           // .Include(t => t.NewComers.Where(x => x.DateAttended.Date >= firstDayOfMonth.Date
-                                           //                                      && x.DateAttended <= lastDayOfMonth.Date))
-                                           // .ThenInclude(nc => nc.ServiceType)
-                                           // .Include(t => t.Currency)
-                                           // .Where(t => t.TenantId == tenantId && t.TenantGuidId == tenantGuidId)
-                                           // .AsSplitQuery()
-                                           .SingleOrDefaultAsync(t => t.TenantId == tenantId);
-            //&& t.TenantStausId == (int)TenantStatusEnum.Active);
+    public async Task<IEnumerable<string>> GetTenantNamesAsync()
+    {
+        var response = await _dbContext.Tenants
+                                       .AsNoTracking()
+                                       .Select(x => x.Name)
+                                       .ToListAsync();
 
-            return response;
-        }
-
-        public async Task<IEnumerable<string>> GetTenantNamesAsync()
-        {
-            var response = await _dbContext.Tenants
-                                           .AsNoTracking()
-                                           .Select(x => x.Name)
-                                           .ToListAsync();
-
-            return response;
-        }
+        return response;
     }
 }

@@ -2,7 +2,7 @@
 --- Add Tenant Statuses-------------
 PRINT('Adding Tenant Statuses')
 
-INSERT INTO [ChurchManagement].[dbo].[TenantStatus]
+INSERT INTO [ChurchManagement].[dbo].[TenantStatuses]
 VALUES
     ('Active'),
     ('On Hold'),
@@ -198,39 +198,26 @@ VALUES
 
 --- Add Finance-------------
 PRINT('Adding Demo Tenant Finance')
-DECLARE @Currency INT = (SELECT CurrencyId
-FROM [ChurchManagement].[dbo].[Currencies]
-WHERE Name = 'British Pounds')
-DECLARE @ThanksgivingFianceTypeId INT = (SELECT FinanceTypeId
-FROM [ChurchManagement].[dbo].[FinanceTypes]
-WHERE Name = 'Thanksgiving')
-DECLARE @ThanksgivingServiceTypeId INT = (SELECT ServiceTypeId
-FROM [ChurchManagement].[dbo].[ServiceTypes]
-WHERE Name = 'Thanksgiving')
-DECLARE @OfferingFianceTypeId INT = (SELECT FinanceTypeId
-FROM [ChurchManagement].[dbo].[FinanceTypes]
-WHERE Name = 'Offering')
-DECLARE @TitheFinanceTypeId INT = (SELECT FinanceTypeId
-FROM [ChurchManagement].[dbo].[FinanceTypes]
-WHERE Name = 'Tithe')
-DECLARE @SundayServiceTypeId INT = (SELECT ServiceTypeId
-FROM [ChurchManagement].[dbo].[ServiceTypes]
-WHERE Name = 'Sunday Service')
-DECLARE @DemoTenantId INT = (SELECT TenantId
-FROM [ChurchManagement].[dbo].[Tenants]
-WHERE Name = 'Demo tenant')
+
+DECLARE @Currency INT = 2;
+DECLARE @ThanksgivingFianceTypeId INT = 1;
+DECLARE @ThanksgivingServiceTypeId INT = 1;
+DECLARE @OfferingFianceTypeId INT = 2;
+DECLARE @TitheFinanceTypeId INT = 5;
+DECLARE @SundayServiceTypeId INT = 3;
+DECLARE @DemoTenantId INT = 10000;
 
 INSERT INTO [ChurchManagement].[dbo].[Finances]
-    (
+(
     TenantId,
     FinanceTypeId,
     ServiceTypeId,
     CurrencyId,
     Amount,
-    ServiceDate,
+    GivenDate,
     Description,
     CreatedAt
-    )
+)
 VALUES
     -- tenant 1
     -- Thanksgiving Offering
@@ -303,9 +290,68 @@ VALUES
     (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '09/05/2021', 103), 'Tithe', CONVERT(DATETIME, '09/05/2021', 103)),
     (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '16/05/2021', 103), 'Tithe', CONVERT(DATETIME, '16/05/2021', 103)),
     (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '900.00'), CONVERT(DATETIME, '23/05/2021', 103),  'Tithe',CONVERT(DATETIME, '23/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.79'), CONVERT(DATETIME, '30/05/2021', 103), 'Tithe', CONVERT(DATETIME, '30/05/2021', 103)),
+
+    --Spendings:
+    (@DemoTenantId, @ThanksgivingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'), CONVERT(DATETIME, '01/01/2021', 103), 'New year spending', CONVERT(DATETIME, '01/01/2021', 103)),
+    
+    -- Church Bus Fuel Refill Spending (Thanksgiving Sunday)
+   (@DemoTenantId, @OfferingFianceTypeId, @ThanksgivingServiceTypeId, @Currency, CONVERT(DECIMAL, '58.89'),  CONVERT(DATETIME, '04/04/2021', 103), 'Esater Spening', CONVERT(DATETIME, '04/04/2021', 103)),
+    
+    --Church Bus Fuel Refill Spending Sunday Services
+ --Feb
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '12.00'), CONVERT(DATETIME, '07/02/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '10.00'),CONVERT(DATETIME, '14/02/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '14/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '70.00'), CONVERT(DATETIME, '21/02/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '21/02/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '10.00'), CONVERT(DATETIME, '28/02/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '28/02/2021', 103)),
+    --Mar
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '78.34'), CONVERT(DATETIME, '07/03/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '23.99'), CONVERT(DATETIME, '14/03/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '14/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '104.96'),CONVERT(DATETIME, '21/03/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '21/03/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '116.98'),CONVERT(DATETIME, '28/03/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '28/03/2021', 103)),
+    --Apr
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '87.00'), CONVERT(DATETIME, '04/04/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'),CONVERT(DATETIME, '11/04/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '11/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '37.99'), CONVERT(DATETIME, '18/04/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '18/04/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.70'), CONVERT(DATETIME, '25/04/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '25/04/2021', 103)),
+    --May
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '67.00'), CONVERT(DATETIME, '02/05/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '02/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '89.00'), CONVERT(DATETIME, '09/05/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '09/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'),CONVERT(DATETIME, '16/05/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '16/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '34.08'), CONVERT(DATETIME, '23/05/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '23/05/2021', 103)),
+    (@DemoTenantId, @OfferingFianceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '315.99'),CONVERT(DATETIME, '30/05/2021', 103), 'Church Bus Fuel Refill Spending', CONVERT(DATETIME, '30/05/2021', 103)),
+
+    -- Tithe 
+    --Jan
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '200.00'), CONVERT(DATETIME, '01/01/2021', 103), 'First tithe Church Bus Fuel Refill Spending of the year', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '400.00'), CONVERT(DATETIME, '01/01/2021', 103), 'Tithe', CONVERT(DATETIME, '01/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '700.00'), CONVERT(DATETIME, '10/01/2021', 103), 'Tithe', CONVERT(DATETIME, '10/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '600.00'), CONVERT(DATETIME, '17/01/2021', 103), 'Tithe', CONVERT(DATETIME, '17/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '95.00'),  CONVERT(DATETIME, '24/01/2021', 103), 'Tithe', CONVERT(DATETIME, '24/01/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.00'), CONVERT(DATETIME, '31/01/2021', 103), 'Tithe', CONVERT(DATETIME, '31/01/2021', 103)),
+    --Feb
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '300.00'), CONVERT(DATETIME, '07/02/2021', 103), 'Tithe', CONVERT(DATETIME, '07/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '190.00'), CONVERT(DATETIME, '14/02/2021', 103), 'Tithe', CONVERT(DATETIME, '14/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/02/2021', 103), 'Tithe', CONVERT(DATETIME, '21/02/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '50.00'),  CONVERT(DATETIME, '28/02/2021', 103),  'Tithe',CONVERT(DATETIME, '28/02/2021', 103)),
+    --Mar
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '500.00'), CONVERT(DATETIME, '07/03/2021', 103), 'Tithe', CONVERT(DATETIME, '07/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '14/03/2021', 103), 'Tithe', CONVERT(DATETIME, '14/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '21/03/2021', 103), 'Tithe', CONVERT(DATETIME, '21/03/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '28/03/2021', 103),  'Tithe',CONVERT(DATETIME, '28/03/2021', 103)),
+    --Apr
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '380.00'), CONVERT(DATETIME, '04/04/2021', 103), 'Tithe', CONVERT(DATETIME, '04/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '11/04/2021', 103), 'Tithe', CONVERT(DATETIME, '11/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '450.00'), CONVERT(DATETIME, '18/04/2021', 103), 'Tithe', CONVERT(DATETIME, '18/04/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '670.00'), CONVERT(DATETIME, '25/04/2021', 103),  'Tithe',CONVERT(DATETIME, '25/04/2021', 103)),
+    --May
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '230.00'), CONVERT(DATETIME, '02/05/2021', 103), 'Tithe', CONVERT(DATETIME, '02/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '150.00'), CONVERT(DATETIME, '09/05/2021', 103), 'Tithe', CONVERT(DATETIME, '09/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '350.00'), CONVERT(DATETIME, '16/05/2021', 103), 'Tithe', CONVERT(DATETIME, '16/05/2021', 103)),
+    (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '900.00'), CONVERT(DATETIME, '23/05/2021', 103),  'Tithe',CONVERT(DATETIME, '23/05/2021', 103)),
     (@DemoTenantId, @TitheFinanceTypeId, @SundayServiceTypeId, @Currency, CONVERT(DECIMAL, '209.79'), CONVERT(DATETIME, '30/05/2021', 103), 'Tithe', CONVERT(DATETIME, '30/05/2021', 103))
-   
-   GO
+
+GO
 
    --- Add Ministers-------------
 DECLARE @DeaconId INT = (SELECT MinisterTitleId
@@ -372,7 +418,7 @@ VALUES
     GO
 
 --- Add Attendance-------------
-INSERT INTO [ChurchManagement].[dbo].[Attendance]
+INSERT INTO [ChurchManagement].[dbo].[Attendances]
 (
     TenantId,
     ServiceDate,
@@ -380,30 +426,82 @@ INSERT INTO [ChurchManagement].[dbo].[Attendance]
     Female,
     Children,
     NewComers,
-    CreatedAt
+    CreatedAt,
+    ServiceTypeId
 )
 VALUES
-(1, CONVERT(DATETIME, '01/01/2021', 103), 80, 97, 50, 13, GETDATE()),
-(1, CONVERT(DATETIME, '10/01/2021', 103), 56, 67, 23, 13, GETDATE()),
-(1, CONVERT(DATETIME, '17/01/2021', 103), 18, 20, 20, 13, GETDATE()),
-(1, CONVERT(DATETIME, '24/01/2021', 103), 29, 23, 15, 13, GETDATE()),
-(1, CONVERT(DATETIME, '31/01/2021', 103), 13, 34, 35, 13, GETDATE()),
-(1, CONVERT(DATETIME, '07/02/2021', 103), 68, 56, 78, 13, GETDATE()),
-(1, CONVERT(DATETIME, '14/02/2021', 103), 25, 45, 50, 13, GETDATE()),
-(1, CONVERT(DATETIME, '21/02/2021', 103), 36, 17, 23, 13, GETDATE()),
-(1, CONVERT(DATETIME, '28/02/2021', 103), 23, 12, 54, 13, GETDATE()),
-(1, CONVERT(DATETIME, '07/03/2021', 103), 10, 15, 43, 13, GETDATE()),
-(1, CONVERT(DATETIME, '14/03/2021', 103), 43, 25, 28, 13, GETDATE()),
-(1, CONVERT(DATETIME, '21/03/2021', 103), 78, 16, 30, 13, GETDATE()),
-(1, CONVERT(DATETIME, '28/03/2021', 103), 28, 19, 27, 13, GETDATE()),
-(1, CONVERT(DATETIME, '04/04/2021', 103), 32, 37, 21, 13, GETDATE()),
-(1, CONVERT(DATETIME, '11/04/2021', 103), 50, 67, 30, 13, GETDATE()),
-(1, CONVERT(DATETIME, '18/04/2021', 103), 31, 13, 50, 13, GETDATE()),
-(1, CONVERT(DATETIME, '25/04/2021', 103), 29, 45, 34, 13, GETDATE()),
-(1, CONVERT(DATETIME, '02/05/2021', 103), 8,  17, 23, 0, GETDATE()),
-(1, CONVERT(DATETIME, '09/05/2021', 103), 45, 58, 20, 0, GETDATE()),
-(1, CONVERT(DATETIME, '16/05/2021', 103), 23, 60, 18, 0, GETDATE()),
-(1, CONVERT(DATETIME, '23/05/2021', 103), 51, 10, 19, 0, GETDATE()),
-(1, CONVERT(DATETIME, '30/05/2021', 103), 17, 45, 20, 0, GETDATE())
+    (10000, CONVERT(DATETIME, '01/01/2021', 103), 80, 97, 50, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '10/01/2021', 103), 56, 67, 23, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '17/01/2021', 103), 18, 20, 20, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '24/01/2021', 103), 29, 23, 15, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '31/01/2021', 103), 13, 34, 35, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '07/02/2021', 103), 68, 56, 78, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '14/02/2021', 103), 25, 45, 50, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '21/02/2021', 103), 36, 17, 23, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '28/02/2021', 103), 23, 12, 54, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '07/03/2021', 103), 10, 15, 43, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '14/03/2021', 103), 43, 25, 28, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '21/03/2021', 103), 78, 16, 30, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '28/03/2021', 103), 28, 19, 27, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '04/04/2021', 103), 32, 37, 21, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '11/04/2021', 103), 50, 67, 30, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '18/04/2021', 103), 31, 13, 50, 13, GETDATE(), 4),
+    (10000, CONVERT(DATETIME, '25/04/2021', 103), 29, 45, 34, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '02/05/2021', 103), 8,  17, 23, 0, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '09/05/2021', 103), 45, 58, 20, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '16/05/2021', 103), 23, 60, 18, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '23/05/2021', 103), 51, 10, 19, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '30/05/2021', 103), 17, 45, 20, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '06/06/2021', 103), 80, 97, 50, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '13/06/2021', 103), 56, 67, 23, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '20/06/2021', 103), 18, 20, 20, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '27/06/2021', 103), 28, 23, 15, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '04/07/2021', 103), 19, 84, 35, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '11/07/2021', 103), 68, 56, 78, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '18/07/2021', 103), 22, 75, 50, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '25/07/2021', 103), 36, 17, 28, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '01/08/2021', 103), 23, 12, 54, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '08/08/2021', 103), 31, 36, 43, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '15/08/2021', 103), 43, 29, 28, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '22/08/2021', 103), 78, 16, 30, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '29/08/2021', 103), 28, 19, 27, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '05/09/2021', 103), 32, 37, 21, 13, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '12/09/2021', 103), 50, 67, 30, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '19/09/2021', 103), 31, 13, 50, 13, GETDATE(), 4),
+    (10000, CONVERT(DATETIME, '26/09/2021', 103), 29, 45, 34, 13, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '03/10/2021', 103), 8,  17, 23, 0, GETDATE(), 1),
+    (10000, CONVERT(DATETIME, '10/10/2021', 103), 45, 58, 20, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '17/10/2021', 103), 23, 60, 18, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '24/10/2021', 103), 51, 10, 19, 0, GETDATE(), 3),
+    (10000, CONVERT(DATETIME, '31/10/2021', 103), 17, 45, 20, 0, GETDATE(), 3)
 
-GO
+
+INSERT INTO [ChurchManagement].[dbo].[FinanceTypes]
+(Name)
+VALUES
+    ('Thanksgiving'),
+    ('Offering'),
+    ('Spending'),
+    ('Donation'),
+    ('Tithe'),
+    ('MidWeekServiceOffering'),
+    ('SpecialThanksgiving'),
+    ('Others')
+
+
+INSERT INTO [ChurchManagement].[dbo].[ServiceTypes]
+(Name)
+VALUES
+    ('Thanksgiving'),
+    ('MidWeekService'),
+    ('SundayService'),
+    ('Crusade'),
+    ('Crossover'),
+    ('Others')
+
+INSERT INTO [ChurchManagement].[dbo].[CurrencyTypes]
+(Name)
+VALUES
+    ('Naira'),
+    ('BritishPounds'),
+    ('BritishPounds')

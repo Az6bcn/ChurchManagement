@@ -1,6 +1,5 @@
-namespace Domain.Interfaces
+namespace Domain.Interfaces;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-    }
 }

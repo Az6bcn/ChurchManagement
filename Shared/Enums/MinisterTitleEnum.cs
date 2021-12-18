@@ -1,10 +1,9 @@
-namespace Shared.Enums
+namespace Shared.Enums;
+
+public enum MinisterTitleEnum
 {
-    public enum MinisterTitleEnum
-    {
-        Pastor = 1,
-        AssitantPastor = 2,
-        Deacon = 3,
-        Deaconess = 4
-    }
+    Pastor = 1,
+    AssitantPastor = 2,
+    Deacon = 3,
+    Deaconess = 4
 }

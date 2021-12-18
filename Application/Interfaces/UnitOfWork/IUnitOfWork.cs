@@ -1,15 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Application.Interfaces.Repositories;
+﻿using Application.Interfaces.Repositories;
 
-namespace Application.Interfaces.UnitOfWork
+namespace Application.Interfaces.UnitOfWork;
+
+public interface IUnitOfWork: IDisposable
 {
-    public interface IUnitOfWork: IDisposable
-    {
-        ITenantRepositoryAsync Tenants {get;}
-        IPersonManagementRepositoryAsync PersonManagements {get;}
+    ITenantRepositoryAsync Tenants {get;}
+    IPersonManagementRepositoryAsync PersonManagements {get;}
 
-        Task<int> SaveChangesAsync();
+    Task<int> SaveChangesAsync();
 
-    }
 }

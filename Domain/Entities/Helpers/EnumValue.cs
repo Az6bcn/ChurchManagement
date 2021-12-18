@@ -1,8 +1,7 @@
-namespace Domain.Entities.Helpers
+namespace Domain.Entities.Helpers;
+
+public class EnumValue
 {
-    public class EnumValue
-    {
-        public int Id { get; set; }
-        public string Value { get; set; }
-    }
+    public int Id { get; set; }
+    public string Value { get; set; }
 }

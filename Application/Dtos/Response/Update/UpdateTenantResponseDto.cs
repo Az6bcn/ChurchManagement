@@ -1,8 +1,7 @@
 using Application.Dtos.Response.Create;
 
-namespace Application.Dtos.Response.Update
+namespace Application.Dtos.Response.Update;
+
+public class UpdateTenantResponseDto: CreateTenantResponseDto
 {
-    public class UpdateTenantResponseDto: CreateTenantResponseDto
-    {
-    }
 }

@@ -4,18 +4,17 @@ using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure
+namespace Infrastructure;
+
+public static class ServiceRegistration
 {
-    public static class ServiceRegistration
+    public static void AddInfrastructureServices(this IServiceCollection services)
     {
-        public static void AddInfrastructureServices(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
-            services.AddScoped<IPersonManagementRepositoryAsync, PersonManagementRepositoryAsync>();
-            services.AddScoped<IFinanceRepositoryAsync, FinanceRepositoryAsync>();
-            services.AddScoped<IAttendanceRepositoryAsync, AttendanceRepositoryAsync>();
-        }
+        services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITenantRepositoryAsync, TenantRepositoryAsync>();
+        services.AddScoped<IPersonManagementRepositoryAsync, PersonManagementRepositoryAsync>();
+        services.AddScoped<IFinanceRepositoryAsync, FinanceRepositoryAsync>();
+        services.AddScoped<IAttendanceRepositoryAsync, AttendanceRepositoryAsync>();
     }
 }

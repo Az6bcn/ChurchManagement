@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using Application.Dtos.Request.Create;
 
-namespace Application.RequestValidators
+namespace Application.RequestValidators;
+
+public interface IValidateTenantRequestDto
 {
-    public interface IValidateTenantRequestDto
-    {
-        void Validate(CreateTenantRequestDto? request,
-                      ICollection<string> tenantNames,
-                      out IDictionary<string, object> errors);
-    }
+    void Validate(CreateTenantRequestDto? request,
+                  ICollection<string> tenantNames,
+                  out IDictionary<string, object> errors);
 }
