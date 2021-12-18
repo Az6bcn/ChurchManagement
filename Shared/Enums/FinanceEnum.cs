@@ -2,12 +2,12 @@
 
 public enum FinanceEnum
 {
-    Thanksgiving = 1,
-    Offering = 2,
-    Spending = 3,
-    Donation = 4,
-    Tithe = 5,
-    MidWeekServiceOffering = 6,
-    SpecialThanksgiving = 7,
-    Others = 8
+    Thanksgiving = 10000,
+    Offering = 10001,
+    Spending = 10002,
+    Donation = 10003,
+    Tithe = 10004,
+    MidWeekServiceOffering = 10005,
+    SpecialThanksgiving = 10006,
+    Others = 10007
 }

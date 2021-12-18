@@ -19,7 +19,7 @@ public class FinanceRepositoryAsync : GenericRepositoryAsync<Finance>, IFinanceR
                            .SingleOrDefaultAsync(f => f.FinanceId == financeId 
                                                       && f.TenantId == tenantId);
 
-    public async Task<IEnumerable<Finance>>
+    public async Task<ICollection<Finance>>
         GetFinancesBetweenDatesByTenantIdAsync(int tenantId,
                                                DateOnly startDate,
                                                DateOnly endDate)

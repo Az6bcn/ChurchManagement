@@ -2,10 +2,10 @@
 
 public enum ServiceEnum
 {
-    Thanksgiving = 1,
-    MidWeekService = 2,
-    SundayService = 3,
-    Crusade = 4,
-    CrossOver = 5,
-    Others = 6
+    Thanksgiving = 10000,
+    MidWeekService = 10001,
+    SundayService = 10002,
+    Crusade = 10003,
+    CrossOver = 10004,
+    Others = 10005
 }
