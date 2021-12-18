@@ -68,7 +68,8 @@ public class NewComerUpdaterTests
 
         // Assert
         Assert.NotNull(response);
-        Assert.Equal(request.NewComerId, response.NewComerId);            Assert.Equal(request.DateAttended, response.DateAttended);
+        Assert.Equal(request.NewComerId, response.NewComerId);            
+        Assert.Equal(request.DateAttended.Date, response.DateAttended.Date);
         Assert.Equal(request.ServiceTypeEnum, response.ServiceTypeEnum);
     }
 

@@ -2,6 +2,7 @@
 using Application.Dtos.Request.Update;
 using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
+using Domain.Entities.TenantAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ public class MemberUpdaterTest
     }
 
     private async Task CreateMemberForRequestAsync(ApplicationDbContext context,
-                                                   Domain.Entities.TenantAggregate.Tenant tenant)
+                                                   Tenant tenant)
         => await TestSeeder.CreateDemoMember(context, tenant);
 
     [Fact]
@@ -110,7 +111,7 @@ public class MemberUpdaterTest
         TestDbCreator.CreateDatabase(context);
 
         await TestSeeder.CreateDemoTenant(context, tenantDomainValidator);
-        var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>().AsNoTracking().Single();
+        var tenant = context.Set<Tenant>().AsNoTracking().Single();
 
         await CreateMemberForRequestAsync(context, tenant);
 
@@ -129,8 +130,8 @@ public class MemberUpdaterTest
         };
 
         // Act and Assert
-        await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                                                                   => await target.ExecuteAsync(request));
+        await Assert.ThrowsAnyAsync<ArgumentException>(async ()
+                                                           => await target.ExecuteAsync(request));
     }
 
     [Fact]
@@ -164,7 +165,7 @@ public class MemberUpdaterTest
         };
 
         // Act and Assert
-        await Assert.ThrowsAnyAsync<InvalidOperationException>(async ()
-                                                                   => await target.ExecuteAsync(request));
+        await Assert.ThrowsAnyAsync<ArgumentException>(async ()
+                                                           => await target.ExecuteAsync(request));
     }
 }

@@ -42,7 +42,7 @@ public class NewComerCommandUpdater : IUpdateNewComerCommand
                                                                 request.TenantId);
 
         if (newComer is null)
-            throw new InvalidOperationException($"{request.NewComerId} {request.NewComerId} not found");
+            throw new ArgumentException($"{request.NewComerId} {request.NewComerId} not found");
 
         var person = Person.Create(request.TenantId,
                                    request.Name,
@@ -63,14 +63,14 @@ public class NewComerCommandUpdater : IUpdateNewComerCommand
                                                      }
                                                  });
 
-        Domain.Entities.PersonAggregate.PersonManagement.AssignNewComer(newComer);
-        Domain.Entities.PersonAggregate.PersonManagement.UpdateNewComer(person,
-                                                                        request.DateAttended,
-                                                                        request.ServiceTypeEnum);
+        PersonManagement.AssignNewComer(newComer);
+        PersonManagement.UpdateNewComer(person,
+                                        request.DateAttended,
+                                        request.ServiceTypeEnum);
 
-        _personManagementRepo.Update<NewComer>(Domain.Entities.PersonAggregate.PersonManagement.NewComer);
+        _personManagementRepo.Update(PersonManagement.NewComer);
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<UpdateNewComerResponseDto>(Domain.Entities.PersonAggregate.PersonManagement.NewComer);
+        return _mapper.Map<UpdateNewComerResponseDto>(PersonManagement.NewComer);
     }
 }
