@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using Domain.Validators;
+using Shared.Communications;
 
 namespace Domain.Entities.PersonAggregate;
 
@@ -25,9 +26,6 @@ public class DepartmentMembers : IEntity
                                bool isHod,
                                DateTime dateJoined)
     {
-        if (!Validate(dateJoined, out IDictionary<string, object> error))
-            throw new DomainValidationException("Failed domain validation", error);
-
         DepartmentId = department.DepartmentId;
         MemberId = member.MemberId;
         Member = member;
@@ -53,17 +51,25 @@ public class DepartmentMembers : IEntity
     public static DepartmentMembers? Assign(Department department,
                                             Member member,
                                             bool isHod,
-                                            DateTime dateJoined)
-        => new(department, member, isHod, dateJoined);
-
+                                            DateTime dateJoined,
+                                            NotificationOutput notification)
+    {
+        if (!Validate(dateJoined, out IDictionary<string, object> error))
+        {
+            notification.AddErrors(error);
+            return null;
+        }
+        
+        return new(department, member, isHod, dateJoined);
+    }
     public void UnAssignMember() => Deleted = DateTime.UtcNow;
 
     internal void AssignAsHod() => IsHeadOfDepartment = true;
 
     public void RemoveAsHod() => IsHeadOfDepartment = false;
 
-
-    private bool Validate(DateTime dateJoined,
+   // Todo Move to proper validation
+    private static bool Validate(DateTime dateJoined,
                           out IDictionary<string, object> error)
     {
         error = new Dictionary<string, object>();

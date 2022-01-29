@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Tenants;
@@ -40,7 +41,7 @@ public class TenantCommandUpdater : IUpdateTenantCommand
         _requestValidator.Validate(request, tenantNames.ToList(), out var errors);
 
         if (errors.Any())
-            throw new RequestValidationException("Request failed validation", errors);
+            throw new ValidationException("Request failed validation", errors);
 
         var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
 
@@ -57,8 +58,7 @@ public class TenantCommandUpdater : IUpdateTenantCommand
 
 
         if (domainErrors.Any())
-            throw new DomainValidationException("Request failed domain validation",
-                                                domainErrors);
+            throw new ValidationException("Request failed domain validation", domainErrors);
 
         _tenantRepo.Update(tenant);
         await _uniOfWork.SaveChangesAsync();

@@ -1,5 +1,6 @@
 using Application.Commands.Tenants.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.RequestValidators;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -64,7 +65,7 @@ public class TenantCreatorTests
         };
 
         // Act && Assert
-        await Assert.ThrowsAsync<RequestValidationException>(
+        await Assert.ThrowsAsync<ValidationException>(
                                                              async () => await target.ExecuteAsync(tenantRequestDto));
     }
         
@@ -87,7 +88,7 @@ public class TenantCreatorTests
         };
 
         // Act && Assert
-        await Assert.ThrowsAsync<RequestValidationException>(
+        await Assert.ThrowsAsync<ValidationException>(
                                                              async () => await target.ExecuteAsync(tenantRequestDto));
     }
         
@@ -107,7 +108,6 @@ public class TenantCreatorTests
         };
 
         // Act && Assert
-        await Assert.ThrowsAsync<DomainValidationException>(
-                                                            async () => await target.ExecuteAsync(tenantRequestDto));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(tenantRequestDto));
     }
 }

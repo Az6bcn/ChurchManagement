@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -47,7 +48,7 @@ public class DepartmentCommandUpdater : IUpdateDepartmentCommand
         _requestValidator.ValidateDepartmentUpdate(request, departments.ToList(), out var errors);
 
         if (errors.Any())
-            throw new RequestValidationException("Request failed validation", errors);
+            throw new ValidationException("Request failed validation", errors);
 
         var department = departments.Single(x => x.DepartmentId == request.DepartmentId);
         PersonManagementAggregate.AssignDepartment(department);

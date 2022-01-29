@@ -3,6 +3,7 @@ using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.Validators;
 using Domain.ValueObjects;
+using Shared.Communications;
 using Shared.Enums;
 
 namespace Domain.Entities.AttendanceAggregate;
@@ -13,8 +14,7 @@ public class Attendance : IEntity, IAggregateRoot
     {
     }
 
-    internal Attendance(IValidateAttendanceInDomain validator,
-                        Tenant tenant,
+    internal Attendance(Tenant tenant,
                         DateOnly serviceDate,
                         int male,
                         int female,
@@ -22,8 +22,6 @@ public class Attendance : IEntity, IAggregateRoot
                         int newComers,
                         ServiceEnum serviceTypeEnum)
     {
-        if (!validator.Validate(serviceDate, male, female, children, newComers, out var errors))
-            throw new DomainValidationException("Request failed domain validation", errors);
 
         var serviceEnumValue = GetServiceTypeEnumValue(serviceTypeEnum);
         Tenant = tenant;
@@ -51,15 +49,37 @@ public class Attendance : IEntity, IAggregateRoot
     public Tenant Tenant { get; private set; }
     public ServiceType ServiceType { get; private set; }
 
-    public static Attendance Create(IValidateAttendanceInDomain validator,
-                                    Tenant tenant,
-                                    DateOnly serviceDate,
-                                    int male,
-                                    int female,
-                                    int children,
-                                    int newComers,
-                                    ServiceEnum serviceTypeEnum)
-        => new(validator, tenant, serviceDate, male, female, children, newComers, serviceTypeEnum);
+    public static Attendance? Create(IValidateAttendanceInDomain validator,
+                                     Tenant tenant,
+                                     DateOnly serviceDate,
+                                     int male,
+                                     int female,
+                                     int children,
+                                     int newComers,
+                                     ServiceEnum serviceTypeEnum,
+                                     out NotificationOutput notification)
+    {
+        notification = new NotificationOutput();
+
+        if (!validator.Validate(serviceDate,
+                                male,
+                                female,
+                                children,
+                                newComers,
+                                out var errors))
+        {
+            notification.AddErrors(errors);
+            return null;
+        }
+
+        return new(tenant,
+                   serviceDate,
+                   male,
+                   female,
+                   children,
+                   newComers,
+                   serviceTypeEnum);
+    }
 
     public void Update(IValidateAttendanceInDomain validator,
                        Tenant tenant,
@@ -68,10 +88,21 @@ public class Attendance : IEntity, IAggregateRoot
                        int female,
                        int children,
                        int newComers,
-                       ServiceEnum serviceTypeEnum)
+                       ServiceEnum serviceTypeEnum,
+                       out NotificationOutput notification)
     {
-        if (!validator.Validate(serviceDate, male, female, children, newComers, out var errors))
-            throw new DomainValidationException("Request failed domain validation", errors);
+        notification = new NotificationOutput();
+
+        if (!validator.Validate(serviceDate,
+                                male,
+                                female,
+                                children,
+                                newComers,
+                                out var errors))
+        {
+            notification.AddErrors(errors);
+            return;
+        }
 
         var serviceEnumValue = GetServiceTypeEnumValue(serviceTypeEnum);
 

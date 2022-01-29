@@ -3,13 +3,14 @@ using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.Validators;
 using Domain.ValueObjects;
+using Shared.Communications;
 using Shared.Enums;
 
 namespace Domain.Entities.PersonAggregate;
 
 public class NewComer : IEntity
 {
-    private NewComer() : base()
+    public NewComer() : base()
     {
     }
 
@@ -18,9 +19,6 @@ public class NewComer : IEntity
                       ServiceEnum serviceTypeEnum,
                       Tenant tenant)
     {
-        if (!Validate(dateAttended, out IDictionary<string, object> error))
-            throw new DomainValidationException("Failed domain validation", error);
-            
         var serviceTypeEnumValue = GetServiceTypeEnumValue(serviceTypeEnum);
         ServiceType = ServiceType.Create(serviceTypeEnumValue.Id, serviceTypeEnumValue.Value);
 
@@ -53,17 +51,34 @@ public class NewComer : IEntity
     public ServiceType ServiceType { get; private set; }
     public Tenant Tenant { get; set; }
 
-    public static NewComer Create(Person person,
-                                  DateTime dateAttended,
-                                  ServiceEnum serviceTypeEnum,
-                                  Tenant tenant) => new(person, dateAttended, serviceTypeEnum, tenant);
+    public static NewComer? Create(Person person,
+                                   DateTime dateAttended,
+                                   ServiceEnum serviceTypeEnum,
+                                   Tenant tenant,
+                                   NotificationOutput notification)
+    {
+        if (!Validate(dateAttended, out IDictionary<string, object> error))
+        {
+            notification.AddErrors(error);
+            return null;
+        }
+        
+        return new(person,
+                   dateAttended,
+                   serviceTypeEnum,
+                   tenant);
+    }
 
     public void Update(Person person,
                        DateTime dateAttended,
-                       ServiceEnum serviceEnumType)
+                       ServiceEnum serviceEnumType,
+                       NotificationOutput notification)
     {
         if (!Validate(dateAttended, out IDictionary<string, object> error))
-            throw new DomainValidationException("Failed domain validation", error);
+        {
+            notification.AddErrors(error);
+            return;
+        }
             
         TenantId = person.TenantId;
         Name = person.Name;
@@ -84,7 +99,7 @@ public class NewComer : IEntity
     private EnumValue GetServiceTypeEnumValue(ServiceEnum serviceTypeEnum)
         => EnumService<ServiceEnum>.GetValue(serviceTypeEnum);
 
-    private bool Validate(DateTime dateAttended,
+    private static bool Validate(DateTime dateAttended,
                           out IDictionary<string, object> error)
     {
         error = new Dictionary<string, object>();

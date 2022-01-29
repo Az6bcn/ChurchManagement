@@ -1,5 +1,6 @@
 using Application.Commands.PersonManagements.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -138,7 +139,7 @@ public class DepartmentMemberTests
         var request = await CreateRequestAsync(context);
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(request));
     }
 
     [Fact]

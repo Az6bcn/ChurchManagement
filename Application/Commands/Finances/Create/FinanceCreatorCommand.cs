@@ -1,4 +1,5 @@
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finances;
@@ -46,7 +47,11 @@ public class FinanceCreatorCommand : ICreateFinanceCommand
                                                                       request.ServiceTypeEnum,
                                                                       request.CurrencyTypeEnum,
                                                                       request.GivenDate,
-                                                                      request.Description);
+                                                                      request.Description,
+                                                                      out var notification);
+
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
 
         await _financeRepo.AddAsync(finance);
         await _unitOfWork.SaveChangesAsync();

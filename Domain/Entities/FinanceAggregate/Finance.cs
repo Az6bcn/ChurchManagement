@@ -3,6 +3,7 @@ using Domain.Entities.TenantAggregate;
 using Domain.Interfaces;
 using Domain.Validators;
 using Domain.ValueObjects;
+using Shared.Communications;
 using Shared.Enums;
 
 namespace Domain.Entities.FinanceAggregate;
@@ -14,18 +15,14 @@ public class Finance : IEntity, IAggregateRoot
             
     }
         
-    internal Finance(IValidateFinanceInDomain validator,
-                     Tenant tenant,
+    internal Finance(Tenant tenant,
                      decimal amount, 
                      FinanceEnum financeEnum,
                      ServiceEnum serviceEnum,
                      CurrencyEnum currencyEnum,
                      DateOnly givenDate,
                      string? description)
-    {
-        if (!validator.Validate(amount, givenDate, out var errors))
-            throw new DomainValidationException("Request failed domain validation", errors);
-            
+    {    
         var serviceEnumValue = GetServiceTypeEnumValue(serviceEnum);
         var financeEnumValue = GetFinanceTypeEnumValue(financeEnum);
         var currencyEnumValue = GetCurrencyTypeEnumValue(currencyEnum);
@@ -69,15 +66,29 @@ public class Finance : IEntity, IAggregateRoot
     public Tenant Tenant { get; private set; }
 
 
-    public static Finance Create(IValidateFinanceInDomain validator,
-                                 Tenant tenant,
-                                 decimal amount,
-                                 FinanceEnum financeEnum,
-                                 ServiceEnum serviceEnum,
-                                 CurrencyEnum currencyEnum,
-                                 DateOnly givenDate,
-                                 string? description)
-        => new(validator, tenant, amount, financeEnum, serviceEnum, currencyEnum, givenDate, description);
+    public static Finance? Create(IValidateFinanceInDomain validator,
+                                  Tenant tenant,
+                                  decimal amount,
+                                  FinanceEnum financeEnum,
+                                  ServiceEnum serviceEnum,
+                                  CurrencyEnum currencyEnum,
+                                  DateOnly givenDate,
+                                  string? description,
+                                  out NotificationOutput notification)
+    {
+        notification = new NotificationOutput();
+
+        if (!validator.Validate(amount,
+                                givenDate,
+                                out var errors))
+        {
+            notification.AddErrors(errors);
+            return null;
+        }
+        
+        return new(tenant, amount, financeEnum, serviceEnum, currencyEnum, givenDate, description);
+    }
+        
 
     public void Update(IValidateFinanceInDomain validator,
                        Tenant tenant,
@@ -86,10 +97,18 @@ public class Finance : IEntity, IAggregateRoot
                        ServiceEnum serviceEnum,
                        CurrencyEnum currencyEnum,
                        DateOnly givenDate,
-                       string? description)
+                       string? description,
+                       out NotificationOutput notification)
     {
-        if (!validator.Validate(amount, givenDate, out var errors))
-            throw new DomainValidationException("Request failed domain validation", errors);
+        notification = new NotificationOutput();
+
+        if (!validator.Validate(amount,
+                                givenDate,
+                                out var errors))
+        {
+            notification.AddErrors(errors);
+            return;
+        }
 
         var serviceEnumValue = GetServiceTypeEnumValue(serviceEnum);
         var financeEnumValue = GetFinanceTypeEnumValue(financeEnum);

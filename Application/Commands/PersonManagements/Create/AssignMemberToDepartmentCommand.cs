@@ -1,4 +1,5 @@
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -54,7 +55,11 @@ public class AssignMemberToDepartmentCommand : IAssignMemberToDepartmentCommand
             PersonManagementAggregate.AssignMemberToDepartment(member,
                                                                department,
                                                                request.IsHeadOfDepartment,
-                                                               request.DateJoined);
+                                                               request.DateJoined,
+                                                               out var notification);
+
+            if (notification.HasErrors)
+                throw new ValidationException("Request failed validation", notification.Errors);
         }
 
         await _personManagementRepo.AddAsync(PersonManagementAggregate.DepartmentMembers);

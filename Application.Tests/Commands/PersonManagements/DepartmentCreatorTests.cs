@@ -1,5 +1,6 @@
 using Application.Commands.PersonManagements.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Validators;
@@ -93,7 +94,7 @@ public class DepartmentCreatorTests
         _request.Name = string.Empty;
 
         // Act and Assert
-        await Assert.ThrowsAsync<RequestValidationException>(
+        await Assert.ThrowsAsync<ValidationException>(
                                                              async ()
                                                                  => await target.ExecuteAsync(_request));
     }
@@ -116,7 +117,7 @@ public class DepartmentCreatorTests
         _request.Name = department.Name;
 
         // Act and Assert
-        await Assert.ThrowsAsync<RequestValidationException>(
+        await Assert.ThrowsAsync<ValidationException>(
                                                              async ()
                                                                  => await target.ExecuteAsync(_request));
     }

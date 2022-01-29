@@ -37,8 +37,7 @@ public class MembersController : ControllerBase
     /// Gets all members.
     /// </summary>
     /// <returns></returns>
-    [ProducesResponseType(typeof(ApiRequestResponse<GetMembersResponseDto>),
-                             StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiRequestResponse<GetMembersResponseDto>),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet()]
@@ -59,8 +58,7 @@ public class MembersController : ControllerBase
     /// Gets all members that are workers.
     /// </summary>
     /// <returns></returns>
-    [ProducesResponseType(typeof(ApiRequestResponse<GetMembersResponseDto>),
-                             StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiRequestResponse<GetMembersResponseDto>),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("workers")]

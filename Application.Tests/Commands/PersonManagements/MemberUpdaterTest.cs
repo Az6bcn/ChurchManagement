@@ -1,5 +1,6 @@
 ﻿using Application.Commands.PersonManagements.Update;
 using Application.Dtos.Request.Update;
+using Application.Exceptions;
 using Application.RequestValidators;
 using Domain.Entities.PersonAggregate;
 using Domain.Entities.TenantAggregate;
@@ -95,7 +96,7 @@ public class MemberUpdaterTest
         };
 
         // Act and Assert
-        await Assert.ThrowsAnyAsync<RequestValidationException>(async ()
+        await Assert.ThrowsAnyAsync<ValidationException>(async ()
                                                                     => await target.ExecuteAsync(request));
     }
 

@@ -1,5 +1,6 @@
 ﻿using Application.Commands.Tenants.Update;
 using Application.Dtos.Request.Update;
+using Application.Exceptions;
 using Application.RequestValidators;
 using Domain.Validators;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,7 +79,7 @@ public class TenantUpdaterTests
             LogoUrl = "www.https://nothing.com"
         };
 
-        await Assert.ThrowsAsync<RequestValidationException>(async ()
+        await Assert.ThrowsAsync<ValidationException>(async ()
                                                                  => await target.ExecuteAsync(updateRequest));
     }
 
@@ -103,8 +104,7 @@ public class TenantUpdaterTests
             LogoUrl = "www.https://nothing.com"
         };
 
-        await Assert.ThrowsAsync<DomainValidationException>(async ()
-                                                                => await target.ExecuteAsync(updateRequest));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(updateRequest));
     }
 
     [Fact]
@@ -129,8 +129,8 @@ public class TenantUpdaterTests
             LogoUrl = "www.https://nothing.com"
         };
 
-        await Assert.ThrowsAsync<DomainValidationException>(async ()
-                                                                => await target.ExecuteAsync(updateRequest));
+        await Assert.ThrowsAsync<ValidationException>(async ()
+                                                          => await target.ExecuteAsync(updateRequest));
     }
 
 }

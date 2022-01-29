@@ -16,6 +16,7 @@ public class FinanceRepositoryAsync : GenericRepositoryAsync<Finance>, IFinanceR
 
     public async Task<Finance?> GetFinanceByIdAndTenantIdAsync(int financeId, int tenantId)
         => await _dbContext.Set<Finance>()
+                           .Include(x => x.Tenant)
                            .SingleOrDefaultAsync(f => f.FinanceId == financeId 
                                                       && f.TenantId == tenantId);
 

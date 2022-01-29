@@ -64,11 +64,9 @@ public class DepartmentsController : ControllerBase
             await _personManagementQuery.GetDepartmentsByTenantIdAsync(tenantId);
 
         if (!queryResult.Results.Any())
-            return NotFound(ApiRequestResponse<GetDepartmentsResponseDto>
-                                .Fail($"No departments found for tenant {tenantId}"));
+            return NotFound(ApiRequestResponse<GetDepartmentsResponseDto>.Fail($"No departments found for tenant {tenantId}"));
 
-        return Ok(ApiRequestResponse<GetDepartmentsResponseDto>.Succeed(queryResult.Results
-                                                                            .ToList()));
+        return Ok(ApiRequestResponse<GetDepartmentsResponseDto>.Succeed(queryResult.Results.ToList()));
     }
 
     /// <summary>
@@ -152,14 +150,14 @@ public class DepartmentsController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPost("{departmentId:int}/Members/{memberId:int}")]
+    [HttpPost("{departmentId:int}/Members/{memberId:int}/assign")]
     public async Task<IActionResult> AssignMemberToDepartment(int departmentId,
                                                               int memberId,
                                                               [FromBody] AssignMemberToDepartmentRequestDto request)
     {
         var tenantId = HttpContext.GetTenantId();
 
-        if (departmentId <= 0 || departmentId != request.DepartmentId 
+        if (departmentId <= 0 || departmentId != request.DepartmentId
                               || tenantId != request.TenantId || memberId != request.MemberId)
             return BadRequest("Invalid request");
 
@@ -177,14 +175,14 @@ public class DepartmentsController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPut("{departmentId:int}/Members/{memberId:int}")]
+    [HttpPut("{departmentId:int}/Members/{memberId:int}/unassign")]
     public async Task<IActionResult> UnAssignMemberToDepartment(int departmentId,
                                                                 int memberId,
                                                                 [FromBody] AssignMemberToDepartmentRequestDto request)
     {
         var tenantId = HttpContext.GetTenantId();
 
-        if (departmentId <= 0 || departmentId != request.DepartmentId 
+        if (departmentId <= 0 || departmentId != request.DepartmentId
                               || tenantId != request.TenantId || memberId != request.MemberId)
             return BadRequest("Invalid request");
 
@@ -202,14 +200,14 @@ public class DepartmentsController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPost("{departmentId:int}/members/{memberId:int}/hod")]
+    [HttpPost("{departmentId:int}/members/{memberId:int}/assign-hod")]
     public async Task<IActionResult> AssignAsHod(int departmentId,
                                                  int memberId,
                                                  [FromBody] AssignMemberToDepartmentRequestDto request)
     {
         var tenantId = HttpContext.GetTenantId();
-            
-        if (departmentId <= 0 || departmentId != request.DepartmentId 
+
+        if (departmentId <= 0 || departmentId != request.DepartmentId
                               || tenantId != request.TenantId || memberId != request.MemberId)
             return BadRequest("Invalid request");
 
@@ -227,14 +225,14 @@ public class DepartmentsController : ControllerBase
     /// <returns></returns>
     [ProducesResponseType(typeof(ApiRequestResponse<string>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [HttpPut("{departmentId:int}/members/{memberId:int}/hod")]
+    [HttpPut("{departmentId:int}/members/{memberId:int}/unassign-hod")]
     public async Task<IActionResult> RemoveAsHod(int departmentId,
                                                  int memberId,
                                                  [FromBody] AssignMemberToDepartmentRequestDto request)
     {
         var tenantId = HttpContext.GetTenantId();
 
-        if (departmentId <= 0 || departmentId != request.DepartmentId 
+        if (departmentId <= 0 || departmentId != request.DepartmentId
                               || tenantId != request.TenantId || memberId != request.MemberId)
             return BadRequest("Invalid request");
 

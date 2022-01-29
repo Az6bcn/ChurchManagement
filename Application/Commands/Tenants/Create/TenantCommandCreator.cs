@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Create;
 using Application.Dtos.Response.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Tenants;
@@ -40,7 +41,7 @@ public class TenantCommandCreator : ICreateTenantCommand
 
         _requestValidator.Validate(request, tenantNames.ToList(), out var errors);
         if (errors.Any())
-            throw new RequestValidationException("Request failed validation", errors);
+            throw new ValidationException("Request failed validation", errors);
 
         var tenant = TenantAggregate.Create(request.Name,
                                             request.LogoUrl ?? string.Empty,
@@ -49,7 +50,7 @@ public class TenantCommandCreator : ICreateTenantCommand
                                             out var domainErrors);
 
         if (domainErrors.Any())
-            throw new DomainValidationException("Request failed domain validation", domainErrors);
+            throw new ValidationException("Request failed domain validation", domainErrors);
 
         await _tenantRepo.AddAsync(tenant);
         await _unitOfWork.SaveChangesAsync();
