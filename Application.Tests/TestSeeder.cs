@@ -67,15 +67,21 @@ public class TestSeeder
                                    "17/03",
                                    "Male",
                                    "+7703000000");
+        
+        var wrapper = new ReflectiveObjectWrapper<NewComer>();
+        
+        wrapper.Set(DateTime.UtcNow, nameof(NewComer.DateAttended));
+        wrapper.Set(ServiceEnum.SundayService, nameof(NewComer.ServiceTypeId));
+        wrapper.Set(tenant.Name, nameof(NewComer.Name));
+        wrapper.Set(person.Surname, nameof(NewComer.Surname));
+        wrapper.Set(person.Gender, nameof(NewComer.Gender));
+        wrapper.Set(person.DateAndMonthOfBirth, nameof(NewComer.DateMonthOfBirth));
+        wrapper.Set(person.PhoneNumber, nameof(NewComer.PhoneNumber));
+        wrapper.Set(person.TenantId, nameof(NewComer.TenantId));
+        
+        context.ChangeTracker.Clear();
 
-        PersonManagementAggregate.CreateNewComer(person,
-                                                 DateTime.UtcNow,
-                                                 ServiceEnum.SundayService,
-                                                 tenant);
-
-        //context.ChangeTracker.Clear();
-
-        context.Update(PersonManagementAggregate.NewComer);
+        context.Update(wrapper.Object);
         await TestDbCreator.SaveChangesAsync(context);
     }
 
@@ -85,7 +91,7 @@ public class TestSeeder
                                         bool isHod)
     {
         await TestSeeder.CreateDemoTenant(context, validator);
-        var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+        var tenant = context.Set<Tenant>()
                             .AsNoTracking()
                             .Single();
 
@@ -122,52 +128,52 @@ public class TestSeeder
     }
 
     public static async Task CreateDemoFinance(IValidateTenantInDomain tenantValidator,
-                                               IValidateFinanceInDomain financeValidator,
                                                ApplicationDbContext context)
     {
         await CreateDemoTenant(context, tenantValidator);
-        var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+        var tenant = context.Set<Tenant>()
                             .AsNoTracking()
                             .Single();
         context.ChangeTracker.Clear();
-
-        var finance = Finance.Create(financeValidator,
-                                     tenant,
-                                     50m,
-                                     FinanceEnum.Thanksgiving,
-                                     ServiceEnum.SundayService,
-                                     CurrencyEnum.UsDollars,
-                                     DateOnly.FromDateTime(DateTime.Now),
-                                     "Demo");
+        
+        var wrapper = new ReflectiveObjectWrapper<Finance>();
+        
+        wrapper.Set(tenant.TenantId, nameof(Finance.TenantId));
+        wrapper.Set(50m, nameof(Finance.Amount));
+        wrapper.Set(DateTime.UtcNow, nameof(Finance.GivenDate));
+        wrapper.Set(FinanceEnum.Thanksgiving, nameof(Finance.FinanceId));
+        wrapper.Set(ServiceEnum.SundayService, nameof(Finance.ServiceTypeId));
+        wrapper.Set(ServiceEnum.SundayService, nameof(Finance.CurrencyId));
+        wrapper.Set("Demo", nameof(Finance.Description));
 
         context.ChangeTracker.Clear();
 
-        context.Update(finance);
+        await context.AddAsync(wrapper.Object);
         await TestDbCreator.SaveChangesAsync(context);
     }
 
     public static async Task CreateDemoAttendance(IValidateTenantInDomain tenantValidator,
-                                                  IValidateAttendanceInDomain attendanceValidator,
                                                   ApplicationDbContext context)
     {
         await CreateDemoTenant(context, tenantValidator);
-        var tenant = context.Set<Domain.Entities.TenantAggregate.Tenant>()
+        var tenant = context.Set<Tenant>()
                             .AsNoTracking()
                             .Single();
         context.ChangeTracker.Clear();
 
-        var attendance = Attendance.Create(attendanceValidator,
-                                           tenant,
-                                           DateOnly.FromDateTime(DateTime.Now),
-                                           20,
-                                           30,
-                                           17,
-                                           20,
-                                           ServiceEnum.SundayService);
-
+        var wrapper = new ReflectiveObjectWrapper<Attendance>();
+        
+        wrapper.Set(tenant, nameof(Attendance.Tenant));
+        wrapper.Set(DateTime.Now, nameof(Attendance.ServiceDate));
+        wrapper.Set(20, nameof(Attendance.Male));
+        wrapper.Set(30, nameof(Attendance.Female));
+        wrapper.Set(17, nameof(Attendance.Children));
+        wrapper.Set(20, nameof(Attendance.NewComers));
+        wrapper.Set(ServiceEnum.SundayService, nameof(Attendance.ServiceTypeId));
+        
         context.ChangeTracker.Clear();
 
-        context.Update(attendance);
+        context.Update(wrapper.Object);
         await TestDbCreator.SaveChangesAsync(context);
     }
 }

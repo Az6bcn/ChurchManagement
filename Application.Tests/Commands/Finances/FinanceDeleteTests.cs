@@ -19,9 +19,8 @@ public class FinanceDeleteTests
     private IServiceCollection GetServices() => TestDependenciesResolver.AddServices();
 
     private async Task CreateTenantForRequestAsync(IValidateTenantInDomain tenantValidator,
-                                                   IValidateFinanceInDomain financeValidator,
                                                    ApplicationDbContext context)
-        => await TestSeeder.CreateDemoFinance(tenantValidator, financeValidator, context);
+        => await TestSeeder.CreateDemoFinance(tenantValidator, context);
 
     [Fact]
     public async Task ExecuteAsync_WhenCalledWithValidRequest_MarksAsDeletedInDatabase()
@@ -30,9 +29,8 @@ public class FinanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteFinanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var financeValidator = TestDependenciesResolver.GetService<IValidateFinanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, financeValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator, context);
 
         var finance = await context.Set<Domain.Entities.FinanceAggregate.Finance>().SingleAsync();
           
@@ -50,9 +48,8 @@ public class FinanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteFinanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var financeValidator = TestDependenciesResolver.GetService<IValidateFinanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, financeValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator,  context);
 
         var finance = await context.Set<Domain.Entities.FinanceAggregate.Finance>().SingleAsync();
 
@@ -69,9 +66,8 @@ public class FinanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteFinanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var financeValidator = TestDependenciesResolver.GetService<IValidateFinanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, financeValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator,  context);
 
         var finance = await context.Set<Domain.Entities.FinanceAggregate.Finance>().SingleAsync();
 

@@ -1,4 +1,5 @@
 using Application.Dtos.Request.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Finances;
@@ -45,7 +46,11 @@ public class FinanceUpdaterCommand: IUpdateFinanceCommand
                        request.ServiceTypeEnum,
                        request.CurrencyTypeEnum,
                        request.GivenDate,
-                       request.Description);
+                       request.Description,
+                       out var notification);
+
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
 
         _financeRepo.Update(finance);
         await _unitOfWork.SaveChangesAsync();

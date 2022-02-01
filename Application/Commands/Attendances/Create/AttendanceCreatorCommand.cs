@@ -1,4 +1,5 @@
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Attendances;
@@ -47,7 +48,11 @@ public class AttendanceCreatorCommand : ICreateAttendanceCommand
                                            request.Female,
                                            request.Children,
                                            request.NewComers,
-                                           request.ServiceTypeEnum);
+                                           request.ServiceTypeEnum,
+                                           out var notification);
+
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
 
         await _attendanceRepo.AddAsync(attendance);
         await _unitOfWork.SaveChangesAsync();

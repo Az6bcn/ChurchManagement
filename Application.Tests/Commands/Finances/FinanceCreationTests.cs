@@ -1,5 +1,6 @@
 using Application.Commands.Finances.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -106,7 +107,7 @@ public class FinanceCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(request));
     }
 
     [Fact]
@@ -131,6 +132,6 @@ public class FinanceCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(request));
     }
 }

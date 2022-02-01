@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -54,20 +55,18 @@ public class NewComerCommandUpdater : IUpdateNewComerCommand
         var personValidationErrors = person.Validate();
 
         if (personValidationErrors.Any())
-            throw new RequestValidationException("Request failed validation",
-                                                 new Dictionary<string, object>
-                                                 {
-                                                     {
-                                                         "Request errors",
-                                                         string.Join(" , ", personValidationErrors)
-                                                     }
-                                                 });
+            throw new ValidationException("Request failed validation",
+                                          new Dictionary<string, object> { { "Request errors", string.Join(" , ", personValidationErrors) } });
 
         PersonManagement.AssignNewComer(newComer);
         PersonManagement.UpdateNewComer(person,
                                         request.DateAttended,
-                                        request.ServiceTypeEnum);
+                                        request.ServiceTypeEnum,
+                                        out var notification);
 
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
+        
         _personManagementRepo.Update(PersonManagement.NewComer);
         await _unitOfWork.SaveChangesAsync();
 

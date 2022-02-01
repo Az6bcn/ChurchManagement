@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Create;
 using Application.Dtos.Response.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -48,7 +49,7 @@ public class DepartmentCommandCreator : ICreateDepartmentCommand
         _requestValidator.ValidateDepartment(request, departmentNames.ToList(), out var errors);
 
         if (errors.Any())
-            throw new RequestValidationException("Request failed validation", errors);
+            throw new ValidationException("Request failed validation", errors);
 
         PersonManagementAggregate.CreateDepartment(request.Name, tenant);
         var department = PersonManagementAggregate.Department;

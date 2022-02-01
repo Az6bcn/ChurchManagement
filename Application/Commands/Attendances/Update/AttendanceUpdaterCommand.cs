@@ -1,4 +1,5 @@
 using Application.Dtos.Request.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.Attendances;
@@ -45,7 +46,11 @@ public class AttendanceUpdaterCommand: IUpdateAttendanceCommand
                        request.Female,
                        request.Children,
                        request.NewComers,
-                       request.ServiceTypeEnum);
+                       request.ServiceTypeEnum,
+                       out var notification);
+
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
 
         _attendanceRepo.Update(finance);
         await _unitOfWork.SaveChangesAsync();

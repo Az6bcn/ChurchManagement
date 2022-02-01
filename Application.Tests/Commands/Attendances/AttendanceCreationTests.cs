@@ -1,5 +1,6 @@
 using Application.Commands.Attendances.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -104,7 +105,7 @@ public class AttendanceCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(request));
     }
 
     [Fact]
@@ -129,6 +130,6 @@ public class AttendanceCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async () => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async () => await target.ExecuteAsync(request));
     }
 }

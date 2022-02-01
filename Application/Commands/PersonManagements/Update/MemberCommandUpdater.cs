@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Request.Update;
 using Application.Dtos.Response.Update;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -56,7 +57,7 @@ public class MemberCommandUpdater : IUpdateMemberCommand
         var personValidationErrors = person.Validate().ToList();
 
         if (personValidationErrors.Any())
-            throw new RequestValidationException("Request failed validation",
+            throw new ValidationException("Request failed validation",
                                                  new Dictionary<string, object>
                                                  {
                                                      { "Request errors", string.Join(" , ", personValidationErrors) }

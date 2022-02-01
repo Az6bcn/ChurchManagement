@@ -1,5 +1,6 @@
 using Application.Commands.PersonManagements.Create;
 using Application.Dtos.Request.Create;
+using Application.Exceptions;
 using Application.RequestValidators;
 using Domain.Validators;
 using Infrastructure.Persistence.Context;
@@ -88,7 +89,7 @@ public class NewComerCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<RequestValidationException>(async ()
+        await Assert.ThrowsAsync<ValidationException>(async ()
                                                                  => await target.ExecuteAsync(request));
     }
         
@@ -119,7 +120,7 @@ public class NewComerCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<RequestValidationException>(async ()
+        await Assert.ThrowsAsync<ValidationException>(async ()
                                                                  => await target.ExecuteAsync(request));
     }
         
@@ -148,7 +149,7 @@ public class NewComerCreationTests
         };
 
         // Act and Assert
-        await Assert.ThrowsAsync<DomainValidationException>(async ()
-                                                                => await target.ExecuteAsync(request));
+        await Assert.ThrowsAsync<ValidationException>(async ()
+                                                          => await target.ExecuteAsync(request));
     }
 }

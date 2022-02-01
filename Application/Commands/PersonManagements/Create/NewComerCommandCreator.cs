@@ -1,5 +1,6 @@
 using Application.Dtos.Request.Create;
 using Application.Dtos.Response.Create;
+using Application.Exceptions;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.UnitOfWork;
 using Application.Queries.PersonManagements;
@@ -52,7 +53,7 @@ public class NewComerCommandCreator : ICreateNewComerCommand
         var personValidationErrors = person.Validate().ToList();
         
         if (personValidationErrors.Any())
-            throw new RequestValidationException("Request failed validation",
+            throw new ValidationException("Request failed validation",
                                                  new Dictionary<string, object>
                                                  {
                                                      {"Request errors", string.Join(" , ", personValidationErrors)}
@@ -61,7 +62,11 @@ public class NewComerCommandCreator : ICreateNewComerCommand
         PersonManagement.CreateNewComer(person,
                                         request.DateAttended,
                                         request.ServiceTypeEnum,
-                                        tenant);
+                                        tenant,
+                                        out var notification);
+
+        if (notification.HasErrors)
+            throw new ValidationException("Request failed validation", notification.Errors);
             
         var newComer = PersonManagement.NewComer;
 

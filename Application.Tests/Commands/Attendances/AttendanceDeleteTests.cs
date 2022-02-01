@@ -19,9 +19,8 @@ public class AttendanceDeleteTests
     private IServiceCollection GetServices() => TestDependenciesResolver.AddServices();
 
     private async Task CreateTenantForRequestAsync(IValidateTenantInDomain tenantValidator,
-                                                   IValidateAttendanceInDomain attendanceValidator,
                                                    ApplicationDbContext context)
-        => await TestSeeder.CreateDemoAttendance(tenantValidator, attendanceValidator, context);
+        => await TestSeeder.CreateDemoAttendance(tenantValidator,  context);
 
     [Fact]
     public async Task ExecuteAsync_WhenCalledWithValidRequest_MarksAsDeletedInDatabase()
@@ -30,9 +29,8 @@ public class AttendanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteAttendanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var attendanceValidator = TestDependenciesResolver.GetService<IValidateAttendanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, attendanceValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator, context);
 
         var attendance = await context.Set<Domain.Entities.AttendanceAggregate.Attendance>().SingleAsync();
           
@@ -50,9 +48,8 @@ public class AttendanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteAttendanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var attendanceValidator = TestDependenciesResolver.GetService<IValidateAttendanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, attendanceValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator,  context);
 
         var attendance = await context.Set<Domain.Entities.AttendanceAggregate.Attendance>().SingleAsync();
 
@@ -70,9 +67,8 @@ public class AttendanceDeleteTests
         var context = TestDependenciesResolver.GetService<ApplicationDbContext>(_builtServices);
         var target = TestDependenciesResolver.GetService<IDeleteAttendanceCommand>(_builtServices);
         var tenantValidator = TestDependenciesResolver.GetService<IValidateTenantInDomain>(_builtServices);
-        var attendanceValidator = TestDependenciesResolver.GetService<IValidateAttendanceInDomain>(_builtServices);
         TestDbCreator.CreateDatabase(context);
-        await CreateTenantForRequestAsync(tenantValidator, attendanceValidator, context);
+        await CreateTenantForRequestAsync(tenantValidator,  context);
 
         var attendance = await context.Set<Domain.Entities.AttendanceAggregate.Attendance>().SingleAsync();
 
