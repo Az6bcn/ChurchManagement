@@ -36,16 +36,13 @@ public class DepartmentCommandCreator : ICreateDepartmentCommand
         _mapper = mapper;
     }
 
-    public async Task<CreateDepartmentResponseDto> ExecuteAsync(CreateDepartmentRequestDto request)
+    public async Task<CreateDepartmentResponseDto> ExecuteAsync( int tenantId, CreateDepartmentRequestDto request)
     {
         var departmentNames = await _personManagementQuery
-                                  .GetDepartmentNamesByTenantIdAsync(request.TenantId);
+                                  .GetDepartmentNamesByTenantIdAsync(tenantId);
 
-        var tenant = await _tenantQuery.GetTenantByIdAsync(request.TenantId);
+        var tenant = await _tenantQuery.GetTenantByIdAsync(tenantId);
 
-        if (tenant is null)
-            throw new ArgumentException("Invalid tenantId", nameof(request.TenantId));
-            
         _requestValidator.ValidateDepartment(request, departmentNames.ToList(), out var errors);
 
         if (errors.Any())

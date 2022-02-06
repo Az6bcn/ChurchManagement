@@ -85,11 +85,11 @@ public class DepartmentsController : ControllerBase
         if (request is null || tenantId <= 0)
             return BadRequest("Invalid request");
 
-        if (request!.TenantId != tenantId)
-            return BadRequest("Invalid request");
+        // if (request!.TenantId != tenantId)
+        //     return BadRequest("Invalid request");
 
         var department =
-            await _createDepartmentCommand.ExecuteAsync(request);
+            await _createDepartmentCommand.ExecuteAsync(tenantId, request);
 
         return Ok(ApiRequestResponse<CreateDepartmentResponseDto>.Succeed(department));
     }

@@ -34,15 +34,17 @@ public class GlobalExceptionHandlerMiddleware
         response.StatusCode = StatusCodes.Status400BadRequest;
 
         var errorList = new List<string>();
-            
-        errorList.Add(e.Message);
 
         foreach (DictionaryEntry d in e.Data )
-            errorList.Add($"{d.Value}");
+            errorList.Add($"{e.Message}, {d.Value}");
 
         var apiResponse = ApiRequestResponse<string>.Fail(errorList);
 
-        var result = JsonSerializer.Serialize(apiResponse);
+        var result = JsonSerializer.Serialize(apiResponse, 
+                                              new JsonSerializerOptions()
+                                              {
+                                                  PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                                              });
 
         await response.WriteAsync(result);
     }

@@ -5,5 +5,5 @@ namespace Application.Commands.PersonManagements.Create;
 
 public interface ICreateDepartmentCommand
 {
-    Task<CreateDepartmentResponseDto> ExecuteAsync(CreateDepartmentRequestDto request);
+    Task<CreateDepartmentResponseDto> ExecuteAsync(int tenantId, CreateDepartmentRequestDto request);
 }
