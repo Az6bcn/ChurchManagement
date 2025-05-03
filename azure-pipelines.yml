@@ -46,3 +46,4 @@ steps:
     publishTestResults: true
     projects: '**/*Application.Tests/*.csproj' # update with your test project directory
   displayName: 'Run Tests'
+
